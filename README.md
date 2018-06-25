@@ -7,3 +7,7 @@ Today I learned
 
 # tiny modules
  * ETC
+
+# To do
+ * Node.js internal operation principle
+ * git commands what i still don't know
