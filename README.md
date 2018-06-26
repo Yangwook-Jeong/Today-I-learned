@@ -11,3 +11,4 @@ Today I learned
 # To do
  * Node.js internal operation principle
  * git commands what i still don't know
+ * what is the Event-loop
