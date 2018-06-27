@@ -12,3 +12,4 @@ Today I learned
  * Node.js internal operation principle
  * git commands what i still don't know
  * what is the Event-loop
+ * to learn Tensorflow.js 
