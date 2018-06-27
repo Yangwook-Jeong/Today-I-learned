@@ -1,11 +1,11 @@
 Today I learned
 ====
 
-# grammars each language
+# Grammars each language
  * VanillaJS
  * Node.js
 
-# tiny modules
+# Tiny modules
  * ETC
 
 # To do
