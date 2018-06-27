@@ -1,4 +1,4 @@
-예약어 (Reserved word)
+예약어 (Reserved Word)
 ====
 
 ## [for](https://github.com/Yangwook-Jeong/Today-I-learned/blob/master/VanillaJS/for%20statemnet.md), while 

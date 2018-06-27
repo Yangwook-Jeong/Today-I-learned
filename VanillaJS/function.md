@@ -1,4 +1,4 @@
-함수 (function)
+함수 (Function)
 ====
 
 ```javascript
