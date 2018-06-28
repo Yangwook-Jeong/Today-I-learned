@@ -7,7 +7,15 @@ for (let i = 0; i < 10; i++) { // (초기값; 조건식; 증감식)
     console.log(i);
 }
 ```
-반복횟수를 정할 수 있기 때문에 몇번 반복될지 알때 사용함
+반복횟수를 정할 수 있기 때문에 몇번 반복될지 알때 사용함.
+
+### for문 성능 향상패턴
+```javascript
+for (let i = 0, max = obj.length; i < max; i++) {
+    // 핸들링 코드
+}
+```
+html collection 순회처리 시에 속도향상이 가능하다.
 
 ## while
 ```javascript
