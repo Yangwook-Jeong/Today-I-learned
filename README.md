@@ -10,6 +10,5 @@ Today I learned
 
 # To do
  * Node.js internal operation principle
- * git commands what i still don't know
- * what is the Event-loop
+ * what is the npm module 'axios'
  * to learn Tensorflow.js 
