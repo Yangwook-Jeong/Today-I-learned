@@ -248,25 +248,31 @@ let data = [
     {
         'title': 'a',
         'year': '2010',
-        'cast': ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ']
+        'cast': ['ㄱ', 'ㄴ', 'ㄷ', 'ㅈ'] // 4번 순회
     },
     {
         'title': 'b',
         'year': '2011',
-        'cast': ['ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ']
+        'cast': ['ㅂ', 'ㄴ', 'ㅇ', 'ㅈ'] // 2번 순회
     },
     {
         'title': 'c',
         'year': '2012',
-        'cast': []
+        'cast': [] // 0번 순회
     }
    ];
 
 let flatMapReducer = (pre, val, idx, arr) => {
-    let key = 'cast';
-    if (val.hasOwnProperty(key) && Array.isArray(val[key])) {
-        val[key].forEach(value => {
-            if (pre.indexOf(value) === -1) {
+    let key = 'cast'; // 'cast'를 key로 갖는다.
+    if (val.hasOwnProperty(key) && Array.isArray(val[key])) { // 배열안에 있는 객체가 key를 가지고 있고 key가 배열이라면
+        // console.log('pre[val] : ' + pre[val]); // 3번 순회함
+        // console.log('val.hasOwnProperty(key) : ' + val.hasOwnProperty(key)); // 3번 순회함
+        val[key].forEach(value => { 
+            if (pre.indexOf(value) === -1) { // 
+                // console.log('val[key] : ' + val[key]); // 6번 순회함
+                // console.log('value : ' + value); // 6번 순회함
+                // console.log('pre.indexOf(value) : ' + pre.indexOf(value));
+                // console.log('pre.push(value) : '+ pre.push(value)); // 1, 3, 5, 7, 9, 11을 return함
                 pre.push(value);
             }
         });
@@ -275,10 +281,9 @@ let flatMapReducer = (pre, val, idx, arr) => {
 };
 
 let flattendCastArray = data.reduce(flatMapReducer, []);
-console.log(flattendCastArray); 
-// ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ']
+console.log(flattendCastArray); // ['ㄱ', 'ㄴ', 'ㄷ', 'ㅈ', 'ㅂ', 'ㅇ']
 ```
-배열을 순횧면서 배열 값으로 들어있는 객체의 키값 존재여부를 확인후, 유니크한 **cast를 키로 갖는 배열의 값들**을 최종적으로 return하는 로직이다.
+배열을 순횧면서 배열 값으로 들어있는 객체의 키값 존재여부를 확인후, 유니크한 **cast를 키로 갖는 배열의 값들**을 최종적으로 return하는 로직이다. ```Array.isArray()```, ```string.indexOf()```메소드 참조.
 
 ### reduceRight
 ```javascript
