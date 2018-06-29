@@ -212,16 +212,74 @@ console.log(sum); // { a: 1, b: 2, c: 3 }
 
 ### initialValue 주의하기
 ```javascript
+let data = ['a', 'b', 'c', 'd', 'e']
 
+let reducer = (pre, val, idx, arr) => {
+    if(pre[val]) {
+        pre[val] = pre[val] + 1;
+    } else {
+        pre[val] = 1;
+    }
+    return pre;
+};
+
+let getData = data.reduce(reducer, {});
+console.log(getData); // { a: 1, b: 2, c: 1, d: 1, e: 1 }
+let getData2 = data.reduce(reducer);
+console.log(getData2); // a
 ```
+initialValue가 있고 없음에 따른 차이를 보여준다. ```getData2```는 reduce메소드의 두번째 매개변수로 아무값도 전달되지 않았기 때문에 a만 return했다. 
+
 ### flatten
 ```javascript
+let data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+let flatArrayReducer = (pre, val, idx, arr) => {
+    return pre.concat(val);
+};
 
+let flattendData = data.reduce(flatArrayReducer, []);
+console.log(flattendData); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
+깊이가 있는 배열들을 납작하게 만들려면, 배열을 순회하면서 concat로직을 활용해서 구현할 수 있다.
+
 ### flattenMap
 ```javascript
+let data = [
+    {
+        'title': 'a',
+        'year': '2010',
+        'cast': ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ']
+    },
+    {
+        'title': 'b',
+        'year': '2011',
+        'cast': ['ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ']
+    },
+    {
+        'title': 'c',
+        'year': '2012',
+        'cast': []
+    }
+   ];
 
+let flatMapReducer = (pre, val, idx, arr) => {
+    let key = 'cast';
+    if (val.hasOwnProperty(key) && Array.isArray(val[key])) {
+        val[key].forEach(value => {
+            if (pre.indexOf(value) === -1) {
+                pre.push(value);
+            }
+        });
+    }
+    return pre;
+};
+
+let flattendCastArray = data.reduce(flatMapReducer, []);
+console.log(flattendCastArray); 
+// ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ']
 ```
+배열을 순횧면서 배열 값으로 들어있는 객체의 키값 존재여부를 확인후, 유니크한 **cast를 키로 갖는 배열의 값들**을 최종적으로 return하는 로직이다.
+
 ### reduceRight
 ```javascript
 
