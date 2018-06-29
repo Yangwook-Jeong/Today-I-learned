@@ -301,7 +301,37 @@ initialValue 0과 '5'가 합쳐지면서 '05'가 되고 그 뒤로도 문자열�
 
 ### reduce를 활용한 함수형 프로그래밍
 ```javascript
+let increment = (input) => { return input+1; };
+let decrement = (input) => { return input-1; };
+let double = (input) => { return input*2; };
+let halve = (input) => { return input/2; };
+```
 
+#### 일반적일 수 있는 로직
+```javascript
+let initialValue = 1;
+let incrementedValue = increment(initialValue);
+let doubledValue = double(incrementedValue);
+let finalValue = decrement(doubledValue);
+console.log(finalValue); // 3
+```
+
+#### 함수용 프로그래밍
+```javascript
+let pipeline = [
+    increment,
+    double,
+    decrement,
+    decrement,
+    decrement,
+    halve,
+    double
+];
+let finalValue2 = pipeline.reduce((pre, val) => {
+    // console.log(pre + val);
+    return val(pre);
+}, initialValue);
+console.log(finalValue2); // 1
 ```
 
 ## 다른 메소드와 차이점
