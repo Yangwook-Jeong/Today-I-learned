@@ -287,8 +287,18 @@ console.log(flattendCastArray); // ['ㄱ', 'ㄴ', 'ㄷ', 'ㅈ', 'ㅂ', 'ㅇ']
 
 ### reduceRight
 ```javascript
-
+let data = [1, 2, 3, 4, '5']
+let sumData = data.reduce((pre, val) => {
+    return pre + val;
+}, 0);
+let sumData2 = data.reduceRight((pre, val) => { // reduceRight 메소드 사용
+    return pre + val;
+}, 0);
+console.log(sumData); // 105
+console.log(sumData2); //054321
 ```
+initialValue 0과 '5'가 합쳐지면서 '05'가 되고 그 뒤로도 문자열이 되어 '054321'이 return된다.
+
 ### reduce를 활용한 함수형 프로그래밍
 ```javascript
 
