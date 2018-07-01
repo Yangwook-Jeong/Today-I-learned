@@ -12,3 +12,4 @@ Today I learned
  * Node.js internal operation principle
  * what is the npm module 'axios'
  * to learn Tensorflow.js 
+ * to learn typescript
