@@ -23,13 +23,26 @@ let people2 = [{name: 'c'}, {name: 'd'}];
 // forEach * 2
 people.forEach((person) => {
     console.log(person.name);
-});
+}); // a, b
 people2.forEach((person) => {
     console.log(person.name);
-});
+}); // c, d
 
 // concat + forEach
 people.concat(people2).forEach((person) => {
     console.log(person.name);
-});
+}); // a, b, c, d
 ```
+
+```javascript
+let a = [1, 2, 3];
+let b = [4, 5, {name: 'a'}];
+let c = a.concat(b);
+console.log(c);
+
+b[1] = 'b';
+b[2].name = 'c';
+console.log(c); // [1, 2, 3, 4, 5, { name: 'c' } ]
+console.log(b); // [4, 'b', { name: 'c' } ]
+```
+참조한 배열, 객체가 수정되었을 경우 아래 코드에도 영향을 줌.
