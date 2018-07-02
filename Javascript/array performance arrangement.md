@@ -106,6 +106,12 @@ console.log(result); // false
 ```
 배열 내부를 순회하며 **조건을 만족하는 값(return true)**이 발견되면 순회는 중단된다. 내부원소 하나라도 만족하면 true를 출력한다.
 
+## reject
+```javascript
+
+```
+reject는 filter와 정반대로 작동한다. 조건이 false인 배열값들이 들어간 새로운 배열을 return한다.
+
 ## reduce
 ### 기본형
 ```javascript
