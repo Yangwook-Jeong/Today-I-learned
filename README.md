@@ -12,4 +12,4 @@ Today I learned
  * Node.js internal operation principle
  * npm module 'axios'
  * Tensorflow.js, typescript 
- * class, hoisting
+ * class, hoisting, promise, async/await
