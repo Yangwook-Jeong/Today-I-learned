@@ -2,10 +2,9 @@ Today I learned
 ====
 
 # To do
- * Node.js internal operation principle
- * npm module 'axios'
  * Tensorflow.js, typescript 
  * class, hoisting, promise, async/await
+ * to materialize with CRUD RESTful API, then to learn GraphQL
 
 # Nomadcoder
 ## vs.
