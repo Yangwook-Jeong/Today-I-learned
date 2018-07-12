@@ -1,0 +1,8 @@
+git init
+yarn init
+eslint --init
+
+"scripts":{
+    "start": "node filename or directory",
+    "start:dev": "nodemon --watch filename"
+  }
