@@ -5,6 +5,7 @@ Today I learned
  * Tensorflow.js, typescript 
  * class, hoisting, promise, async/await
  * to materialize with CRUD RESTful API, then to learn GraphQL
+ * ES6 + webpack + babel
 
 # Nomadcoder
 ## vs.
