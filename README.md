@@ -3,9 +3,9 @@ Today I learned
 
 # To do
  * Tensorflow.js, typescript 
- * class, hoisting, promise, async/await
  * to materialize with CRUD RESTful API, then to learn GraphQL
  * ES6 + webpack + babel
+ * Github pages + Jekyll
 
 # Nomadcoder
 ## vs.
@@ -30,6 +30,3 @@ CJS(.js) => ESM(.mjs) (default import)<br />
 ## React, GraphQL
 React: JS와 HTML을 합쳐버림<br />
 GraphQL: REST를 대체해버림, playground<br />
-
-
-
