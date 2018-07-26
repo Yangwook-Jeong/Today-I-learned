@@ -13,12 +13,12 @@ yarn add koa koa-router nodemon
 ```
 
 ## babel
-yarn add -D @babel/core @babel/node @babel/preset-env @babel/cli @babel/polyfill // 개발의존모듈 babel-preset-env를 추천
+yarn add -D @babel/core @babel/node @babel/preset-env @babel/cli @babel/polyfill // 개발의존모듈 ```@babel/preset-env```를 추천
 
 // .babelrc 생성하기
 ```javascript
 {
-    "presets": ["@babel/preset-env"]
+    "presets": ["env"]
 }
 ```
 
