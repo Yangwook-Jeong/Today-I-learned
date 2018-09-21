@@ -16,7 +16,7 @@ app.use((ctx, next) => {
 * ctx : 요청, 응답에 대한 정보
 * next : 다음 미들웨어 실행
 
-#### next()
+### next()
 ```javascript
 app.use((ctx, next) => {
     console.log(1);
@@ -28,7 +28,7 @@ app.use((ctx, next) => {
 ```
 ```next()```다음에 Promise를 바로 연결시킬 수 있다. 
 
-#### async/await
+### async/await
 ```javascript
 app.use(async (ctx, next) => {
     console.log(1);
