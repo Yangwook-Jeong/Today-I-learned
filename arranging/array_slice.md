@@ -1,4 +1,4 @@
-slice()
+array.slice()
 ====
 
 ## 기본형
@@ -16,7 +16,7 @@ console.log(copy); // [100, 2, 3, 4, 5]
 
 let copy2 = items.slice(2, 3); // [3]
 let copy3 = items.slice(2); // [3, 4, 5] 
-let copy4 = items.slice(-2); // []
-let copy5 = items.slice(1, -1); // []
+let copy4 = items.slice(-2); // [1, 2, 3]
+let copy5 = items.slice(1, -1); // [3, 4]
 ```
 
