@@ -37,3 +37,13 @@ FULLTEXT KEY `idx_ft_product_name_description` (`name`, `description`)
 
 [Performing FULLTEXT search after JOIN operation in sequelize](https://stackoverflow.com/questions/40571881/performing-fulltext-search-after-join-operation-in-sequelize)
 [Is there a way do MySQL FullText search in Sequelize 4?](https://stackoverflow.com/questions/47742180/is-there-a-way-do-mysql-fulltext-search-in-sequelize-4)
+
+# Sequelize Many-to-Many 관계 이용하기
+
+## M:N
+
+`belongsTO()`
+
+## 참조
+
+- [ORM(Object Relation Mapping)을 이용해보자!!! 1편 Sequelize.js](https://real-dongsoo7.tistory.com/63)
