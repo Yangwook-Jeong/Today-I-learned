@@ -42,7 +42,13 @@ FULLTEXT KEY `idx_ft_product_name_description` (`name`, `description`)
 
 ## M:N
 
-`belongsTO()`
+테이블 3개로 작동하며, 다리테이블은 쿼리에 사용하지 않는다. 하지만 json데이터에는 다리테이블이 찍히니 이걸 제외하고 반환시키고 싶다면 아래와 같은 옵션을 반드시 사용한다.
+
+```js
+through: {
+  attributes: [];
+}
+```
 
 ## 참조
 
