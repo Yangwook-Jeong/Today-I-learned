@@ -53,3 +53,20 @@ through: {
 ## 참조
 
 - [ORM(Object Relation Mapping)을 이용해보자!!! 1편 Sequelize.js](https://real-dongsoo7.tistory.com/63)
+
+## fn사용법 예시는 substr
+
+```sql
+SELECT SUBSTR(description, 1, 10) AS description FROM product;
+```
+
+를 sequelize 쿼리로 하면
+
+```js
+const data = await product.findAll({
+  attributes: [
+    sequelize.fn('substring', sequelize.col('description'), 1, 10),
+    'description'
+  ]
+});
+```
