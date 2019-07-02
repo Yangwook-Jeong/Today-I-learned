@@ -70,3 +70,72 @@ const data = await product.findAll({
   ]
 });
 ```
+
+## 기존 값에 값을 더하고싶을떄
+
+```sql
+UPDATE "myModel" SET "some_fild"="some_fild" + -2 WHERE "id" = '1';
+```
+
+을 sequelize 쿼리로 바꾸고싶으면
+
+```js
+Model.update(
+  { field: sequelize.literal('field + 2') },
+  { where: { id: model_id } }
+);
+```
+
+## 참조
+
+- [How to update and increment?](https://github.com/sequelize/sequelize/issues/7268)
+
+## raw, plain옵션
+
+- `findOne()`을 콘솔에서 json형태로 보고싶거나 가공하고싶을때는 `{ plain: true }`옵션을 사용하면 데이터가 잘 나온다.
+
+- `findOne()` 및 `findAll()`에서 json형태로 보거나 가공하고싶을때는 `{ raw: true }`옵션을 사용하면 된다. 하지만 다음과 같이 나온다.
+
+```js
+// 원래 데이터
+{
+  'image': 'gallic-cock.gif',
+  'shopping_carts': [
+    {
+      'item_id': 1086
+    }
+  ]
+}
+
+// raw처리한 데이터
+[
+  {
+  'image': 'gallic-cock.gif',
+  'shopping_carts.item_id': 1086
+  }
+]
+```
+
+- 다른 방법도 있다. 쿼리를 넣을때 다음과 같이 한다.
+
+```js
+await model.findAll({}).map(el => el.get({ plain: true }));
+```
+
+위와 같이 쿼리하면 아래처럼 나온다.
+
+```js
+// 원래 데이터
+{
+  'image': 'gallic-cock.gif',
+  'shopping_carts': [
+    {
+      'item_id': 1086
+    }
+  ]
+}
+```
+
+## 참조
+
+- [https://github.com/sequelize/sequelize/issues/6950](Can findAll() directly get plain objects?)
