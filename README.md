@@ -7,10 +7,10 @@
 
 ## Goal for 2019
 
-🗹 서버개발자로 취업하기
-🗹 Travis CI, Docker 사용해보고 생산성향상이 얼마나 되는지 느껴보기
-☐ Python: Tensorflow로 대량의 데이터를 다뤄보기
-☐ 신기술 커뮤니티 들어가서 활동하기
+- 서버개발자로 취업하기
+- Travis CI, Docker 사용해보고 생산성향상이 얼마나 되는지 느껴보기
+- Python: Tensorflow로 대량의 데이터를 다뤄보기
+- 신기술 커뮤니티 들어가서 활동하기
 
 ## Attitude
 
