@@ -34,8 +34,4 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1565253692/logo/posts/se
     - output파일에 스트림으로 담기
   - 커맨드라인에서 명령어를 작성해서 실행시킬 수 있도록 하기
     - 검색어, 시작날짜, 종료날짜
-  - 필드에 담을 date를 바탕으로 moment를 이용해 날짜 비교하기
   - 조건문에 통과한 데이터만 output파일에 작성하기
-  - 코드 길이를 줄이기 위한 util 만들기
-    - 문자열 필터링 기능 만들기
-    - 슬립 기능 만들기
