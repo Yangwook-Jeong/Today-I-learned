@@ -24,7 +24,7 @@ cover:
   - 이미지 로딩속도가 조금 느리다.
   - 도커 세팅하기가 까다롭다.
 
-### ㅇㅇ
+## 
 
 docker에서 jekyll 실행하면 에러뜨길래 플래그 --force_polling --livereload
 달아뒀당
@@ -52,11 +52,13 @@ docker run --rm --name blog -v "C:/dev/record/blog:/srv/jekyll" -p 4000:4000 -it
 ## 아래와 같은 오류가 나면
 
 ```sh
-$ docker run --rm --name blog -v "C:/dev/record/blog:/srv/jekyll" -p 4000:4000 -it jekyll/jekyll jekyll serve --force_polling --livereloa
-d
+$ docker run --rm --name blog -v "C:/dev/record/blog:/srv/jekyll" -p 4000:4000 -it jekyll/jekyll jekyll serve --force_polling --livereload
+
 C:\Program Files\Docker\Docker\Resources\bin\docker.exe: Error response from daemon: driver failed programming external connectivity on endpoint blog (019ddce4631aa692553c6fd7fd15cf440dfb0abf8e2938771a7cff1a8d63281b): Error starting userland proxy: mkdir /port/tcp:0.0.0.0:4000:tcp:172.17.0.2:4000: input/output error.
 ```
 
-반드시 도커를 재실행하면 된다.
+도커가 켜지지 않는 경우 발생하는 에러입니다. 만약에 도커가 켜져 있는데도 위와 같은 에러가 발생한다면 도커를 재실행시키면 에러가 발생하지 않을 것입니다.
+
+## 참조
 
 [Docker won't start containers after win 10 shutdown and power up.](https://github.com/docker/for-win/issues/1038)
