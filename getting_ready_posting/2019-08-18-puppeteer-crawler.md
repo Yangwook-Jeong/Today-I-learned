@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Selenium으로 크롤러 만들기
+title: Puppeteer로 크롤러 만들기
 author: Yangeok
 categories: Node.js
 comments: true
