@@ -7,17 +7,10 @@ comments: true
 cover: https://res.cloudinary.com/yangeok/image/upload/v1566999441/logo/posts/puppeteer.jpg
 ---
 
-## 작업환경
-
-- [puppeteer v1.19.0](https://www.npmjs.com/package/puppeteer)
-- [moment v2.24.0](https://momentjs.com)
-
----
-
 ## 시리즈
 
 - [Puppeteer로 크롤러 만들기 - 준비]()
-- [Puppeteer로 크롤러 만들기 - 페이지네이션]()
+- [Puppeteer로 크롤러 만들기 - 페이지네이션](#)
 - [Puppeteer로 크롤러 만들기 - 무한스크롤]()
 
 ---
@@ -98,7 +91,27 @@ puppeteer 내장 함수 혹은 cheerio로 html 요소를 가져올때 참고하�
 
 하지만 브라우저에서 `$()`로 요소를 반환하지 않고 `$$()`로만 반환한다고 한들 걱정할 것 없습니다.
 
-puppeteer 내장 함수를 사용한다면, 아래와 같은 여러가지 메서드가 있습니다.
+[Chrome Develeopers Tools documentation](https://developers.google.com/web/tools/chrome-devtools/console/?utm_source=dcc&utm_medium=redirect&utm_campaign=2016q3#selecting-elements)에서 아래와 같이 `$`마크가 용도 별로 있음을 알려줍니다.
+
+> ### Selecting Elements
+>
+> There are a few shortcuts for selecting elements. These save you valuable time when compared to typing out their standard counterparts.
+>
+> \$() Returns the first element that matches the specified CSS selector. It is a shortcut for document.querySelector().
+>
+> \$\$() Returns an array of all the elements that match the specified CSS selector. This is an alias for document.querySelectorAll()
+
+만, 작동은 똑같이 하는 것 같습니다. 더 헷갈리기만 하더라구요. 브라우저에서 `$()`를 먼저 사용해보고 안된다면 `$$()`를 사용하는 편입니다. 같은 셀렉터를 읽어옴에도 `$()`와 `$$()`는 뒤에 붙는 메서드 혹은 객체 이름이 다름을 참고해주세요. 아래는 어떤 요소 안에 들어있는 텍스트만 가져오기 위한 코드입니다.
+
+```js
+$('selector').text();
+// something
+
+$$('selector')[0].innerText;
+// something
+```
+
+아래처럼 puppeteer 내장 함수를 사용한다면 아래와 같은 여러가지 메서드가 있습니다.
 
 ```js
 const item = await page.$('selector');
@@ -131,11 +144,15 @@ const items = await page.$$eval('selector', el => el);
 `page.$$eval()`는 `Array.from(document.querySelectorAll(selector))`를 페이지에서 실행합니다. 일치하는 셀렉터가 없다면 빈 배열 `[]`을 반환합니다.
 
 ```js
+const fn = await page.evaluate('pageFunction');
+
 const item = await page.evaluate(() => {
   const $ = window.$;
   return $('selector');
 });
 ```
+
+스크롤바 이동같은 함수를 바로 사용하거나 콜백으로 html요소를 반환합니다.
 
 `page.evaluate()`에서 하는 행동을 콘솔에 찍어보면 브라우저 콘솔에서 확인할 수 있습니다. 그래서 `window`객체에 내장된 jQuery를 이용할 수 있죠. 대신 브라우저 하는 행동이라 아래와 같이 서버에 설치된 라이브러리를 사용할 수는 없습니다. 예컨대 `.csv`파일로 크롤한 내용을 써야하는 경우에는 객체에 들어있는 내용에 컴마가 들어간다면 안되겠죠. 이런 경우에는 `.evaluate()` 안에서 작업이 불가능합니다. 그래서 아래와 같이 밑에서 다시 선언해줘야하는 불편함이 따를 수 있습니다.
 
@@ -205,16 +222,6 @@ const item = {
 
 반복해서 루프를 돌다 `:not(.className)`인 게시물이 없으면 한 스크롤을 내리는 행동을 반복하고 더 이상 요소가 없어 에러가 나면 페이지를 닫고 프로그램을 종료합니다.
 
-#### puppeteer 내장 함수 혹은cheerio
-
-위에를 사용할 수 있습니다.
-
-````js
-const content = await page.content()
-const $ = await cheerio.load(content)
-
-```서 언급했듯이 브라우저 콘솔에서 `$()`로 요소가 검색이 되기도, `$$()`로 요소가 검색이 되기도 합니다.
-
 ---
 
 ## 브라우저 옵션 설정
@@ -225,7 +232,7 @@ headless, 디바이스, 뷰포트 설정, 자바스크립트, 폰트, 이미지,
 
 ```js
 const browser = await puppeteer.launch({ headless: true });
-````
+```
 
 [여기](https://github.com/GoogleChrome/puppeteer/blob/master/lib/DeviceDescriptors.js)에서 디바이스 종류를 선택할 수 있습니다. 디바이스를 선택하면 해당 크기에 맞는 뷰를 브라우저가 제공합니다. 디바이스 옵션은 다음과 같이 작성합니다.
 
@@ -273,7 +280,9 @@ await page.setJavaScriptEnabled(false);
 
 ---
 
-다음편에서는 본격적으로 코드를 짜면서 이야기하도록 하겠습니다.
+다음편부터는 본격적으로 코드를 짜면서 이야기하도록 하겠습니다. 페이지네이션 형태는 뽐뿌를, 무한스크롤 형태는 인스타그램을 크롤하도록 하겠습니다.
+
+---
 
 ## 참조
 
@@ -283,3 +292,7 @@ await page.setJavaScriptEnabled(false);
 - [window inner size not equal to viewport size](https://github.com/GoogleChrome/puppeteer/issues/1183)
 - [puppeteer.launch([options])](https://pptr.dev/#?product=Puppeteer&version=v1.12.2&show=api-puppeteerlaunchoptions)
 - [CSS Pseudo-classes](https://www.w3schools.com/css/css_pseudo_classes.asp)
+- [class: Page](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page)
+
+$$
+$$
