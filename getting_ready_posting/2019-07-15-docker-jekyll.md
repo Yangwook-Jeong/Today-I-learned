@@ -24,7 +24,7 @@ cover:
   - 이미지 로딩속도가 조금 느리다.
   - 도커 세팅하기가 까다롭다.
 
-## 
+##
 
 docker에서 jekyll 실행하면 에러뜨길래 플래그 --force_polling --livereload
 달아뒀당
@@ -62,3 +62,13 @@ C:\Program Files\Docker\Docker\Resources\bin\docker.exe: Error response from dae
 ## 참조
 
 [Docker won't start containers after win 10 shutdown and power up.](https://github.com/docker/for-win/issues/1038)
+
+##
+
+```sh
+C:\Program Files\Docker\Docker\Resources\bin\docker.exe: Error response from daemon: driver failed programming external connectivity
+on endpoint blog (ed0f8587c68ea6d0036b1dbdc313ae2cf900120053f55a9163567def303357ea): Error starting userland proxy: listen tcp 0.0.0.0:3000: bind: An attempt was made to access a socket in a way forbidden by its access permissions.
+```
+
+뜨면 포트 번호를 40000번대 이상으로 올려서 하면 된당 ㅎㅎ
+[참고](https://stackoverflow.com/questions/53673801/docker-error-starting-userland-proxy-bind-for-0-0-0-050000-unexpected-error)
