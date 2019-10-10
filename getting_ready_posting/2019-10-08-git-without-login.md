@@ -15,3 +15,7 @@ cloud environment에서 git login 없이 사용하려면
 [참조](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)
 
 [세팅](https://github.com/settings/tokens)
+
+ec2 비밀번호 로그인하는 방법은
+
+[여기](https://aws.amazon.com/ko/premiumsupport/knowledge-center/ec2-password-login/)
