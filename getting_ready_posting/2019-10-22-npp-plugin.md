@@ -1,0 +1,1 @@
+- npp - ligature 폰트 사용하려면 [여기](https://github.com/notepad-plus-plus/notepad-plus-plus/issues/2287)보고 따라하기
