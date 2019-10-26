@@ -1,1 +1,0 @@
-- python - [pip easy install](https://bootstrap.pypa.io/ez_setup.py) 다운로드 후 cli에서 실행한다. - pip upgrade - linux: `pip install --upgrade pip` - windows: `python -m pip install --upgrade pip` - 패키지파일 한 번에 설치하려면 - `pip install -r requirements.txt` - `pip freeze > requirements.txt`

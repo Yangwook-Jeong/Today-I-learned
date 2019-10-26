@@ -72,3 +72,28 @@ on endpoint blog (ed0f8587c68ea6d0036b1dbdc313ae2cf900120053f55a9163567def303357
 
 뜨면 포트 번호를 40000번대 이상으로 올려서 하면 된당 ㅎㅎ
 [참고](https://stackoverflow.com/questions/53673801/docker-error-starting-userland-proxy-bind-for-0-0-0-050000-unexpected-error)
+
+## 도커 볼륨 윈도우에서 사용하기
+
+도커 스크립트에서 volume 경로:경로 하면 drive sharing이 되는데용
+이떄 윈도우에서는 admin 비번이 설정되지 않은 경우에도 비번을 입력하라고 나온다 ㅋㅋ
+어처구니
+하지만 비번을 설정하고 drive sharing을 하면 아주 잘된다 ㅠㅠㅠ
+
+## 도커/지킬 타임존 설정하기
+
+#### 도커에서 하는 방법
+
+환경변수로 하는법
+
+docker run ... -e TZ=Asia/Seoul ...
+
+#### 지킬에서 하는 방법
+
+config.yml 에서 timezone: Aisa/Seoul로 설정하기 - 이걸로 바로 성공 ><
+
+md파일에서 헤더에 date: YYYY-MM-DD HH:MM +GMT
+
+## 도커가 windows Home에서는 실행이 안되는디
+
+해결하려면 인터넷 끊고 따라하기 [여기](https://osmanias.com/tip/3028386)
