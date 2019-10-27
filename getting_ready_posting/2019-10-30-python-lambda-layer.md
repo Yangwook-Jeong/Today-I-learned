@@ -15,12 +15,16 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1572139949/logo/posts/py
 
 ## 목차
 
-- [vanilla python 삽질]()
-- [anaconda 삽질]()
-- [python on docker 삽질]()
+- [vanilla python 삽질](#vanilla-python-삽질)
+  - [python-lambda-local 삽질](#python-lambda-local-삽질)
+- [anaconda 삽질](#anaconda-삽질)
+  - [전역 pip 모듈 및 캐시 제거](#전역-pip-모듈-및-캐시-제거)
+  - [venv로 가상환경에서 실행](#venv로-가상환경에서-실행)
+- [python on docker 삽질](#python-on-docker-삽질)
+- [TL;DR](#TL;DR)
 - [참조](#참조)
 
-##
+## vanilla python 삽질
 
 빠른 코드 배포를 위해 다른 생각 없이 로컬환경에 python을 설치해 pip로 패키지를 설치했습니다. 로컬과 aws lambda의 리눅스 환경이 차이가 있다는 것을 이 때까지는 인지하지 못하고 있었죠. 며칠동안 펼쳐질 고통을 이 때 미리 깨달았어야 했습니다.
 
@@ -63,13 +67,19 @@ def handler(event, context):
 
 그렇습니다. 소스코드 바꿔서 올릴때마다 아주 귀찮습니다. 이것을 해결하기 위해 2018년 12월 경에 나온 layer 기능을 사용할겁니다. 로컬에서 모듈을 모두 로딩만 가능한 상태로 만들고 layer를 사용해야겠습니다.
 
-##
+---
+
+## anaconda 삽질
 
 [matplotlib](https://matplotlib.org/3.1.1/users/installing.html)을 설치하는 과정에서 뭔가를 발견했습니다. [anaconda](https://www.anaconda.com)라는 과학패키지 및 패키지매니저를 제공하는 배포판이었습니다. 일일이 모듈을 설치하다보면 의존성 문제가 생길 수 있어 anaconda를 쓰길 더 추천하더군요. 어차피 같은 환경이니 아까 발생했던 오류들이 똑같이 발생합니다.
+
+---
 
 ### 전역 pip 모듈 및 캐시 제거
 
 이 때도 살짝 샛길로 나갔다 들어옵니다. 의존성의 문제란 것을 미처 깨닫지 못한 저는 전역 pip 모듈 및 캐시를 제거하는 행동을 합니다. 네, 역시 안돼요.
+
+---
 
 ### venv로 가상환경에서 실행
 
@@ -124,7 +134,9 @@ print(platform.system())
 
 잘 확인했습니다. 왜 이제야 docker를 쓸 생각을 한걸까요ㅎㅎ
 
-##
+---
+
+## python on docker 삽질
 
 친절하게도 누군가 docker 이미지를 만들어뒀습니다. [lambci/lambda](https://hub.docker.com/r/lambci/lambda/)를 사용하면 바로 실행가능한 모드도, 빌드해서 배포가능한 형태로 가공하기 위한 모드도 사용할 수 있습니다. 저는 3.7 버전을 사용하고 있고, 파일구조를 lambda 함수와 똑같은 구조로 만들어야 하므로 아래와 같은 명령어를 사용했습니다.
 
@@ -160,9 +172,13 @@ Default output format [None]:
 
 ![](https://res.cloudinary.com/yangeok/image/upload/v1572172179/python-lambda/py-05.jpg)
 
+---
+
 ## TL;DR
 
 인라인 코드 편집기는 10mb 이상이면 사용할 수 없기 때문에 패키지 파일 말고도 용량이 큰 파일이라면, 예컨대 폰트 파일일지라도 layer에 집어넣어줄 수 있습니다. 폰트 혹은 다른 파일을 import할 때 디렉토리 주소를 반드시 `/opt/python/<filename>`와 같이 써주셔야 합니다.
+
+---
 
 ## 참조
 

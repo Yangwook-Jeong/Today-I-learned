@@ -58,6 +58,8 @@ Retype new password:
 
 `ssh <username>@<host>
 
+---
+
 ## git private 저장소 pull시 로그인 생략하기
 
 인스턴스에서 git 저장소를 가져오려고 할때 private 저장소라면 항상 로그인을 해줘야합니다.
@@ -74,6 +76,8 @@ Retype new password:
 `git clone <ssh address>`
 
 를 입력하면 git 계정인증을 매번 할 필요가 없어집니다.
+
+---
 
 ## 참조
 
