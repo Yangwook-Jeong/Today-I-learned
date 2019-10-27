@@ -25,7 +25,7 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1570100178/logo/posts/s3
 
 - [aws-sdk](https://www.npmjs.com/package/aws-sdk)
 - [archiver](https://www.npmjs.com/package/archiver)
-- [stream](
+- [stream](https://www.npmjs.com/package/stream)
 
 ---
 
