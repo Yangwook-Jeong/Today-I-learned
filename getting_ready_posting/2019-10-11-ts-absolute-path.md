@@ -2,20 +2,20 @@
 
 [how to pass optional parameters while omitting some other optional parameters? ]: https://stackoverflow.com/questions/30734509/how-to-pass-optional-parameters-while-omitting-some-other-optional-parameters
 
-    - absolute path
-    	- yarn add -D babel-plugin-module-resolver
-    	- tsconfig.json
-    	```json
-    	"baseUrl": ".",
-    	"paths": {
-    		"@/*": ["./src/*"]
-    	}
-    	```
-    	- .babelrc
-    	```.babelrc
-    	 ["module-resolver", {
-    		  "alias": {
-    			"@": "./src"
-    		  }
-    		}]
-    	```
+- absolute path
+	- yarn add -D babel-plugin-module-resolver
+	- tsconfig.json
+	```json
+	"baseUrl": ".",
+	"paths": {
+		"@/*": ["./src/*"]
+	}
+	```
+	- .babelrc
+	```.babelrc
+		["module-resolver", {
+			"alias": {
+			"@": "./src"
+			}
+		}]
+	```
