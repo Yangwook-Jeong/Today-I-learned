@@ -346,6 +346,7 @@ Puppeteer is a Node library which provides a high-level API to control Chromium 
 The Puppeteer API is hierarchical and mirrors the browser structure.
 
 > **NOTE** On the following diagram, faded entities are not currently represented in Puppeteer.
+> **NOTE** On the following diagram, faded entities are not currently represented in Puppeteer.
 
 ![puppeteer overview](https://user-images.githubusercontent.com/746130/40333229-5df5480c-5d0c-11e8-83cb-c3e371de7374.png)
 
@@ -356,7 +357,7 @@ The Puppeteer API is hierarchical and mirrors the browser structure.
 - [`Frame`](#class-frame) 적어도 한 개의 Javascript가 실행된 곳에서 컨텍스트를 가진다. Frame은 추가적으로 [크롬 확장프로그램](https://developer.chrome.com/extensions)과 연결된 컨텍스트를 가질 수도 있습니다.
 - [`Worker`](#class-worker) 한 개의 컨텍스트가 실행되며 [WebWorkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)와 상호작용합니다.
 
-(Diagram source: [link](https://docs.google.com/drawings/d/1Q_AM6KYs9kbyLZF-Lpp5mtpAWth73Cq8IKCsWYgi8MM/edit?usp=sharing))
+(다이어그램 소스: [link](https://docs.google.com/drawings/d/1Q_AM6KYs9kbyLZF-Lpp5mtpAWth73Cq8IKCsWYgi8MM/edit?usp=sharing))
 
 ### puppeteer vs puppeteer-core
 
@@ -453,42 +454,41 @@ const puppeteer = require('puppeteer');
 - `options` <[Object]>
   - `browserWSEndpoin t` <?[string]> a [browser websocket endpoint](#browserwsendpoint) to connect to.
   - `browserURL` <?[string]> a browser url to connect to, in format `http://${host}:${port}`. Use interchangeably with `browserWSEndpoint` to let Puppeteer fetch it from [metadata endpoint](https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target).
-  - `ignoreHTTPSErrors` <[boolean]> Whether to ignore HTTPS errors during navigation. Defaults to `false`.
-  - `defaultViewport` <?[Object]> Sets a consistent viewport for each page. Defaults to an 800x600 viewport. `null` disables the default viewport.
-    - `width` <[number]> page width in pixels.
-    - `height` <[number]> page height in pixels.
-    - `deviceScaleFactor` <[number]> Specify device scale factor (can be thought of as dpr). Defaults to `1`.
-    - `isMobile` <[boolean]> Whether the `meta viewport` tag is taken into account. Defaults to `false`.
-    - `hasTouch`<[boolean]> Specifies if viewport supports touch events. Defaults to `false`
-    - `isLandscape` <[boolean]> Specifies if viewport is in landscape mode. Defaults to `false`.
-  - `slowMo` <[number]> Slows down Puppeteer operations by the specified amount of milliseconds. Useful so that you can see what is going on.
-  - `transport` <[ConnectionTransport]> **Experimental** Specify a custom transport object for Puppeteer to use.
+  - `ignoreHTTPSErrors` <[boolean]> 브라우징 도중 발생하는 HTTPS 에러를 무시할지 결정합니다. 기본 값은 `false`입니다.
+  - `defaultViewport` <?[Object]> 각 페이지마다 일관된 뷰포트를 설정합니다. 기본 값은 800x600 뷰포트입니다.
+    - `width` <[number]> 페이지 너비는 픽셀 단위입니다.
+    - `height` <[number]> 페이지 높이는 픽셀 단위입니다.
+    - `deviceScaleFactor` <[number]> 기기 스케일 팩터를 명시합니다. DPR(Device Pixel Ratio)로도 생각할 수 있습니다. 기본 값은 `1`입니다.
+    - `isMobile` <[boolean]> `meta viewport`태그를 사용할지 결정합니다. 기본 값은 `false`입니다. 
+    - `hasTouch`<[boolean]> 뷰포트가 터치 이벤트를 지원한다면 명시합니다. 기본 값은 `false`입니다.
+    - `isLandscape` <[boolean]> 가로모드 뷰포트라면 명시합니다. 기본 값은 `false`입니다.
+  - `slowMo` <[number]> Puppeteer의 작동을 밀리세컨드(ms)만큼 느리게 합니다. 어떤 일이 일어나는지 당신이 볼 수 있어 유용합니다.
+  - `transport` <[ConnectionTransport]> **실험기능** Specify a custom transport object for Puppeteer to use.
 - returns: <[Promise]<[Browser]>>
 
-This methods attaches Puppeteer to an existing Chromium instance.
+이 메서드는 Puppeteer를 띄워져있는 Chromium 인스턴스에 접착합니다.
 
 #### puppeteer.createBrowserFetcher([options])
 - `options` <[Object]>
-  - `host` <[string]> A download host to be used. Defaults to `https://storage.googleapis.com`.
-  - `path` <[string]> A path for the downloads folder. Defaults to `<root>/.local-chromium`, where `<root>` is puppeteer's package root.
-  - `platform` <[string]> Possible values are: `mac`, `win32`, `win64`, `linux`. Defaults to the current platform.
+  - `host` <[string]> 다운로드 호스트가 사용됩니다. 기본 값은 `https://storage.googleapis.com`입니다..
+  - `path` <[string]> 다운로드할 폴더 경로입니다. 기본 값은 `<root>`가 퍼펫티어 패키지의 루트 폴더인, `<root>/.local-chromium`입니다.
+  - `platform` <[string]> 사용할 수 있는 값은 `mac`, `win32`, `win64`, `linux`입니다. 기본 값은 현재 플랫폼입니다.
 - returns: <[BrowserFetcher]>
 
 #### puppeteer.defaultArgs([options])
-- `options` <[Object]>  Set of configurable options to set on the browser. Can have the following fields:
-  - `headless` <[boolean]> Whether to run browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Defaults to `true` unless the `devtools` option is `true`.
+- `options` <[Object]> 브라우저에 설정할 수 있는 옵션들을 설정합니다. 아래의 필드와 같이 설정할 수 있습니다.
+  - `headless` <[boolean]> [헤드리스 모드](https://developers.google.com/web/updates/2017/04/headless-chrome)에서 실행할지 결정합니다. 기본 값은 `devtools` 옵션이 `true`가 아닌 이상 `true`입니다.
   - `args` <[Array]<[string]>> Additional arguments to pass to the browser instance. The list of Chromium flags can be found [here](http://peter.sh/experiments/chromium-command-line-switches/).
   - `userDataDir` <[string]> Path to a [User Data Directory](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md).
-  - `devtools` <[boolean]> Whether to auto-open a DevTools panel for each tab. If this option is `true`, the `headless` option will be set `false`.
+  - `devtools` <[boolean]> DevTools 패널을 각각 탭마다 자동으로 열지 결정합니다. 이 옵션이 `true`라면, `headless` 옵션은 `false`로 세팅될 것입니다.
 - returns: <[Array]<[string]>>
 
-The default flags that Chromium will be launched with.
+기본 플래그는 Chromium이 실행될때 같이 작동합니다.
 
 #### puppeteer.devices
 - returns: <[Object]>
 
-Returns a list of devices to be used with [`page.emulate(options)`](#pageemulateoptions). Actual list of
-devices can be found in [lib/DeviceDescriptors.js](https://github.com/puppeteer/puppeteer/blob/master/lib/DeviceDescriptors.js).
+[`page.emulate(options)`](#pageemulateoptions)에 사용된 디바이스 리스트를 반환합니다. 실제 디바이스 리스트는 [lib/DeviceDescriptors.js](https://github.com/puppeteer/puppeteer/blob/master/lib/DeviceDescriptors.js)에서 찾을 수 있습니다.
 
 ```js
 const puppeteer = require('puppeteer');
@@ -504,7 +504,7 @@ const iPhone = puppeteer.devices['iPhone 6'];
 })();
 ```
 
-> **NOTE** The old way (Puppeteer versions <= v1.14.0) devices can be obtained with `require('puppeteer/DeviceDescriptors')`.
+> **참고** 예전 방법 (Puppeteer 버전 <= v1.14.0) 디바이스를 `require('puppeteer/DeviceDescriptors')`에서 찾을 수 있습니다.
 
 #### puppeteer.errors
 - returns: <[Object]>
@@ -540,16 +540,17 @@ try {
   - `product` <[string]> 현재로서는, `chrome`이나 `firefox`둘 중에 하나로 어떤 브라우저를 실행할지 결정합니다. `PUPPETEER_PRODUCT`를 참고하세요.
   - `ignoreHTTPSErrors` <[boolean]> 네비게이션하는 동안 HTTPS 에러를 무시할지 결정합니다. 기본 값은 `false`입니다.
   - `headless` <[boolean]> [헤드리스 모드](https://developers.google.com/web/updates/2017/04/headless-chrome)에서 실행할지 결정합니다. 기본 값은 `devtools` 옵션이 `true`가 아닌 이상 `true`입니다.
-  - `headless` <[boolean]> Whether to run browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Defaults to `true` unless the `devtools` option is `true`.
-  - `executablePath` <[string]> Path to a browser executable to run instead of the bundled Chromium. If `executablePath` is a relative path, then it is resolved relative to [current working directory](https://nodejs.org/api/process.html#process_process_cwd). **BEWARE**: Puppeteer is only [guaranteed to work](https://github.compuppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy) with the bundled Chromium, use at your own risk.
-  - `slowMo` <[number]> Slows down Puppeteer operations by the specified amount of milliseconds. Useful so that you can see what is going on.
-  - `defaultViewport` <?[Object]> Sets a consistent viewport for each page. Defaults to an 800x600 viewport. `null` disables the default viewport.
-    - `width` <[number]> page width in pixels.
-    - `height` <[number]> page height in pixels.
-    - `deviceScaleFactor` <[number]> Specify device scale factor (can be thought of as dpr). Defaults to `1`.
-    - `isMobile` <[boolean]> Whether the `meta viewport` tag is taken into account. Defaults to `false`.
-    - `hasTouch`<[boolean]> Specifies if viewport supports touch events. Defaults to `false`
-    - `isLandscape` <[boolean]> Specifies if viewport is in landscape mode. Defaults to `false`.
+  - `executablePath` <[string]>  번들된 Chromium 대신 실행가능한 브라우저 경로를 입력합니다 만약 `executablePath` 이 상대경로라면, [현재 작동중인 디렉토리](https://nodejs.org/api/process.html#process_process_cwd)와 관련성이 있습니다.. **주의**: Puppeteer는 [guaranteed to work](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy)
+  책임은 본인
+   with the bundled Chromium, use at your own risk.
+  - `slowMo` <[number]> Puppeteer의 작동을 밀리세컨드(ms)만큼 느리게 합니다. 어떤 일이 일어나는지 당신이 볼 수 있어 유용합니다.
+  - `defaultViewport` <?[Object]>  각 페이지마다 일관된 뷰포트를 설정합니다. 기본 값은 800x600 뷰포트입니다. `null`로 입력하면 기본 뷰포트 옵션이 꺼집니다.
+    - `width` <[number]> 페이지 너비는 픽셀 단위입니다.
+    - `height` <[number]> 페이지 높이는 픽셀 단위입니다.  
+    - `deviceScaleFactor` <[number]>  기기 스케일 팩터를 명시합니다. DPR(Device Pixel Ratio)로도 생각할 수 있습니다. 기본 값은 `1`입니다.
+    - `isMobile` <[boolean]> `meta viewport` 태그를 사용할지 결정합니다. 기본 값은 `false`입니다.
+    - `hasTouch`<[boolean]> 뷰포트가 터치 이벤트를 지원한다면 명시합니다. 기본 값은 `false`입니다.
+    - `isLandscape` <[boolean]> 가로모드 뷰포트라면 명시합니다. 기본 값은 `false`입니다.
   - `args` <[Array]<[string]>> Additional arguments to pass to the browser instance. The list of Chromium flags can be found [here](http://peter.sh/experiments/chromium-command-line-switches/), and here is the list of [Firefox flags](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options).
   - `ignoreDefaultArgs` <[boolean]|[Array]<[string]>> If `true`, then do not use [`puppeteer.defaultArgs()`](#puppeteerdefaultargsoptions). If an array is given, then filter out the given default arguments. Dangerous option; use with care. Defaults to `false`.
   - `handleSIGINT` <[boolean]> Close the browser process on Ctrl-C. Defaults to `true`.
