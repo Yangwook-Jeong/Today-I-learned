@@ -7,6 +7,9 @@ comments: true
 cover:
 ---
 
+<!-- note 참고
+beware 주의
+see 참고하세요 -->
 
 # Puppeteer API <!-- GEN:version -->Tip-Of-Tree<!-- GEN:stop-->
 <!-- GEN:empty-if-release --><!-- GEN:stop -->
@@ -341,12 +344,11 @@ cover:
 
 ### Overview
 
-Puppeteer is a Node library which provides a high-level API to control Chromium or Chrome over the DevTools Protocol.
+Puppeteer는 DevTools Protocol 위의 Chromium이나 Chrome을 제어하는 고수준 API를 제공하는 Node 라이브러리입니다.
 
-The Puppeteer API is hierarchical and mirrors the browser structure.
+Puppeteer API는 상속적이며 브라우저 구조를 반영합니다. 
 
-> **NOTE** On the following diagram, faded entities are not currently represented in Puppeteer.
-> **NOTE** On the following diagram, faded entities are not currently represented in Puppeteer.
+> **참고** 아래의 다이어그램처럼, 희미한 개체는 현재 Puppeteer에 해당하지 않습니다.
 
 ![puppeteer overview](https://user-images.githubusercontent.com/746130/40333229-5df5480c-5d0c-11e8-83cb-c3e371de7374.png)
 
@@ -540,9 +542,7 @@ try {
   - `product` <[string]> 현재로서는, `chrome`이나 `firefox`둘 중에 하나로 어떤 브라우저를 실행할지 결정합니다. `PUPPETEER_PRODUCT`를 참고하세요.
   - `ignoreHTTPSErrors` <[boolean]> 네비게이션하는 동안 HTTPS 에러를 무시할지 결정합니다. 기본 값은 `false`입니다.
   - `headless` <[boolean]> [헤드리스 모드](https://developers.google.com/web/updates/2017/04/headless-chrome)에서 실행할지 결정합니다. 기본 값은 `devtools` 옵션이 `true`가 아닌 이상 `true`입니다.
-  - `executablePath` <[string]>  번들된 Chromium 대신 실행가능한 브라우저 경로를 입력합니다 만약 `executablePath` 이 상대경로라면, [현재 작동중인 디렉토리](https://nodejs.org/api/process.html#process_process_cwd)와 관련성이 있습니다.. **주의**: Puppeteer는 [guaranteed to work](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy)
-  책임은 본인
-   with the bundled Chromium, use at your own risk.
+  - `executablePath` <[string]>  번들된 Chromium 대신 실행가능한 브라우저 경로를 입력합니다 만약 `executablePath` 이 상대경로라면, [현재 작동중인 디렉토리](https://nodejs.org/api/process.html#process_process_cwd)와 관련성이 있습니다.. **주의**: Puppeteer는 [guaranteed to work](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy) 번들된 Chromium을 작업대상으로 보장하며, 책임은 본인에게 있습니다.
   - `slowMo` <[number]> Puppeteer의 작동을 밀리세컨드(ms)만큼 느리게 합니다. 어떤 일이 일어나는지 당신이 볼 수 있어 유용합니다.
   - `defaultViewport` <?[Object]>  각 페이지마다 일관된 뷰포트를 설정합니다. 기본 값은 800x600 뷰포트입니다. `null`로 입력하면 기본 뷰포트 옵션이 꺼집니다.
     - `width` <[number]> 페이지 너비는 픽셀 단위입니다.
@@ -551,22 +551,22 @@ try {
     - `isMobile` <[boolean]> `meta viewport` 태그를 사용할지 결정합니다. 기본 값은 `false`입니다.
     - `hasTouch`<[boolean]> 뷰포트가 터치 이벤트를 지원한다면 명시합니다. 기본 값은 `false`입니다.
     - `isLandscape` <[boolean]> 가로모드 뷰포트라면 명시합니다. 기본 값은 `false`입니다.
-  - `args` <[Array]<[string]>> Additional arguments to pass to the browser instance. The list of Chromium flags can be found [here](http://peter.sh/experiments/chromium-command-line-switches/), and here is the list of [Firefox flags](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options).
+  - `args` <[Array]<[string]>> 추가 인자를 브라우저 인스턴스로 보냅니다. Chromium 플래그 리스트는 [여기](http://peter.sh/experiments/chromium-command-line-switches/)에서 찾을 수 있으며, 여기는 [Firefox 플래그](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options) 리스트입니다.
   - `ignoreDefaultArgs` <[boolean]|[Array]<[string]>> If `true`, then do not use [`puppeteer.defaultArgs()`](#puppeteerdefaultargsoptions). If an array is given, then filter out the given default arguments. Dangerous option; use with care. Defaults to `false`.
-  - `handleSIGINT` <[boolean]> Close the browser process on Ctrl-C. Defaults to `true`.
-  - `handleSIGTERM` <[boolean]> Close the browser process on SIGTERM. Defaults to `true`.
-  - `handleSIGHUP` <[boolean]> Close the browser process on SIGHUP. Defaults to `true`.
-  - `timeout` <[number]> Maximum time in milliseconds to wait for the browser instance to start. Defaults to `30000` (30 seconds). Pass `0` to disable timeout.
-  - `dumpio` <[boolean]> Whether to pipe the browser process stdout and stderr into `process.stdout` and `process.stderr`. Defaults to `false`.
-  - `userDataDir` <[string]> Path to a [User Data Directory](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md).
-  - `env` <[Object]> Specify environment variables that will be visible to the browser. Defaults to `process.env`.
-  - `devtools` <[boolean]> Whether to auto-open a DevTools panel for each tab. If this option is `true`, the `headless` option will be set `false`.
-  - `pipe` <[boolean]> Connects to the browser over a pipe instead of a WebSocket. Defaults to `false`.
-  - `extraPrefsFirefox` <[Object]> Additional [preferences](https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Preference_reference) that can be passed to Firefox (see `PUPPETEER_PRODUCT`)
-- returns: <[Promise]<[Browser]>> Promise which resolves to browser instance.
+  - `handleSIGINT` <[boolean]> 브라우저 프로세스를 Ctrl-C로 닫습니다. 기본 값은 `true`입니다.
+  - `handleSIGTERM` <[boolean]> 브라우저 프로세스를 SIGTERM로 닫니다. 기본 값은 `true`입니다.
+  - `handleSIGHUP` <[boolean]> 브라우저 프로세스를 SIGHUP로 닫니다. 기본 값은 `true`입니다.
+  - `timeout` <[number]> 밀리초동안의 최대시간동안 브라우저 인스턴스를 시작하길 기다립니다. 기본 값은 `30000` (30초)입니다. `0`으로 입력하면 타임아웃을 없앨 수 있습니다.
+  - `dumpio` <[boolean]> 브라우저 프로세스가 stdout과 stderr를 `process.stdout`과 `process.stderr`로 보낼지 결정합니다. 기본 값은 `false`입니다.
+  - `userDataDir` <[string]> [User Data Directory](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md)의 경로를 입력합니다..
+  - `env` <[Object]> 브라우저에 보여질 환경변수를 명시합니다. 기본 값은 `process.env`입니다.
+  - `devtools` <[boolean]> DevTools 패널을 각각 탭마다 자동으로 열지 결정합니다. 이 옵션이 `true`라면, `headless` 옵션은 `false`로 세팅될 것입니다.
+  - `pipe` <[boolean]> WebSocket 대신 브라우저로 접속해 파이프를 지나갑니다. 기본 값은 `false`입니다.
+  - `extraPrefsFirefox` <[Object]> Firefox에서 통과할 수 있는 추가적인 [내용](https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Preference_reference)입니다. (`PUPPETEER_PRODUCT`를 참고하세요.)
+- returns: <[Promise]<[Browser]>> 브라우저 인스턴스로 resolve한 Promise 객체입니다.
 
 
-You can use `ignoreDefaultArgs` to filter out `--mute-audio` from default arguments:
+`ignoreDefaultArgs`을 사용해 `--mute-audio`를 기본 인자에서 필터링할 수 있습니다. :
 ```js
 const browser = await puppeteer.launch({
   ignoreDefaultArgs: ['--mute-audio']
