@@ -1,16 +1,3 @@
----
-layout: post
-title: 퍼펫티어 
-author: Yangeok
-categories:
-comments: true
-cover:
----
-
-<!-- note 참고
-beware 주의
-see 참고하세요 -->
-
 # Puppeteer API <!-- GEN:version -->Tip-Of-Tree<!-- GEN:stop-->
 <!-- GEN:empty-if-release --><!-- GEN:stop -->
 
@@ -363,10 +350,12 @@ Puppeteer API는 상속적이며 브라우저 구조를 반영합니다.
 
 ### puppeteer vs puppeteer-core
 
-Every release since v1.7.0 we publish two packages:
+v1.7.0 이후 모든 릴리즈를 두가지 패키지로 배포합니다.
 - [puppeteer](https://www.npmjs.com/package/puppeteer)
 - [puppeteer-core](https://www.npmjs.com/package/puppeteer-core)
 
+
+`puppeteer`는  is a *product* for browser automation. When installed, it downloads a version of
 `puppeteer` is a *product* for browser automation. When installed, it downloads a version of
 Chromium, which it then drives using `puppeteer-core`. Being an end-user product, `puppeteer` supports a bunch of convenient `PUPPETEER_*` env variables to tweak its behavior.
 
