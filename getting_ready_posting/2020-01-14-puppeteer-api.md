@@ -408,9 +408,9 @@ If Puppeteer doesn't find them in the environment during the installation step, 
 
 ### Working with Chrome Extensions
 
-Puppeteer can be used for testing Chrome Extensions.
+Puppeteer는 Chrome Extensions를 테스트하는데 사용합니다.
 
-> **NOTE** Extensions in Chrome / Chromium currently only work in non-headless mode.
+> **주의** Chrome Extensions나 Chromium은 현재 논-헤드리스 모드에서만 동작합니다.
 
 The following is code for getting a handle to the [background page](https://developer.chrome.com/extensions/background_pages) of an extension whose source is located in `./my-extension`:
 ```js
@@ -433,7 +433,7 @@ const puppeteer = require('puppeteer');
 })();
 ```
 
-> **NOTE** It is not yet possible to test extension popups or content scripts.
+> **주의** 테스트 확장 팝업이나 컨텐츠 스크립트는 아직 불가능합니다. 
 
 ### class: Puppeteer
 
@@ -454,8 +454,8 @@ const puppeteer = require('puppeteer');
 
 #### puppeteer.connect(options)
 - `options` <[Object]>
-  - `browserWSEndpoin t` <?[string]> a [browser websocket endpoint](#browserwsendpoint) to connect to.
-  - `browserURL` <?[string]> a browser url to connect to, in format `http://${host}:${port}`. Use interchangeably with `browserWSEndpoint` to let Puppeteer fetch it from [metadata endpoint](https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target).
+  - `browserWSEndpoint` <?[string]> 연결할 [브라우저 웹소켓 엔드포인트](#browserwsendpoint)입니다.
+  - `browserURL` <?[string]> 연결할 브라우저입니다. 포맷은 `http://${host}:${port}`입니다. Puppeteer로 [메타데이터 엔드포인트](https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target)에서 `browserWSEndpoint`에서 교체해서 사용하세요. 
   - `ignoreHTTPSErrors` <[boolean]> 브라우징 도중 발생하는 HTTPS 에러를 무시할지 결정합니다. 기본 값은 `false`입니다.
   - `defaultViewport` <?[Object]> 각 페이지마다 일관된 뷰포트를 설정합니다. 기본 값은 800x600 뷰포트입니다.
     - `width` <[number]> 페이지 너비는 픽셀 단위입니다.
@@ -465,7 +465,7 @@ const puppeteer = require('puppeteer');
     - `hasTouch`<[boolean]> 뷰포트가 터치 이벤트를 지원한다면 명시합니다. 기본 값은 `false`입니다.
     - `isLandscape` <[boolean]> 가로모드 뷰포트라면 명시합니다. 기본 값은 `false`입니다.
   - `slowMo` <[number]> Puppeteer의 작동을 밀리세컨드(ms)만큼 느리게 합니다. 어떤 일이 일어나는지 당신이 볼 수 있어 유용합니다.
-  - `transport` <[ConnectionTransport]> **실험기능** Specify a custom transport object for Puppeteer to use.
+  - `transport` <[ConnectionTransport]> **실험기능** Puppeteer를 사용하기 위해 커스텀 transport를 명시합니다.  
 - returns: <[Promise]<[Browser]>>
 
 이 메서드는 Puppeteer를 띄워져있는 Chromium 인스턴스에 접착합니다.
