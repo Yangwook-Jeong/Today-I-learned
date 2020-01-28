@@ -1,23 +1,10 @@
----
-layout: post
-title: 퍼펫티어 
-author: Yangeok
-categories:
-comments: true
-cover:
----
-
-<!-- note 참고
-beware 주의
-see 참고하세요 -->
-
 # Puppeteer API <!-- GEN:version -->Tip-Of-Tree<!-- GEN:stop-->
 <!-- GEN:empty-if-release --><!-- GEN:stop -->
 
-- Interactive Documentation: https://pptr.dev
-- API Translations: [中文|Chinese](https://zhaoqize.github.io/puppeteer-api-zh_CN/#/)
-- Troubleshooting: [troubleshooting.md](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md)
-- Releases per Chromium Version:
+- 대화형 문서: https://pptr.dev
+- API 번역: [中文|Chinese](https://zhaoqize.github.io/puppeteer-api-zh_CN/#/)
+- 고장진단: [troubleshooting.md](https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md)
+- Chromium 버전 별 릴리즈:
   * Chromium 79.0.3942.0 - [Puppeteer v2.0.0](https://github.com/puppeteer/puppeteer/blob/v2.0.0/docs/api.md)
   * Chromium 78.0.3882.0 - [Puppeteer v1.20.0](https://github.com/puppeteer/puppeteer/blob/v1.20.0/docs/api.md)
   * Chromium 77.0.3803.0 - [Puppeteer v1.19.0](https://github.com/puppeteer/puppeteer/blob/v1.19.0/docs/api.md)
@@ -25,7 +12,7 @@ see 참고하세요 -->
   * Chromium 75.0.3765.0 - [Puppeteer v1.15.0](https://github.com/puppeteer/puppeteer/blob/v1.15.0/docs/api.md)
   * Chromium 74.0.3723.0 - [Puppeteer v1.13.0](https://github.com/puppeteer/puppeteer/blob/v1.13.0/docs/api.md)
   * Chromium 73.0.3679.0 - [Puppeteer v1.12.2](https://github.com/puppeteer/puppeteer/blob/v1.12.2/docs/api.md)
-  * [All releases](https://github.com/puppeteer/puppeteer/releases)
+  * [전체 릴리즈](https://github.com/puppeteer/puppeteer/releases)
 
 
 ##### Table of Contents
@@ -363,56 +350,55 @@ Puppeteer API는 상속적이며 브라우저 구조를 반영합니다.
 
 ### puppeteer vs puppeteer-core
 
-Every release since v1.7.0 we publish two packages:
+v1.7.0 이후 모든 릴리즈를 두가지 패키지로 배포합니다.
 - [puppeteer](https://www.npmjs.com/package/puppeteer)
 - [puppeteer-core](https://www.npmjs.com/package/puppeteer-core)
 
-`puppeteer` is a *product* for browser automation. When installed, it downloads a version of
-Chromium, which it then drives using `puppeteer-core`. Being an end-user product, `puppeteer` supports a bunch of convenient `PUPPETEER_*` env variables to tweak its behavior.
 
-`puppeteer-core` is a *library* to help drive anything that supports DevTools protocol. `puppeteer-core` doesn't download Chromium when installed. Being a library, `puppeteer-core` is fully driven
-through its programmatic interface and disregards all the `PUPPETEER_*` env variables.
+`puppeteer`는 브라우저 자동화를 위한 *제품*입니다. Chromium 버전이 다운로드 되고, 설치되었을 때, 그 다음 `puppeteer-core`로 작동합니다.  
+엔드-유저 제품인 `puppeteer`는 `PUPPETEER_*` 환경변수의 행동을 바꿀 수 있도록 여러가지 편리성을 지원합니다.
 
-To sum up, the only differences between `puppeteer-core` and `puppeteer` are:
-- `puppeteer-core` doesn't automatically download Chromium when installed.
-- `puppeteer-core` ignores all `PUPPETEER_*` env variables.
+`puppeteer-core`는 DevTools 프로토콜을 지원하는 어떤 것을 작동하도록 돕는  *라이브러리*입니다. `puppeteer-core`는 설치되었을 때, Chromium을 다운로드하지 않습니다.  라이브러리인 `puppeteer-core`는 프로그램 인터페이스과 모든 `PUPPETEER_*` 환경변수를 무시하는 것을 통해 완전히 작동합니다.
 
-In most cases, you'll be fine using the `puppeteer` package.
+요약하자면, `puppeteer-core`과 `puppeteer`의 유일한 차이점은 아래와 같습니다.
+- `puppeteer-core`은 설치되었을 때 자동으로 Chromium을 다운받지 않습니다.
+- `puppeteer-core`는 모든 `PUPPETEER_*` 환경변수를 무시합니다.
 
-However, you should use `puppeteer-core` if:
-- you're building another end-user product or library atop of DevTools protocol. For example, one might build a PDF generator using `puppeteer-core` and write a custom `install.js` script that downloads [`headless_shell`](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md) instead of Chromium to save disk space.
-- you're bundling Puppeteer to use in Chrome Extension / browser with the DevTools protocol where downloading an additional Chromium binary is unnecessary.
+대부분의 경우, 당신은 `puppeteer` 패키지를 사용하는 것이 좋을 것 입니다.
 
-When using `puppeteer-core`, remember to change the *include* line:
+하지만, 당신이 `puppeteer-core`를 써야하는 경우는 아래와 같습니다.
+- 다른 엔드-유저  DevTools 프로토콜의 가장 위에 있는 제품이나 라이브러리를 만드는 경우. 예를 들어, `puppeteer-core`를 사용해 PDF 생성기를 만들 수도 있으며 커스텀 `install.js` 스크립트를 작성할 수도 있습니다. 
+- Puppeteer를 추가적인 Chromium 바이너리 다운로드가 필요없는 Chrome Extension과 브라우저에서 DevTools 프로토콜을 사용하기 위해 번들링할 수 있습니다.
+
+`puppeteer-core`를 사용할 때, *아래* 라인을 변경하는 것을 명심하세요.
 
 ```js
 const puppeteer = require('puppeteer-core');
 ```
 
-You will then need to call [`puppeteer.connect([options])`](#puppeteerconnectoptions) or [`puppeteer.launch([options])`](#puppeteerlaunchoptions) with an explicit `executablePath` option.
+그리고 나서 [`puppeteer.connect([options])`](#puppeteerconnectoptions) 나 [`puppeteer.launch([options])`](#puppeteerlaunchoptions)를  명시적인 `executablePath` 옵션으로 불러와야 합니다.
 
 ### Environment Variables
 
-Puppeteer looks for certain [environment variables](https://en.wikipedia.org/wiki/Environment_variable) to aid its operations.
-If Puppeteer doesn't find them in the environment during the installation step, a lowercased variant of these variables will be used from the [npm config](https://docs.npmjs.com/cli/config).
+Puppeteer의 작동을 돕기 위해 어떤 [환경 변수](https://en.wikipedia.org/wiki/Environment_variable)를 찾습니다. Puppeteer가 설치 과정에서  변수들을 찾지 못한다면, 이 변수들의 소문자형을 [npm config](https://docs.npmjs.com/cli/config)에서 사용하게 될 것입니다.
 
-- `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY` - defines HTTP proxy settings that are used to download and run Chromium.
-- `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` - do not download bundled Chromium during installation step.
-- `PUPPETEER_DOWNLOAD_HOST` - overwrite URL prefix that is used to download Chromium. Note: this includes protocol and might even include path prefix. Defaults to `https://storage.googleapis.com`.
-- `PUPPETEER_CHROMIUM_REVISION` - specify a certain version of Chromium you'd like Puppeteer to use. See [puppeteer.launch([options])](#puppeteerlaunchoptions) on how executable path is inferred. **BEWARE**: Puppeteer is only [guaranteed to work](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy) with the bundled Chromium, use at your own risk.
-- `PUPPETEER_EXECUTABLE_PATH` - specify an executable path to be used in `puppeteer.launch`. See [puppeteer.launch([options])](#puppeteerlaunchoptions) on how the executable path is inferred. **BEWARE**: Puppeteer is only [guaranteed to work](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy) with the bundled Chromium, use at your own risk.
-- `PUPPETEER_PRODUCT` - specify which browser you'd like Puppeteer to use. Must be one of `chrome` or `firefox`. Setting `product` programmatically in [puppeteer.launch([options])](#puppeteerlaunchoptions) supercedes this environment variable. The product is exposed in [`puppeteer.product`](#puppeteerproduct)
+- `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY` - Chromium을 다운로드하고 실행하는 HTTP 프록시 설정을 정의합니다.
+- `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` - 설치 중에 번들링된 Chromium을 다운받지 않습니다.
+- `PUPPETEER_DOWNLOAD_HOST` - Chromium을 다운받는 URL 접두어를 덮어씌웁니다. 주의: 프로토콜을 포함하며 경로 접두어를 포함할 수도 있습니다. 기본 값은 `https://storage.googleapis.com`입니다.
+- `PUPPETEER_CHROMIUM_REVISION` - 사용하고 싶은 Puppeteer의 Chromium 버전을 명시합니다. 실행가능한 경로가 어떻게 추론되는지 [puppeteer.launch([options])](#puppeteerlaunchoptions)에서 확인하세요. **주의**: Puppeteer는 번들된 Chromium을 [작업대상으로 보장](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy)하며, 책임은 본인에게 있습니다.
+- `PUPPETEER_EXECUTABLE_PATH` - 실행가능한 경로를 `puppeteer.launch`에서 사용할 것을 명시합니다. 실행가능한 경로가 어떻게 추론되는지 [puppeteer.launch([options])](#puppeteerlaunchoptions)에서 확인하세요. **주의**: Puppeteer는 번들된 Chromium을 [작업대상으로 보장](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy)하며, 책임은 본인에게 있습니다.
+- `PUPPETEER_PRODUCT` - 어떤 브라우저에서 Puppeteer를 사용할지  명시합니다. `chrome`이나 `firefox` 둘 중에 하나여야 합니다. 이 환경변수를 대체하는 [puppeteer.launch([options])](#puppeteerlaunchoptions)에서 `제품`을 프로그래밍적으로 세팅합니다. 제품은 [`puppeteer.product`](#puppeteerproduct)에 노출됩니다.
 
-> **NOTE** PUPPETEER_* env variables are not accounted for in the [`puppeteer-core`](https://www.npmjs.com/package/puppeteer-core) package.
+> **주의** PUPPETEER_* 환경변수는 [`puppeteer-core`](https://www.npmjs.com/package/puppeteer-core) 패키지에 속하지 않습니다.
 
 
 ### Working with Chrome Extensions
 
-Puppeteer can be used for testing Chrome Extensions.
+Puppeteer는 Chrome Extensions를 테스트하는데 사용합니다.
 
-> **NOTE** Extensions in Chrome / Chromium currently only work in non-headless mode.
+> **주의** Chrome Extensions나 Chromium은 현재 논-헤드리스 모드에서만 동작합니다.
 
-The following is code for getting a handle to the [background page](https://developer.chrome.com/extensions/background_pages) of an extension whose source is located in `./my-extension`:
+아래는 소스가 `./my-extension`에 위치한 확장프로그램의 [백그라운드 페이지](https://developer.chrome.com/extensions/background_pages)를 제어하기 위한 코드입니다.
 ```js
 const puppeteer = require('puppeteer');
 
@@ -433,7 +419,7 @@ const puppeteer = require('puppeteer');
 })();
 ```
 
-> **NOTE** It is not yet possible to test extension popups or content scripts.
+> **주의** 테스트 확장 팝업이나 컨텐츠 스크립트는 아직 불가능합니다. 
 
 ### class: Puppeteer
 
@@ -454,9 +440,9 @@ const puppeteer = require('puppeteer');
 
 #### puppeteer.connect(options)
 - `options` <[Object]>
-  - `browserWSEndpoin t` <?[string]> a [browser websocket endpoint](#browserwsendpoint) to connect to.
-  - `browserURL` <?[string]> a browser url to connect to, in format `http://${host}:${port}`. Use interchangeably with `browserWSEndpoint` to let Puppeteer fetch it from [metadata endpoint](https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target).
-  - `ignoreHTTPSErrors` <[boolean]> 브라우징 도중 발생하는 HTTPS 에러를 무시할지 결정합니다. 기본 값은 `false`입니다.
+  - `browserWSEndpoint` <?[string]> 연결할 [브라우저 웹소켓 엔드포인트](#browserwsendpoint)입니다.
+  - `browserURL` <?[string]> 연결할 브라우저입니다. 포맷은 `http://${host}:${port}`입니다. Puppeteer로 [메타데이터 엔드포인트](https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target)에서 `browserWSEndpoint`에서 교체해서 사용하세요. 
+  - `ignoreHTTPSErrors` <[boolean]> 브라우징 도중 발생하는 HTTPS 오류를 무시할지 결정합니다. 기본 값은 `false`입니다.
   - `defaultViewport` <?[Object]> 각 페이지마다 일관된 뷰포트를 설정합니다. 기본 값은 800x600 뷰포트입니다.
     - `width` <[number]> 페이지 너비는 픽셀 단위입니다.
     - `height` <[number]> 페이지 높이는 픽셀 단위입니다.
@@ -465,7 +451,7 @@ const puppeteer = require('puppeteer');
     - `hasTouch`<[boolean]> 뷰포트가 터치 이벤트를 지원한다면 명시합니다. 기본 값은 `false`입니다.
     - `isLandscape` <[boolean]> 가로모드 뷰포트라면 명시합니다. 기본 값은 `false`입니다.
   - `slowMo` <[number]> Puppeteer의 작동을 밀리세컨드(ms)만큼 느리게 합니다. 어떤 일이 일어나는지 당신이 볼 수 있어 유용합니다.
-  - `transport` <[ConnectionTransport]> **실험기능** Specify a custom transport object for Puppeteer to use.
+  - `transport` <[ConnectionTransport]> **실험기능** Puppeteer를 사용하기 위해 커스텀 transport를 명시합니다.  
 - returns: <[Promise]<[Browser]>>
 
 이 메서드는 Puppeteer를 띄워져있는 Chromium 인스턴스에 접착합니다.
@@ -510,15 +496,13 @@ const iPhone = puppeteer.devices['iPhone 6'];
 
 #### puppeteer.errors
 - returns: <[Object]>
-  - `TimeoutError` <[function]> A class of [TimeoutError].
+  - `TimeoutError` <[function]> [TimeoutError]의 클래스입니다.
 
-Puppeteer methods might throw errors if they are unable to fulfill a request. For example, [page.waitForSelector(selector[, options])](#pagewaitforselectorselector-options)
-might fail if the selector doesn't match any nodes during the given timeframe.
+요청을 수행할 수 없다면 Puppeteer 메서드는 오류를 던질 수도 있습니다. 예를 들어, 주어진 시간동안 셀렉터가 어떤 노드와도 일치하지 않는다면 [page.waitForSelector(selector[, options])](#pagewaitforselectorselector-options)는 실패할 수 있습니다.
 
-For certain types of errors Puppeteer uses specific error classes.
-These classes are available via [`puppeteer.errors`](#puppeteererrors)
+틀림없이 Puppeteer 오류의 타입은 특정한 오류 클래스에 사용합니다. 이 클래스들은 [`puppeteer.errors`](#puppeteererrors)를 통해 사용 가능합니다.
 
-An example of handling a timeout error:
+아래는 타임아웃 오류 처리 예시입니다.
 ```js
 try {
   await page.waitForSelector('.foo');
@@ -529,20 +513,19 @@ try {
 }
 ```
 
-> **NOTE** The old way (Puppeteer versions <= v1.14.0) errors can be obtained with `require('puppeteer/Errors')`.
+> **주의** 예전 방법 (Puppeteer 버전 <= v1.14.0) 오류를 `require('puppeteer/Errors')`로 얻을 수 있습니다.
 
 #### puppeteer.executablePath()
-- returns: <[string]> A path where Puppeteer expects to find bundled Chromium. Chromium might not exist there if the download was skipped with [`PUPPETEER_SKIP_CHROMIUM_DOWNLOAD`](#environment-variables).
+- returns: <[string]> Puppeteer가 번들링된 Chromium을 찾길 예상하는 경로입니다. [`PUPPETEER_SKIP_CHROMIUM_DOWNLOAD`](#environment-variables)으로 다운로드를 생략했다면,  Chromium은 그곳에 없을 수도 있습니다.
 
-> **NOTE** `puppeteer.executablePath()` is affected by the `PUPPETEER_EXECUTABLE_PATH` and `PUPPETEER_CHROMIUM_REVISION` env variables. See [Environment Variables](#environment-variables) for details.
-
+> **주의** `puppeteer.executablePath()`은 `PUPPETEER_EXECUTABLE_PATH`와 `PUPPETEER_CHROMIUM_REVISION` 환경 변수에 영향을 받습니다. 자세한 내용은 [Environment Variables](#environment-variables)에서 확인하세요.
 
 #### puppeteer.launch([options])
 - `options` <[Object]>  설정가능한 옵션 셋을 브라우저에 세팅합니다. 아래와 같은 필드를 입력 할 수 있습니다.
   - `product` <[string]> 현재로서는, `chrome`이나 `firefox`둘 중에 하나로 어떤 브라우저를 실행할지 결정합니다. `PUPPETEER_PRODUCT`를 참고하세요.
-  - `ignoreHTTPSErrors` <[boolean]> 네비게이션하는 동안 HTTPS 에러를 무시할지 결정합니다. 기본 값은 `false`입니다.
+  - `ignoreHTTPSErrors` <[boolean]> 네비게이션하는 동안 HTTPS 오류를 무시할지 결정합니다. 기본 값은 `false`입니다.
   - `headless` <[boolean]> [헤드리스 모드](https://developers.google.com/web/updates/2017/04/headless-chrome)에서 실행할지 결정합니다. 기본 값은 `devtools` 옵션이 `true`가 아닌 이상 `true`입니다.
-  - `executablePath` <[string]>  번들된 Chromium 대신 실행가능한 브라우저 경로를 입력합니다 만약 `executablePath` 이 상대경로라면, [현재 작동중인 디렉토리](https://nodejs.org/api/process.html#process_process_cwd)와 관련성이 있습니다.. **주의**: Puppeteer는 [guaranteed to work](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy) 번들된 Chromium을 작업대상으로 보장하며, 책임은 본인에게 있습니다.
+  - `executablePath` <[string]>  번들된 Chromium 대신 실행가능한 브라우저 경로를 입력합니다 만약 `executablePath` 이 상대경로라면, [현재 작동중인 디렉토리](https://nodejs.org/api/process.html#process_process_cwd)와 관련성이 있습니다.. **주의**: Puppeteer는 번들된 Chromium을 [작업대상으로 보장](https://github.com/puppeteer/puppeteer/#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy)하며, 책임은 본인에게 있습니다.
   - `slowMo` <[number]> Puppeteer의 작동을 밀리세컨드(ms)만큼 느리게 합니다. 어떤 일이 일어나는지 당신이 볼 수 있어 유용합니다.
   - `defaultViewport` <?[Object]>  각 페이지마다 일관된 뷰포트를 설정합니다. 기본 값은 800x600 뷰포트입니다. `null`로 입력하면 기본 뷰포트 옵션이 꺼집니다.
     - `width` <[number]> 페이지 너비는 픽셀 단위입니다.
@@ -552,7 +535,7 @@ try {
     - `hasTouch`<[boolean]> 뷰포트가 터치 이벤트를 지원한다면 명시합니다. 기본 값은 `false`입니다.
     - `isLandscape` <[boolean]> 가로모드 뷰포트라면 명시합니다. 기본 값은 `false`입니다.
   - `args` <[Array]<[string]>> 추가 인자를 브라우저 인스턴스로 보냅니다. Chromium 플래그 리스트는 [여기](http://peter.sh/experiments/chromium-command-line-switches/)에서 찾을 수 있으며, 여기는 [Firefox 플래그](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options) 리스트입니다.
-  - `ignoreDefaultArgs` <[boolean]|[Array]<[string]>> If `true`, then do not use [`puppeteer.defaultArgs()`](#puppeteerdefaultargsoptions). If an array is given, then filter out the given default arguments. Dangerous option; use with care. Defaults to `false`.
+  - `ignoreDefaultArgs` <[boolean]|[Array]<[string]>> 만약 `true`라면, [`puppeteer.defaultArgs()`](#puppeteerdefaultargsoptions)는 사용하지 마세요. 만약 배열이 주어졌다면, 주어진 기본 인자를 걸러냅니다. 위험한 옵션이니 사용에 주의를 기울여주세요. 기본 값은 `false`입니다.
   - `handleSIGINT` <[boolean]> 브라우저 프로세스를 Ctrl-C로 닫습니다. 기본 값은 `true`입니다.
   - `handleSIGTERM` <[boolean]> 브라우저 프로세스를 SIGTERM로 닫니다. 기본 값은 `true`입니다.
   - `handleSIGHUP` <[boolean]> 브라우저 프로세스를 SIGHUP로 닫니다. 기본 값은 `true`입니다.
@@ -573,28 +556,27 @@ const browser = await puppeteer.launch({
 });
 ```
 
-> **NOTE** Puppeteer can also be used to control the Chrome browser, but it works best with the version of Chromium it is bundled with. There is no guarantee it will work with any other version. Use `executablePath` option with extreme caution.
 >
-> If Google Chrome (rather than Chromium) is preferred, a [Chrome Canary](https://www.google.com/chrome/browser/canary.html) or [Dev Channel](https://www.chromium.org/getting-involved/dev-channel) build is suggested.
+> **주의** Puppeteer는 Chrome 브라우저를 제어하는데에도 사용할 수 있습니다. 하지만 번들링된 Chromium 버전에서 가장 효과적입니다. 어떤 다른 버전에서도 잘 작동한다는 보장은 없습니다. 아주 조심해서 `executablePath` 옵션을 사용하세요.
 >
-> In [puppeteer.launch([options])](#puppeteerlaunchoptions) above, any mention of Chromium also applies to Chrome.
+> Google Chrome (Chromium보다는)을 더 선호한다면, [Chrome Canary](https://www.google.com/chrome/browser/canary.html)나 [Dev Channel](https://www.chromium.org/getting-involved/dev-channel)을 추천합니다.
 >
-> See [`this article`](https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/) for a description of the differences between Chromium and Chrome. [`This article`](https://chromium.googlesource.com/chromium/src/+/lkgr/docs/chromium_browser_vs_google_chrome.md) describes some differences for Linux users.
+> [puppeteer.launch([options])](#puppeteerlaunchoptions)에서 Chromium의 어떤 언급이나 Chrome에서도 적용됩니다.
+>
+> Chromium과 Chrome의 차이를 설명한 [`이 글`](https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/)을 확인하세요. [`이 글`](https://chromium.googlesource.com/chromium/src/+/lkgr/docs/chromium_browser_vs_google_chrome.md)은 어떤 차이가 있는지 Linux 사용자들을 위한 차이점을 설명합니다.
 
 #### puppeteer.product
-- returns: <[string]> returns the name of the browser that is under automation ("chrome" or "firefox")
+- returns: <[string]> 자동화 중인("크롬"이나 "파이어폭스") 브라우저의 이름을 반환합니다.
 
-The product is set by the `PUPPETEER_PRODUCT` environment variable or the `product` option in [puppeteer.launch([options])](#puppeteerlaunchoptions) and defaults to `chrome`. Firefox support is experimental.
-
+product는 `PUPPETEER_PRODUCT` 환경변수나 [puppeteer.launch([options])](#puppeteerlaunchoptions)에서 `product`옵션에 의해 세팅되었으며, 기본 값은 `chrome`입니다. Firefox는 실험적으로 제공합니다.
 
 ### class: BrowserFetcher
 
-BrowserFetcher can download and manage different versions of Chromium.
+BrowserFetcher는 Chromium의 다른 버전을 다운받고 관리할 수 있습니다.
 
-BrowserFetcher operates on revision strings that specify a precise version of Chromium, e.g. `"533271"`. Revision strings can be obtained from [omahaproxy.appspot.com](http://omahaproxy.appspot.com/).
+BrowserFetcher는 Chromium의 정확한 버전을 명시한 revision 문자열을 수정합니다. 예를 들어, `"533271"`이라고 할 수 있습니다. revision 문자열은 [omahaproxy.appspot.com](http://omahaproxy.appspot.com/)에서 얻을 수 있습니다.
 
-An example of using BrowserFetcher to download a specific version of Chromium and running
-Puppeteer against it:
+특정한 버전의 Chromium을 다운로드하고 Puppeteer를 실행하는 BrowserFetcher의 사용 예시는 아래와 같습니다.
 
 ```js
 const browserFetcher = puppeteer.createBrowserFetcher();
@@ -602,55 +584,54 @@ const revisionInfo = await browserFetcher.download('533271');
 const browser = await puppeteer.launch({executablePath: revisionInfo.executablePath})
 ```
 
-> **NOTE** BrowserFetcher is not designed to work concurrently with other
-> instances of BrowserFetcher that share the same downloads directory.
+> **주의** BrowserFetcher는 동시에 같은 다운로드 디렉토리를 공유하는 다른 BrowserFetcher의 인스턴스와 작동하기 위해 디자인된 것이 아닙니다. 
 
 #### browserFetcher.canDownload(revision)
-- `revision` <[string]> a revision to check availability.
-- returns: <[Promise]<[boolean]>>  returns `true` if the revision could be downloaded from the host.
+- `revision` <[string]> revision을 사용가능한지 확인합니다.
+- returns: <[Promise]<[boolean]>> 만약 호스트로부터 revision을 다운로드할 수 있으면 `true`를 반환합니다.
 
-The method initiates a HEAD request to check if the revision is available.
+메서드는 revision이 사용가능하다면 체크하기 위해 HEAD 요청을 초기화합니다. 
 
 #### browserFetcher.download(revision[, progressCallback])
-- `revision` <[string]> a revision to download.
-- `progressCallback` <[function]([number], [number])> A function that will be called with two arguments:
-  - `downloadedBytes` <[number]> how many bytes have been downloaded
-  - `totalBytes` <[number]> how large is the total download.
-- returns: <[Promise]<[Object]>> Resolves with revision information when the revision is downloaded and extracted
-  - `revision` <[string]> the revision the info was created from
-  - `folderPath` <[string]> path to the extracted revision folder
-  - `executablePath` <[string]> path to the revision executable
-  - `url` <[string]> URL this revision can be downloaded from
-  - `local` <[boolean]> whether the revision is locally available on disk
+- `revision` <[string]> 다운로드할 revision입니다.
+- `progressCallback` <[function]([number], [number])> 두 개의 인자를 불러 함수입니다.
+  - `downloadedBytes` <[number]> 몇 바이트를 다운로드 했는지 확인합니다.
+  - `totalBytes` <[number]> 총 다운로드할 것이 얼마나 큰지 확인합니다.
+- returns: <[Promise]<[Object]>> revision이 다운로드 되고 추출되었을 때 revision 정보를 resolve합니다. 
+  - `revision` <[string]> 정보가 생성된 revision을 확인할 수 있습니다.
+  - `folderPath` <[string]> 추출된 revision 폴더의 경로입니다.
+  - `executablePath` <[string]> 실행가능한 revision의 경로입니다.
+  - `url` <[string]> revision을 다운로드할 수 있는 URL입니다.
+  - `local` <[boolean]> 디스크에서 로컬로 revision을 사용가능한지 불가능한지 알려줍니다.
 
-The method initiates a GET request to download the revision from the host.
+메서드는 revision을 호스트로부터 다운로드 받기 위해 GET 요청을 초기화합니다.  
 
 #### browserFetcher.localRevisions()
-- returns: <[Promise]<[Array]<[string]>>> A list of all revisions available locally on disk.
+- returns: <[Promise]<[Array]<[string]>>> 디스크에서 로컬로 사용가능한 모든 revision의 리스트입니다.
 
 #### browserFetcher.platform()
-- returns: <[string]> One of `mac`, `linux`, `win32` or `win64`.
+- returns: <[string]> `mac`, `linux`, `win32`나 `win64` 중에 하나를 입력합니다.
 
 #### browserFetcher.remove(revision)
-- `revision` <[string]> a revision to remove. The method will throw if the revision has not been downloaded.
-- returns: <[Promise]> Resolves when the revision has been removed.
+- `revision` <[string]> revision을 제거하기 위해 사용합니다. 메서드는 revision이 다운로드 되지 않았다면 던질 것입니다.
+- returns: <[Promise]> revision이 제거되었을 때 resolve합니다.
 
 #### browserFetcher.revisionInfo(revision)
-- `revision` <[string]> a revision to get info for.
+- `revision` <[string]> revision을 정보로서 얻습니다.
 - returns: <[Object]>
-  - `revision` <[string]> the revision the info was created from
-  - `folderPath` <[string]> path to the extracted revision folder
-  - `executablePath` <[string]> path to the revision executable
-  - `url` <[string]> URL this revision can be downloaded from
-  - `local` <[boolean]> whether the revision is locally available on disk
+  - `revision` <[string]> 정보가 생성된 revision을 확인할 수 있습니다.
+  - `folderPath` <[string]> 추출된 revision 폴더의 경로입니다.
+  - `executablePath` <[string]> 실행가능한 revision의 경로입니다.
+  - `url` <[string]> revision을 다운로드할 수 있는 URL입니다.
+  - `local` <[boolean]> 디스크에서 로컬로 revision을 사용가능한지 불가능한지 알려줍니다.
 
 ### class: Browser
 
 * extends: [EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter)
 
-A Browser is created when Puppeteer connects to a Chromium instance, either through [`puppeteer.launch`](#puppeteerlaunchoptions) or [`puppeteer.connect`](#puppeteerconnectoptions).
+Browser는 Puppeteer가 Chromium 인스턴스에 연결할나 [`puppeteer.launch`](#puppeteerlaunchoptions)나 [`puppeteer.connect`](#puppeteerconnectoptions)를 통해 생성됩니다.
 
-An example of using a [Browser] to create a [Page]:
+[Browser]를 사용해 [Page]를 생성하는 예시입니다.
 ```js
 const puppeteer = require('puppeteer');
 
@@ -662,7 +643,7 @@ const puppeteer = require('puppeteer');
 })();
 ```
 
-An example of disconnecting from and reconnecting to a [Browser]:
+[Browser]에서 연결해제하고 재연결하는 예시입니다.
 ```js
 const puppeteer = require('puppeteer');
 
@@ -679,48 +660,47 @@ const puppeteer = require('puppeteer');
   await browser2.close();
 })();
 ```
+
 #### event: 'disconnected'
-Emitted when Puppeteer gets disconnected from the Chromium instance. This might happen because of one of the following:
-- Chromium is closed or crashed
-- The [`browser.disconnect`](#browserdisconnect) method was called
+Puppeteer가 Chromium 인스턴스로부터 연결 해제될 때 발생합니다. 아래의 이유 중 하나 때문에 발생할 수도 있습니다.
+- Chromium이 닫히거나 충돌하는 경우
+- [`browser.disconnect`](#browserdisconnect) 메서드가 호출되었을 경우
 
 #### event: 'targetchanged'
 - <[Target]>
 
-Emitted when the url of a target changes.
+타겟의 url이 바뀌었을 때 발생합니다.
 
-> **NOTE** This includes target changes in incognito browser contexts.
-
+> **주의** 시크릿 브라우저 컨텍스트 타겟이 바뀐 것을 포함합니다.
 
 #### event: 'targetcreated'
 - <[Target]>
 
-Emitted when a target is created, for example when a new page is opened by [`window.open`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) or [`browser.newPage`](#browsernewpage).
+타겟이 생성되었을 때 발생합니다. 예를 들어 새로운 페이지가 [`window.open`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open)나 [`browser.newPage`](#browsernewpage)에 의해 열렸을 경우가 있습니다.
 
-> **NOTE** This includes target creations in incognito browser contexts.
+> **주의** 시크릿 브라우저 컨텍스트 타겟이 바뀐 것을 포함합니다.
 
 #### event: 'targetdestroyed'
 - <[Target]>
 
-Emitted when a target is destroyed, for example when a page is closed.
+타겟이 소실되었을 때 발생합니다. 예를 들어 페이지가 닫힌 경우가 있습니다.
 
-> **NOTE** This includes target destructions in incognito browser contexts.
+> **주의** 시크릿 브라우저 컨텍스트 타겟이 바뀐 것을 포함합니다.
 
 #### browser.browserContexts()
 - returns: <[Array]<[BrowserContext]>>
 
-Returns an array of all open browser contexts. In a newly created browser, this will return
-a single instance of [BrowserContext].
+모든 열린 브라우저 컨텍스트의 배열을 반환합니다. 새롭게 생성된 브라우저에서는 [BrowserContext] 중 하나의 인스턴스만 반환할 것입니다.
 
 #### browser.close()
 - returns: <[Promise]>
 
-Closes Chromium and all of its pages (if any were opened). The [Browser] object itself is considered to be disposed and cannot be used anymore.
+Chromium과 그 모든 페이지들(어떤 것들이 열렸다면)을 닫습니다. [Browser] 객체는 폐기된 것으로 간주해 더이상 사용할 수 없습니다.
 
 #### browser.createIncognitoBrowserContext()
 - returns: <[Promise]<[BrowserContext]>>
 
-Creates a new incognito browser context. This won't share cookies/cache with other browser contexts.
+새로운 시크릿 브라우저 컨텍스트를 생성합니다. 쿠키, 캐시를 다른 브라우저 컨텍스트와 공유하지 않을 것입니다.
 
 ```js
 (async () => {
@@ -737,87 +717,82 @@ Creates a new incognito browser context. This won't share cookies/cache with oth
 #### browser.defaultBrowserContext()
 - returns: <[BrowserContext]>
 
-Returns the default browser context. The default browser context can not be closed.
+기본 브라우저 컨텍스트를 반환합니다. 기본 브라우저 컨텍스트는 닫을 수 있습니다.
 
 #### browser.disconnect()
 
-Disconnects Puppeteer from the browser, but leaves the Chromium process running. After calling `disconnect`, the [Browser] object is considered disposed and cannot be used anymore.
+Puppeteer를 브라우저에서 연결해제하지만, Chromium 프로세스는 계속 동작합니다. `disconnect` 호출 이후에 [Browser] 객체는 폐기된 것으로 간주해 더 이상 사용할 수 없습니다.
 
 #### browser.isConnected()
 
 - returns: <[boolean]>
 
-Indicates that the browser is connected.
+브라우저가 연결된 것을 표시합니다.
 
 #### browser.newPage()
 - returns: <[Promise]<[Page]>>
 
-Promise which resolves to a new [Page] object. The [Page] is created in a default browser context.
+새로운 [Page] 객체로 resolve하는 프로미스입니다. [Page]는 기본 브라우저 컨텍스트에서 생성됩니다.
 
 #### browser.pages()
-- returns: <[Promise]<[Array]<[Page]>>> Promise which resolves to an array of all open pages. Non visible pages, such as `"background_page"`, will not be listed here. You can find them using [target.page()](#targetpage).
+- returns: <[Promise]<[Array]<[Page]>>> 모든 열린 페이지의 배열을 resolve하는 프로미스입니다. `"background_page"`같은 보이지 않는 페이지는 리스팅되지 않을 것입니다. [target.page()](#targetpage)을 사용해 그것들을 찾을 수 있습니다.
 
-An array of all pages inside the Browser. In case of multiple browser contexts,
-the method will return an array with all the pages in all browser contexts.
+Browser 내부에 있는 모든 페이지의 배열입니다. 여러 브라우저 컨텍스트의 경우, 메서드가 모든 브라우저 컨텍스트에 있는 모든 페이지를 배열로 반환할 것입니다.
 
 #### browser.process()
-- returns: <?[ChildProcess]> Spawned browser process. Returns `null` if the browser instance was created with [`puppeteer.connect`](#puppeteerconnectoptions) method.
+- returns: <?[ChildProcess]> 자식 브라우저 프로세스입니다. 브라우저 인스턴스가 [`puppeteer.connect`](#puppeteerconnectoptions) 메서드로 생성되었다면, `null`을 반환합니다.
 
 #### browser.target()
 - returns: <[Target]>
 
-A target associated with the browser.
+브라우저와 연관된 타겟입니다.
 
 #### browser.targets()
 - returns: <[Array]<[Target]>>
 
-An array of all active targets inside the Browser. In case of multiple browser contexts,
-the method will return an array with all the targets in all browser contexts.
+Browser 내부의 활동하는 모든 타겟의 배열입니다. 여러 브라우저 컨텍스트의 경우, 메서드는 모든 브라우저 컨텍스트에 있는 모든 타겟을 배열로 반환할 것입니다.
 
 #### browser.userAgent()
-- returns: <[Promise]<[string]>> Promise which resolves to the browser's original user agent.
+- returns: <[Promise]<[string]>> 브라우저의 원래 유저 에이전트로 resolve하는 프로미스입니다.
 
-> **NOTE** Pages can override browser user agent with [page.setUserAgent](#pagesetuseragentuseragent)
+> **주의** 페이지는 브라우저 유저 에이전트를 [page.setUserAgent](#pagesetuseragentuseragent)로 오버라이드할 수 있습니다.
 
 #### browser.version()
-- returns: <[Promise]<[string]>> For headless Chromium, this is similar to `HeadlessChrome/61.0.3153.0`. For non-headless, this is similar to `Chrome/61.0.3153.0`.
+- returns: <[Promise]<[string]>> 헤드리스 Chromium에 있어 `HeadlessChrome/61.0.3153.0`과 비슷합니다. 논-헤드리스에서는 `Chrome/61.0.3153.0`과 비슷합니다.
 
-> **NOTE** the format of browser.version() might change with future releases of Chromium.
+> **주의** `browser.version()`의 포맷은 나중에 나올 Chromium 릴리즈에서 바뀔 수도 있습니다.
 
 #### browser.waitForTarget(predicate[, options])
-- `predicate` <[function]\([Target]\):[boolean]> A function to be run for every target
+- `predicate` <[function]\([Target]\):[boolean]> 모든 타겟에 적용되는 함수입니다.
 - `options` <[Object]>
-  - `timeout` <[number]> Maximum wait time in milliseconds. Pass `0` to disable the timeout. Defaults to 30 seconds.
-- returns: <[Promise]<[Target]>> Promise which resolves to the first target found that matches the `predicate` function.
+  - `timeout` <[number]> 최대 대기시간을 밀리초로 표기합니다. `0`은 타임아웃을 비활성화합니다. 기본 값은 30초입니다.
+- returns: <[Promise]<[Target]>> `predicate`과 일치하는 첫 타겟을  찾아 resolve하는 프로미스입니다.
 
-This searches for a target in all browser contexts.
+모든 브라우저 컨텍스트에 있는 타겟에 대한 검색입니다.
 
-An example of finding a target for a page opened via `window.open`:
+`window.open`를 통해 열린 페이지에 대한 타겟을 찾는 예시입니다.
 ```js
 await page.evaluate(() => window.open('https://www.example.com/'));
 const newWindowTarget = await browser.waitForTarget(target => target.url() === 'https://www.example.com/');
 ```
 
 #### browser.wsEndpoint()
-- returns: <[string]> Browser websocket url.
+- returns: <[string]> Browser 웹소켓 url입니다.
 
-Browser websocket endpoint which can be used as an argument to
-[puppeteer.connect](#puppeteerconnectoptions). The format is `ws://${host}:${port}/devtools/browser/<id>`
+[puppeteer.connect](#puppeteerconnectoptions)로 인자를 사용할 수 있는 Browser 웹소켓 엔드포인트입니다. 포맷은 `ws://${host}:${port}/devtools/browser/<id>`입니다.
 
-You can find the `webSocketDebuggerUrl` from `http://${host}:${port}/json/version`. Learn more about the [devtools protocol](https://chromedevtools.github.io/devtools-protocol) and the [browser endpoint](https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target).
+`http://${host}:${port}/json/version`로부터 `webSocketDebuggerUrl`을 찾을 수 있습니다. [개발자도구 프로토콜](https://chromedevtools.github.io/devtools-protocol)과 [브라우저 엔드포인트](https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target)에 대해 더 알아보세요.
 
 ### class: BrowserContext
 
 * extends: [EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter)
 
-BrowserContexts provide a way to operate multiple independent browser sessions. When a browser is launched, it has
-a single BrowserContext used by default. The method `browser.newPage()` creates a page in the default browser context.
+BrowserContexts는 여러개의 독립적인 브라우저 세션을 제공할 방법을 제공합니다. 브라우저가 실행중일 때, 한 개의 BrowserContext를 기본적으로 사용합니다. `browser.newPage()` 메서드는 기본 브라우저 컨텍스트에서 페이지를 생성합니다.
 
-If a page opens another page, e.g. with a `window.open` call, the popup will belong to the parent page's browser
-context.
+페이지가 다른 페이지를 여는 경우, 예를 들어 `window.open`을 호출했을 떄, 팝업은 부모 페이지의 브라우저 컨텍스트에 속합니다.
 
-Puppeteer allows creation of "incognito" browser contexts with `browser.createIncognitoBrowserContext()` method.
-"Incognito" browser contexts don't write any browsing data to disk.
+Puppeteer는 `browser.createIncognitoBrowserContext()` 메서드로 "시크릿" 브라우저 컨텍스트의 생성을 허용합니다.
+"시크릿" 브라우저 컨텍스트는 어느 브라우징 데이터를 디스크에 작성하지 않습니다.
 
 ```js
 // Create a new incognito browser context
@@ -833,27 +808,27 @@ await context.close();
 #### event: 'targetchanged'
 - <[Target]>
 
-Emitted when the url of a target inside the browser context changes.
+타겟의 url이 브라우저 컨텍스트 내부에서 바뀔 때 발생합니다.
 
 #### event: 'targetcreated'
 - <[Target]>
 
-Emitted when a new target is created inside the browser context, for example when a new page is opened by [`window.open`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) or [`browserContext.newPage`](#browsercontextnewpage).
+브라우저 컨텍스트 내부에 새로운 타겟이 생성되었을 때 발생합니다. 예를 들어, 새로운 페이지가 [`window.open`](https://developer.mozilla.org/en-US/docs/Web/API/Window/open)나 [`browserContext.newPage`](#browsercontextnewpage)에 의해 열리는 경우가 있습니다.
 
 #### event: 'targetdestroyed'
 - <[Target]>
 
-Emitted when a target inside the browser context is destroyed, for example when a page is closed.
+브라우저 컨텍스트 내부에 타겟이 소실되었을 때 발생합니다. 예를 들어 페이지가 닫혔을 경우가 있습니다.
 
 #### browserContext.browser()
 - returns: <[Browser]>
 
-The browser this browser context belongs to.
+브라우저는 이 브라우저 컨텍스트에 속합니다.
 
 #### browserContext.clearPermissionOverrides()
 - returns: <[Promise]>
 
-Clears all permission overrides for the browser context.
+브라우저 컨텍스트에 대해 모든 권한 오버라이드를 지웁니다.
 
 ```js
 const context = browser.defaultBrowserContext();
@@ -865,44 +840,41 @@ context.clearPermissionOverrides();
 #### browserContext.close()
 - returns: <[Promise]>
 
-Closes the browser context. All the targets that belong to the browser context
-will be closed.
+브라우저 컨텍스트를 닫습니다. 브라우저 컨텍스트에 속한 모든 타겟이 닫히게 될 것입니다.
 
-> **NOTE** only incognito browser contexts can be closed.
+> **주의** 시크릿 브라우저 컨텍스트만 닫을 수 있습니다.
 
 #### browserContext.isIncognito()
 - returns: <[boolean]>
 
-Returns whether BrowserContext is incognito.
-The default browser context is the only non-incognito browser context.
+BrowserContext가 시크릿인지 아닌지 반환합니다. 기본 브라우저 컨텍스트는 시크릿이 아닌 브라우저 컨텍스트입니다.
 
-> **NOTE** the default browser context cannot be closed.
+> **주의** 기본 브라우저 컨텍스트는 닫을 수 없습니다.
 
 #### browserContext.newPage()
 - returns: <[Promise]<[Page]>>
 
-Creates a new page in the browser context.
-
+새로운 페이지를 브라우저 컨텍스트에 생성합니다.
 
 #### browserContext.overridePermissions(origin, permissions)
-- `origin` <[string]> The [origin] to grant permissions to, e.g. "https://example.com".
-- `permissions` <[Array]<[string]>> An array of permissions to grant. All permissions that are not listed here will be automatically denied. Permissions can be one of the following values:
-    - `'geolocation'`
-    - `'midi'`
-    - `'midi-sysex'` (system-exclusive midi)
-    - `'notifications'`
-    - `'push'`
-    - `'camera'`
-    - `'microphone'`
-    - `'background-sync'`
-    - `'ambient-light-sensor'`
-    - `'accelerometer'`
-    - `'gyroscope'`
-    - `'magnetometer'`
-    - `'accessibility-events'`
-    - `'clipboard-read'`
-    - `'clipboard-write'`
-    - `'payment-handler'`
+- `origin` <[string]> 권한 허용을 위한 [origin]입니다. 예를 들어 "https://example.com"를 입력할 수 있습니다.
+- `permissions` <[Array]<[string]>> 허용하기 위한 권한 배열입니다. 여기에 리스트되지 않은 모든 권한은 여기서 자동으로 거부합니다. 권한들은 아래의 값들 중 하나를 사용할 수 있습니다.
+  - `'geolocation'`
+  - `'midi'`
+  - `'midi-sysex'` (system-exclusive midi)
+  - `'notifications'`
+  - `'push'`
+  - `'camera'`
+  - `'microphone'`
+  - `'background-sync'`
+  - `'ambient-light-sensor'`
+  - `'accelerometer'`
+  - `'gyroscope'`
+  - `'magnetometer'`
+  - `'accessibility-events'`
+  - `'clipboard-read'`
+  - `'clipboard-write'`
+  - `'payment-handler'`
 - returns: <[Promise]>
 
 
@@ -913,24 +885,24 @@ await context.overridePermissions('https://html5demos.com', ['geolocation']);
 
 
 #### browserContext.pages()
-- returns: <[Promise]<[Array]<[Page]>>> Promise which resolves to an array of all open pages. Non visible pages, such as `"background_page"`, will not be listed here. You can find them using [target.page()](#targetpage).
+- returns: <[Promise]<[Array]<[Page]>>> 모든 열린 페이지의 배열을 resolve하는 프로미스입니다. `"background_page"`같은 보이지 않는 페이지는 리스팅되지 않을 것입니다. [target.page()](#targetpage)을 사용해 그것들을 찾을 수 있습니다.
 
-An array of all pages inside the browser context.
+브라우저 컨텍스트에 있는 모든 페이지의 배열입니다.
 
 #### browserContext.targets()
 - returns: <[Array]<[Target]>>
 
-An array of all active targets inside the browser context.
+브라우저 컨텍스트 내부의 활동하는 모든 타겟의 배열입니다. 
 
 #### browserContext.waitForTarget(predicate[, options])
-- `predicate` <[function]\([Target]\):[boolean]> A function to be run for every target
+- `predicate` <[function]\([Target]\):[boolean]> 모든 타겟에 적용되는 함수입니다.
 - `options` <[Object]>
-  - `timeout` <[number]> Maximum wait time in milliseconds. Pass `0` to disable the timeout. Defaults to 30 seconds.
-- returns: <[Promise]<[Target]>> Promise which resolves to the first target found that matches the `predicate` function.
+  - `timeout` <[number]> 최대 대기시간을 밀리초로 표기합니다. `0`은 타임아웃을 비활성화합니다. 기본 값은 30초입니다.
+- returns: <[Promise]<[Target]>> `predicate`과 일치하는 첫 타겟을 찾아 resolve하는 프로미스입니다.
 
-This searches for a target in this specific browser context.
+모든 브라우저 컨텍스트에 있는 타겟에 대한 검색입니다.
 
-An example of finding a target for a page opened via `window.open`:
+`window.open`를 통해 열린 페이지에 대한 타겟을 찾는 예시입니다.
 ```js
 await page.evaluate(() => window.open('https://www.example.com/'));
 const newWindowTarget = await browserContext.waitForTarget(target => target.url() === 'https://www.example.com/');
@@ -940,9 +912,9 @@ const newWindowTarget = await browserContext.waitForTarget(target => target.url(
 
 * extends: [EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter)
 
-Page provides methods to interact with a single tab or [extension background page](https://developer.chrome.com/extensions/background_pages) in Chromium. One [Browser] instance might have multiple [Page] instances.
+Page는 싱글 탭이나 Chromium에 [extension background page](https://developer.chrome.com/extensions/background_pages)과 상호작용하기 위한 메서드들을 제공합니다. 하나의 [Browser] 인스턴스는 여러개의 [Page] 인스턴스를 가질 수도 있다.
 
-This example creates a page, navigates it to a URL, and then saves a screenshot:
+이 예제는 페이지를 생성하고, URL로 항해하고, 스크린샷을 저장합니다.
 ```js
 const puppeteer = require('puppeteer');
 
@@ -955,14 +927,14 @@ const puppeteer = require('puppeteer');
 })();
 ```
 
-The Page class emits various events (described below) which can be handled using any of Node's native [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) methods, such as `on`, `once` or `removeListener`.
+Page 클래스는 `on`, `once`나 `removeListener`같은 Node의 네이티브 [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) 메서드를 사용해 처리할 수 있는 여러 이벤트들을 발생시킵니다. 
 
-This example logs a message for a single page `load` event:
+이 예제는 싱글 페이지 `load` 이벤트에 대한 메시지를 기록합니다.
 ```js
 page.once('load', () => console.log('Page loaded!'));
 ```
 
-To unsubscribe from events use the `removeListener` method:
+`removeListenr` 메서드를 사용해 이벤트로부터 구독해지하기 위한 메서드입니다.
 
 ```js
 function logRequest(interceptedRequest) {
@@ -975,16 +947,16 @@ page.removeListener('request', logRequest);
 
 #### event: 'close'
 
-Emitted when the page closes.
+페이지가 닫힐때 발생합니다.
 
 #### event: 'console'
 - <[ConsoleMessage]>
 
-Emitted when JavaScript within the page calls one of console API methods, e.g. `console.log` or `console.dir`. Also emitted if the page throws an error or a warning.
+페이지 내의 Javascript가 console API 메서드 중 하나를 호출하면 발생합니다. 예를 들어 `console.log`나 `console.dir`이 있습니다. 또한 페이지가 오류나 경고를 던진다면 발생합니다.
 
-The arguments passed into `console.log` appear as arguments on the event handler.
+`console.log`로 전달된 인자들은 이벤트 핸들러에서 인자로 나타납니다.
 
-An example of handling `console` event:
+`console` 이벤트를 다루는 예제입니다.
 ```js
 page.on('console', msg => {
   for (let i = 0; i < msg.args().length; ++i)
@@ -996,37 +968,38 @@ page.evaluate(() => console.log('hello', 5, {foo: 'bar'}));
 #### event: 'dialog'
 - <[Dialog]>
 
-Emitted when a JavaScript dialog appears, such as `alert`, `prompt`, `confirm` or `beforeunload`. Puppeteer can respond to the dialog via [Dialog]'s [accept](#dialogacceptprompttext) or [dismiss](#dialogdismiss) methods.
+
+`alert`,`prompt`,`confirm` 또는`beforeunload`와 같은 Javascript 대화상자가 나타날 때 발생합니다. Puppeteer는  [Dialog]의 [accept] 또는 [dismiss] 메서드를 통해 대화상자에 응답할 수 있습니다.
 
 #### event: 'domcontentloaded'
 
-Emitted when the JavaScript [`DOMContentLoaded`](https://developer.mozilla.org/en-US/docs/Web/Events/DOMContentLoaded) event is dispatched.
+Javascript [`DOMContentLoaded`](https://developer.mozilla.org/en-US/docs/Web/Events/DOMContentLoaded) 이벤트가 전달될 때 발생합니다. 
 
 #### event: 'error'
 - <[Error]>
 
-Emitted when the page crashes.
+페이지가 출동할 때 발생합니다.
 
-> **NOTE** `error` event has a special meaning in Node, see [error events](https://nodejs.org/api/events.html#events_error_events) for details.
+> **주의** `error` 이벤트는 Node에서 특별한 의미를 가지고 있습니다. 자세한 내용은 [error events](https://nodejs.org/api/events.html#events_error_events)에서 확인하세요.
 
 #### event: 'frameattached'
 - <[Frame]>
 
-Emitted when a frame is attached.
+프레임에 붙으면 발생합니다.
 
 #### event: 'framedetached'
 - <[Frame]>
 
-Emitted when a frame is detached.
+프레임이 떨어지면 발생합니다.
 
 #### event: 'framenavigated'
 - <[Frame]>
 
-Emitted when a frame is navigated to a new url.
+프레임이 새로운 url로 항해하면 발생합니다.
 
 #### event: 'load'
 
-Emitted when the JavaScript [`load`](https://developer.mozilla.org/en-US/docs/Web/Events/load) event is dispatched.
+Javascript [`load`](https://developer.mozilla.org/en-US/docs/Web/Events/load) 이벤트가 전달되면 발생합니다.
 
 #### event: 'metrics'
 - <[Object]>
@@ -3875,8 +3848,8 @@ reported.
 
 * extends: [Error]
 
-TimeoutError is emitted whenever certain operations are terminated due to timeout, e.g. [page.waitForSelector(selector[, options])](#pagewaitforselectorselector-options) or [puppeteer.launch([options])](#puppeteerlaunchoptions).
-
+TimeoutError는 정확한 실행을 타임아웃때문에 제거할 경우마다 발생합니다.
+예를 들어 [page.waitForSelector(selector[, options])](#pagewaitforselectorselector-options)나 [puppeteer.launch([options])](#puppeteerlaunchoptions)에서 발생할 수 있습니다.
 
 
 [AXNode]: #accessibilitysnapshotoptions "AXNode"
