@@ -1003,20 +1003,18 @@ Javascript [`load`](https://developer.mozilla.org/en-US/docs/Web/Events/load) �
 
 #### event: 'metrics'
 - <[Object]>
-  - `title` <[string]> The title passed to `console.timeStamp`.
-  - `metrics` <[Object]> Object containing metrics as key/value pairs. The values
-    of metrics are of <[number]> type.
+  - `title` <[string]> title이 `console.timeStamp`로 상속됩니다.
+  - `metrics` <[Object]> 객체가 키/밸류쌍인 metrics를 가집니다. metrics의 값은 <[number]> 타입입니다.
 
-Emitted when the JavaScript code makes a call to `console.timeStamp`. For the list
-of metrics see `page.metrics`.
+`console.timeStamp`로 호출하는 코드를 자바스크립트가 만들때 발생합니다. metrics의 목록에 대해서는 `page.metrics`를 확인하세요.
 
 #### event: 'pageerror'
-- <[Error]> The exception message
+- <[Error]> 예외 메시지입니다.
 
-Emitted when an uncaught exception happens within the page.
+잡히지 않은 예외가 페이지 내부에서 일어날때 발생합니다.
 
 #### event: 'popup'
-- <[Page]> Page corresponding to "popup" window
+- <[Page]> Page가 "팝업"창과 일치합니다.
 
 Emitted when the page opens a new tab or window.
 
