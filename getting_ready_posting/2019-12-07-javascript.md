@@ -1,6 +1,5 @@
 ## pattern
 
-
 - 생성자함수: 기존에 있던 함수를 `new`명령어를 이용해 새로운 객체를 만들 수 있다. 다른 언어에서의 `class`역할을 한다.
 
   ```js
@@ -12,8 +11,8 @@
       this.name = name;
     }
   }
-  const es5 = new ES5('ES5');
-  const es6 = new ES6('ES6');
+  const es5 = new ES5("ES5");
+  const es6 = new ES6("ES6");
   console.log(es5.name, es6.name); // ES5 ES6
   ```
 
@@ -22,23 +21,23 @@
   ```js
   function ES5(name) {
     this.name = name;
-    return name + ' es5';
+    return name + " es5";
   }
   class ES6 {
     constructor(name) {
       this.name = name;
-      return name + ' es6';
+      return name + " es6";
     }
   }
-  console.log(ES5('ES5')); // ES5 es5
-  console.log(ES5.prototype.constructor('ES5')); // ES5 es5
-  console.log(ES6('ES6')); // Uncaught TypeError
-  console.log(ES6.prototype.constructor('ES6')); // Uncaught TypeError
+  console.log(ES5("ES5")); // ES5 es5
+  console.log(ES5.prototype.constructor("ES5")); // ES5 es5
+  console.log(ES6("ES6")); // Uncaught TypeError
+  console.log(ES6.prototype.constructor("ES6")); // Uncaught TypeError
 
-  console.log(new ES6('ES6')); // ES6 { name: "ES6" }
-  console.log(new ES6.prototype.constructor('ES6')); // ES6 { name: "ES6" }
-  const es6 = new ES6('ES6');
-  console.log(new es6.constructor('ES6 awesome')); // ES6 { name: "ES6 awesome" }
+  console.log(new ES6("ES6")); // ES6 { name: "ES6" }
+  console.log(new ES6.prototype.constructor("ES6")); // ES6 { name: "ES6" }
+  const es6 = new ES6("ES6");
+  console.log(new es6.constructor("ES6 awesome")); // ES6 { name: "ES6 awesome" }
   ```
 
   2. 하지만 ES5에서는 생성자로서의 기능과 일반함수의 기능을 모두 수행할 수 있다.
@@ -48,11 +47,11 @@
   class ES6 {
     constructor(name, age) {
       this.name = name;
-      return name + ' es6';
+      return name + " es6";
       this.age = age;
     }
   }
-  const es6 = new ES6('es6', 2015);
+  const es6 = new ES6("es6", 2015);
   console.log(es6); // ES6 { name: "es6" }
   ```
 
@@ -88,9 +87,8 @@
   1. strategy: prototype을 이용해서 함수의 인자만 바꿔 코드 재활용성을 높이는 패턴이다.
      d
 
+## prototype
 
-     ## prototype
-     
 - prototype:
   1. prototype link:
   2. prototype object: 항상 객체로 생성된다. 프로토타입이 생성되기 전 원래 있던 함수에 생성자 자격이 부여된다. 이 자격이 부여되면 `new`를 통해 객체를 만들어낼 수 있게 된다. 함수를 생성하면 함수만 생성되는 것이 아니라 프로토타입 객체도 함께 생성된다. (`new Person() = Person.prototype`)
@@ -114,7 +112,7 @@ window 객체 중 on 이벤트류: onblur, onchange, onfocus, onclick, ondblclic
 arguments: 함수에 들어온 인자를 유사배열로 반환, 배열의 메소드는 사용 불가함.
 call(), apply(), bind()
 
-## method 
+## method
 
 매서드는 객체에서만 작동하는 함수이다. 함수에서 매개변수 뒤에 매서드가 있으면 이 매개변수는 무조건 배열 혹은 유사배열이다.
 
@@ -167,11 +165,9 @@ hash(password)
 
 ## es6
 
-
 - ES5: ES6 형식의 모듈을 불러올때 `.default`를 써줘야 읽어들일 수 있다.
 
 ## es9
-
 
 - `Promise { <pending> }`: `resolve`나 `reject`를 호출하지 않을 때 발생하는 상태이다.
 - ES9:
@@ -211,7 +207,7 @@ hash(password)
 
   ```js
   (async () => {
-    const promises = ['1000', '2000', '3000', '4000'].map(
+    const promises = ["1000", "2000", "3000", "4000"].map(
       timer =>
         new Promise((res, rej) => {
           setTImeout(() => res(timer), timer);
@@ -235,22 +231,22 @@ hash(password)
 
 ## syntax
 
-
 - javascript:
   - class: 같은 이름의 class를 여러개 사용할 수 있다.
   - id: 같은 이름의 id를 한 문서에 단 하나만 가질 수 있다.
 
-
-- javascript:
+* javascript:
   - NaN(Not a Number): 숫자가 아니다.
   - 배열메소드:
     - `push([배열값])`
     - `splice([기준인덱스], [삭제할 배열수], [추가할 배열])`
 
+- javascript:
 
-- javascript: 
   - 배열 메서드:
+
     - `reduce()`: `map()`, `filter()`, `find()`로 구현할 수 있는 문제들은 모두 구현할 수있는 유연한 메서드이다.
+
       - `reduce(callbackFunction(accumulator, currentValue[, currentIndex, array]){...}[, initialValue])`
       - accumulator: 직전의 콜백이 리턴한 계산값
       - currentValue: 현재 콜백, 배열의 요소값
@@ -258,7 +254,8 @@ hash(password)
       - array: 작업을 수행하는 배열 자체
       - initialValue: 콜백의 첫번째 호출에서 첫번쨰 인수로 사용되는 값
 
-    - `indexOf()`: 
+    - `indexOf()`:
+
       - `indexOf(searchValue[, fromIndex])`
       - searchValue: 필수요소이며 찾으려는 문자열을 넣는다.
       - fromIndex: 선택요소이며 검색을 시작할 인덱스값이다. 입력하지 않으면 처음부터 검색한다.
@@ -266,6 +263,7 @@ hash(password)
       - 찾으려는 문자열이 없으면 -1을 반환한다.
 
     - `filter()`: 배열의 요소들을 걸러내는 것이 목적이다.
+
       - `filter(callback(element[, index[, array]])[, thisArg])`
       - element: 처리할 현재 요소값
       - index: 처리할 현재 요소의 인덱스값
@@ -273,6 +271,7 @@ hash(password)
       - thisArg: 콜백을 실행할 때 `this`로 사용하는 값
 
     - `map()`: 배열의 요소를 일괄적으로 변경하는데 효과적이다.
+
       - `map(callback(currentValue[, index[, array]])[, thisArg])`
       - currentValue: 처리할 현재 요소값
       - index: 처리할 현재 요소의 인덱스값
@@ -280,13 +279,14 @@ hash(password)
       - thisArg: 콜백을 실행할 때 `this`로 사용하는 값
 
     - `find()`: `filter()`와 비슷하지만 단 하나의 요소만 리턴한다.
+
       - find(callback(element[, index, array])[, thisArg])
       - element: 처리할 현재 요소값
       - index: 처리할 현재 요소의 인덱스값
       - array: find를 호출한 배열 자체
       - thisArg: 콜백을 실행할 때 `this`로 사용하는 값
 
-    - `forEach()`: 
+    - `forEach()`:
       - `forEach(callback(currentValue[, index, array])[, thisArg])`
       - currentValue: 처리할 현재 요소값
       - index: 처리할 현재 요소의 인덱스값
@@ -305,7 +305,7 @@ hash(password)
 
     // forEach()
     let arr = [3, 9, 4, 2, 7, 6];
-    arr.forEach((n) => {
+    arr.forEach(n => {
       if (n % 2 == 0) {
         console.log(n);
       }
@@ -313,21 +313,22 @@ hash(password)
     // [4, 2, 6]
     ```
 
-      - for문을 사용할때는 배열의 인덱스를 저장하기 위한 임시변수 `i`를 사용하면서 가독성이 떨어지게 된다.
-      - 요서 접근방법이 `arr[i]`와 `n`으로 다르다.
+    - for문을 사용할때는 배열의 인덱스를 저장하기 위한 임시변수 `i`를 사용하면서 가독성이 떨어지게 된다.
+    - 요서 접근방법이 `arr[i]`와 `n`으로 다르다.
 
     - `Object.keys(obj)`:
-      - obj: 처리될 객체 
+
+      - obj: 처리될 객체
 
       ```js
-      let obj = { a: 1, b: 2, c: 3 }
-      let arr = Object.keys(obj)
-      
-      console.log(arr) // ['a', 'b', 'c']
+      let obj = { a: 1, b: 2, c: 3 };
+      let arr = Object.keys(obj);
+
+      console.log(arr); // ['a', 'b', 'c']
       ```
 
-  - jsDoc: python의 docstring이나 java의 javadoc과 비슷하다. `/**`을 입력하면 자동으로 vscode에서 생성해준다. 아래와 같이 파라미터나 생성자를 작성한다. 
-  
+  - jsDoc: python의 docstring이나 java의 javadoc과 비슷하다. `/**`을 입력하면 자동으로 vscode에서 생성해준다. 아래와 같이 파라미터나 생성자를 작성한다.
+
   ```js
   /**
    * Example
@@ -335,25 +336,25 @@ hash(password)
    */
   ```
 
+## convention
 
-  ## convention
-  
 - airbnb style javascript:
+
   - 객체 메서드는 줄여서 적는다.
 
   ```js
   // bad
   const atom = {
-    addValue: function (value) {
+    addValue: function(value) {
       return atom.value + value;
-    },
+    }
   };
 
   // good
   const atom = {
     addValue(value) {
       return atom.value + value;
-    },
+    }
   };
   ```
 
@@ -371,168 +372,167 @@ hash(password)
   }
   ```
 
+## regexp
 
-  ## regexp
+- js: 정규표현식을 위한 `RegExp`객체가 JS에서는 제공된다. 리터럴 방식과 생성자함수를 사용할 수 있다.
+  - 정규식을 이용하는 메서드:
+    - `exec()`: `g`플래그를 지정해도 첫번쨰 매치 결과만 반환한다.
+    - `test()`:
+    - `match()`
+    - `replace()`:
+    - `search()`:
+    - `split()`:
 
-  
-  - js: 정규표현식을 위한 `RegExp`객체가 JS에서는 제공된다. 리터럴 방식과 생성자함수를 사용할 수 있다.
-    - 정규식을 이용하는 메서드:
-      - `exec()`: `g`플래그를 지정해도 첫번쨰 매치 결과만 반환한다.
-      - `test()`:
-      - `match()`
-      - `replace()`:
-      - `search()`:
-      - `split()`:
+```js
+let targetStr = "This is a pen.";
+let regxr = /is/gi;
+
+console.log(regexr.exec(targetStr)); // [ 'is', index: 2, input: 'This is a pen.' ]
+console.log(regexr.test(targetStr)); // true
+
+console.log(targetStr.match(regexr)); // [ 'is', 'is' ]
+console.log(targetStr.replace(regexr)); // ThIS IS a pen.
+console.log(targetStr.search(regexr)); // 2
+console.log(targetStr.split(regexr)); // [ 'Th', ' ', ' a pen.' ]
+```
+
+- 플래그:
+
+  - `g`(Global):
+    - 문자열내 모든 패턴을 검색한다.
+    - 하위 문자열을 포함하는 배열을 반환하고 일치하는 것이 없으면 `null`을 반환한다.
+    - `g`플래그가 포함되지 않으면 반환되는 배열에 원래 문자열의 값을 가지는 `input`속성과 인덱스를 나타내는 `index`속성이 포함된다.
+  - `i`(Ignore Case): 대소문자 구별없이 검색한다.
+  - `m`(Multi Line): 문자열의 행이 바뀌더라도 검색을 계속한다.
+
+- 패턴: 찾고자 하는 대상을 문자열로 지정한다. 이때 따옴표를 포함하면 따옴표까지 검색하기 때문에 문자열의 따옴표는 생략한다.
+
+  - `.`:
+    - `.`은 임의의 문자 한개를 의미한다.
+    - `.`을 연속해서 작성했을 경우에는 추출을 반복하지 않기 때문에 `g`플래그를 같이 사용한다.
+    - 모든 문자를 선택하려면 `.`와 `g`를 동시에 지정한다.
 
   ```js
-  let targetStr = 'This is a pen.';
-  let regxr = /is/gi;
+  let targetStr = "AA BB Aa Bb";
+  let regexr = /.../g;
+  let regexrAll = /./g;
 
-  console.log(regexr.exec(targetStr)); // [ 'is', index: 2, input: 'This is a pen.' ]
-  console.log(regexr.test(targetStr)); // true
-
-  console.log(targetStr.match(regexr)); // [ 'is', 'is' ]
-  console.log(targetStr.replace(regexr)); // ThIS IS a pen.
-  console.log(targetStr.search(regexr)); // 2
-  console.log(targetStr.split(regexr)); // [ 'Th', ' ', ' a pen.' ]
+  console.log(targetStr.match(regexr)); // ['AA', 'BB', 'Aa'];
+  console.log(targetStr.match(regexrAll)); // [ 'A', 'A', ' ', 'B', 'B', ' ', 'A', 'a', ' ', 'B', 'b' ]
   ```
 
-  - 플래그:
+  - 문자 혹은 문자열: 지정된 문자나 문자열을 추출한다. 이때 대소문자를 구별해서 반환한다.
+  - `*`: 앞선 패턴이 최소 0번 반복되는 문자열을 추출한다. `{0,}`과 같다.
+  - `+`: 앞선 패턴이 최소 한번 반복되는 문자열을 추출한다. `{1,}`과 같다.
+  - `?`: 앞선 패턴이 0 또는 한번 반복되는 문자열을 추출한다. `{0, 1}`과 같다.
+  - `{n}`: 앞선 패턴이 n번 반복되는 문자열을 추출한다.
+  - `{n, m}`: 앞선 패턴이 n번 이상 m번 이하 반복되는 문자열을 추출한다.
 
-    - `g`(Global):
-      - 문자열내 모든 패턴을 검색한다.
-      - 하위 문자열을 포함하는 배열을 반환하고 일치하는 것이 없으면 `null`을 반환한다.
-      - `g`플래그가 포함되지 않으면 반환되는 배열에 원래 문자열의 값을 가지는 `input`속성과 인덱스를 나타내는 `index`속성이 포함된다.
-    - `i`(Ignore Case): 대소문자 구별없이 검색한다.
-    - `m`(Multi Line): 문자열의 행이 바뀌더라도 검색을 계속한다.
+  ```js
+  let targetStr = "AA AAA BB Aa Bb";
+  let regexr = /A/gi;
+  let regexrAll = /A+/g;
 
-  - 패턴: 찾고자 하는 대상을 문자열로 지정한다. 이때 따옴표를 포함하면 따옴표까지 검색하기 때문에 문자열의 따옴표는 생략한다.
+  console.log(targetStr.match(regexr)); // [ 'A', 'A', 'A', 'A', 'A', 'A', 'a' ]
+  console.log(targetStr.match(regexrAll)); // [ 'AA', 'AAA', 'A' ]
+  ```
 
-    - `.`:
-      - `.`은 임의의 문자 한개를 의미한다.
-      - `.`을 연속해서 작성했을 경우에는 추출을 반복하지 않기 때문에 `g`플래그를 같이 사용한다.
-      - 모든 문자를 선택하려면 `.`와 `g`를 동시에 지정한다.
+  - `|`: or의 의미로 `[]`로도 똑같이 표현할 수 있다.
+
+  ```js
+  let regexr = /A|B/;
+  regexr = /[AB]/;
+  ```
+
+  - `-`: 범위를 지정하려면 `[]`내에 `-`를 사용한다.
+  - 알파벳 추출:
+    - `/[A-Z]/g`: 대문자 추출을 할 수 있다.
+    - `/[A-Za-z]/g`: 대소문자 모두 추출을 할 수 있다.
+      - `\w`: 알파벳과 숫자를 의미한다.
+      - `\W`: 반대로 알파벳과 숫자가 아닌 것을 의미한다.
+  - `0-9`: 숫자 추출을 할 수 있다.
+    - `\d`: 간단히 다음과 같이 표현할 수 있다.
+    - `\D`: 숫자가 아닌 문자를 검색하는 패턴이다.
+
+  ```js
+  let targetStr = "AA BB Aa Bb 24,000";
+  let regexr = /[0-9]+/g;
+  let regexrNew = /[0-9,]+/g;
+
+  console.log(targetStr.match(regexr)); // [ '24', '000' ]
+  console.log(targetStr.match(regexrNew)); // [ '24,000' ]
+  ```
+
+  - `^`: 특정 단어로 시작하는지 검사한다.
+  - `$`: 특정 단어로 끝나는지 검사한다.
+
+  ```js
+  let url = "https://example.com";
+  let fileName = "index.html";
+  let regexrFirst = /^https/;
+  let regexrLast = /html$/;
+
+  console.log(regexrFirst.test(url)); // true
+  console.log(regexrLast.test(fileName)); // true
+  ```
+
+  -`\s`: 공백이 있는지 검사한다.
+
+  ```js
+  let targetStr = " Hi!";
+  let regexr = /^[\s]+/;
+
+  console.log(regexr.test(targetStr)); // true
+  ```
+
+  - `()`: 특정 패턴을 묶어서 반복기호와 함꼐 사용할 수 있다.
+
+  - 형식검사:
+
+    - 아이디: 알파벳 대소문자나 숫자로 시작하고 끝나며 4~10자리인지 검사한다.
 
     ```js
-    let targetStr = 'AA BB Aa Bb';
-    let regexr = /.../g;
-    let regexrAll = /./g;
+    let id = "abc123";
+    let regexr = /^[A-Za-z0-9]{4, 10}$/;
 
-    console.log(targetStr.match(regexr)); // ['AA', 'BB', 'Aa'];
-    console.log(targetStr.match(regexrAll)); // [ 'A', 'A', ' ', 'B', 'B', ' ', 'A', 'a', ' ', 'B', 'b' ]
+    console.log(regexr.test(id)); // true
     ```
 
-    - 문자 혹은 문자열: 지정된 문자나 문자열을 추출한다. 이때 대소문자를 구별해서 반환한다.
-    - `*`: 앞선 패턴이 최소 0번 반복되는 문자열을 추출한다. `{0,}`과 같다.
-    - `+`: 앞선 패턴이 최소 한번 반복되는 문자열을 추출한다. `{1,}`과 같다.
-    - `?`: 앞선 패턴이 0 또는 한번 반복되는 문자열을 추출한다. `{0, 1}`과 같다.
-    - `{n}`: 앞선 패턴이 n번 반복되는 문자열을 추출한다.
-    - `{n, m}`: 앞선 패턴이 n번 이상 m번 이하 반복되는 문자열을 추출한다.
+    - 메일주소:
 
     ```js
-    let targetStr = 'AA AAA BB Aa Bb';
-    let regexr = /A/gi;
-    let regexrAll = /A+/g;
+    let email = "wooky92@naver.com";
+    let regexr = /^[0-9a-zA-Z]([[-_\.]?][0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
-    console.log(targetStr.match(regexr)); // [ 'A', 'A', 'A', 'A', 'A', 'A', 'a' ]
-    console.log(targetStr.match(regexrAll)); // [ 'AA', 'AAA', 'A' ]
+    console.log(regexr.test(email)); // true
     ```
 
-    - `|`: or의 의미로 `[]`로도 똑같이 표현할 수 있다.
+    - 전화번호:
 
     ```js
-    let regexr = /A|B/;
-    regexr = /[AB]/;
+    let phone = "010-1234-5678";
+    let regexr = /^\d{3}-\d{3, 4}-\d{4}%/;
+
+    console.log(regexr.test(phone)); // true
     ```
 
-    - `-`: 범위를 지정하려면 `[]`내에 `-`를 사용한다.
-    - 알파벳 추출:
-      - `/[A-Z]/g`: 대문자 추출을 할 수 있다.
-      - `/[A-Za-z]/g`: 대소문자 모두 추출을 할 수 있다.
-        - `\w`: 알파벳과 숫자를 의미한다.
-        - `\W`: 반대로 알파벳과 숫자가 아닌 것을 의미한다.
-    - `0-9`: 숫자 추출을 할 수 있다.
-      - `\d`: 간단히 다음과 같이 표현할 수 있다.
-      - `\D`: 숫자가 아닌 문자를 검색하는 패턴이다.
+    - 특수번호 포함여부:
 
     ```js
-    let targetStr = 'AA BB Aa Bb 24,000';
-    let regexr = /[0-9]+/g;
-    let regexrNew = /[0-9,]+/g;
+    let targetStr = "abc#123";
 
-    console.log(targetStr.match(regexr)); // [ '24', '000' ]
-    console.log(targetStr.match(regexrNew)); // [ '24,000' ]
-    ```
-
-    - `^`: 특정 단어로 시작하는지 검사한다.
-    - `$`: 특정 단어로 끝나는지 검사한다.
-
-    ```js
-    let url = 'https://example.com';
-    let fileName = 'index.html';
-    let regexrFirst = /^https/;
-    let regexrLast = /html$/;
-
-    console.log(regexrFirst.test(url)); // true
-    console.log(regexrLast.test(fileName)); // true
-    ```
-
-    -`\s`: 공백이 있는지 검사한다.
-
-    ```js
-    let targetStr = ' Hi!';
-    let regexr = /^[\s]+/;
-
+    // A-Za-z0-9 이외의 문자가 있는지 검사한다.
+    let regexr = /[^A-Za-z0-9]/gi;
     console.log(regexr.test(targetStr)); // true
+
+    // 특수문자를 선택적으로 검사할 수 있다.
+    regexr = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    console.log(regexr.test(targetStr)); // true
+
+    // 특수문자를 제거한다.
+    console.log(targetStr.replace(regexr, "")); // abc123
     ```
 
-    - `()`: 특정 패턴을 묶어서 반복기호와 함꼐 사용할 수 있다.
-
-    - 형식검사:
-
-      - 아이디: 알파벳 대소문자나 숫자로 시작하고 끝나며 4~10자리인지 검사한다.
-
-      ```js
-      let id = 'abc123';
-      let regexr = /^[A-Za-z0-9]{4, 10}$/;
-
-      console.log(regexr.test(id)); // true
-      ```
-
-      - 메일주소:
-
-      ```js
-      let email = 'wooky92@naver.com';
-      let regexr = /^[0-9a-zA-Z]([[-_\.]?][0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-
-      console.log(regexr.test(email)); // true
-      ```
-
-      - 전화번호:
-
-      ```js
-      let phone = '010-1234-5678';
-      let regexr = /^\d{3}-\d{3, 4}-\d{4}%/;
-
-      console.log(regexr.test(phone)); // true
-      ```
-
-      - 특수번호 포함여부:
-
-      ```js
-      let targetStr = 'abc#123';
-
-      // A-Za-z0-9 이외의 문자가 있는지 검사한다.
-      let regexr = /[^A-Za-z0-9]/gi;
-      console.log(regexr.test(targetStr)); // true
-
-      // 특수문자를 선택적으로 검사할 수 있다.
-      regexr = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-      console.log(regexr.test(targetStr)); // true
-
-      // 특수문자를 제거한다.
-      console.log(targetStr.replace(regexr, '')); // abc123
-      ```
 ## arr str obj method
 
 - 재귀함수: 반복적인 호출이 종료되는 조건이 있어야한다.
@@ -573,8 +573,8 @@ hash(password)
   console.log(newArr); // [1,3,2,4,5,6] 중복이 제거된 배열을 얻을 수 있다.
 
   // 문자열
-  const str = 'abcdacbe';
-  const newStr = [...new Set(str)].join('');
+  const str = "abcdacbe";
+  const newStr = [...new Set(str)].join("");
   console.log(newStr); // "abcde" 중복이 제거된 문자열을 얻을 수 있다.
   ```
 
@@ -584,8 +584,8 @@ hash(password)
   const arr = [1, 1, 4, 1, 1];
   arr.filter(el => arr.indexOf(el) === arr.lastIndexOf(el)); // [4]
 
-  const str = '11411';
-  str.split('').filter(el => str.indexOf(el) === str.lastIndexOf(el)); // ['4']
+  const str = "11411";
+  str.split("").filter(el => str.indexOf(el) === str.lastIndexOf(el)); // ['4']
   ```
 
   - 배열, 문자열에서 i번째 인덱스 내용을 삭제하고 싶을떄
@@ -635,13 +635,13 @@ hash(password)
 
   ```js
   // 문자를 숫자로 변환
-  const str = '1234';
+  const str = "1234";
   const strToNum = +str;
   console.log(strToNum); // 1234
 
   // 숫자를 문자로 변환
   const num = 1234;
-  const numToStr = '' + num;
+  const numToStr = "" + num;
   console.log(numToStr); // '1234'
   ```
 
@@ -715,7 +715,7 @@ hash(password)
   ```js
   const arr = [1, 2, 3, 4];
   arr.join(); // "1,2,3,4"
-  arr.join('..'); // "1..2..3..4"
+  arr.join(".."); // "1..2..3..4"
   arr; // [1,2,3,4] 원본이 바뀌지 않음
   ```
 
@@ -806,7 +806,7 @@ hash(password)
   - `charCodeAt(index)`: 주어진 인덱스에 대해 utf-16코드를 나타내는 0부터 65535사이의 정수를 반환한다.
 
   ```js
-  const str = 'abcd';
+  const str = "abcd";
   str.charCodeAt(0); // 97
   str.charCodeAt(1); // 98
   ```
@@ -814,30 +814,29 @@ hash(password)
   - `repeat(count)`: 주어진 문자열을 인자만큼 반복한다.
 
   ```js
-  const str = 'abc';
+  const str = "abc";
   str.repeat(2); // 'abcabc'
   ```
 
   - `replace(pattern, replacement or function)`: 패턴에 일치하는 일부 또는 모든 부분이 교체된 새로운 문자열을 반환한다. 정규식이나 문자열로 패턴을 설정할 수 있다.
 
   ```js
-  const str = 'abcdabcd';
-  str.replace('ab', 'kkk'); // 'kkkcdabcd'
-  str.replace(/ab/gi, 'kkk'); // 'kkkcdkkkcd'
+  const str = "abcdabcd";
+  str.replace("ab", "kkk"); // 'kkkcdabcd'
+  str.replace(/ab/gi, "kkk"); // 'kkkcdkkkcd'
   ```
 
   - `split(separator[, limit])`: 문자열을 배열로 변환할때 사용한다.
 
   ```js
-  const str = 'abcde';
+  const str = "abcde";
   str.split(); // ['abcde']
-  str.split(''); // ['a','b','c','d','e']
-  str.split('c'); // ['ab','d']
-  str.split('', 3); // ['a','b','c']
+  str.split(""); // ['a','b','c','d','e']
+  str.split("c"); // ['ab','d']
+  str.split("", 3); // ['a','b','c']
   ```
 
   - `toUpperCase()`, `toLowerCase()`: 대소문자로 변형할 시에 사용한다.
-
 
 ## syntax
 
@@ -886,11 +885,11 @@ hash(password)
   Person.prototype.speakName = function(number) {
     // 인스턴스간 공유되는 메소드
     for (var i = 0; i < number; i++) {
-      console.log('my name is ' + this.name);
+      console.log("my name is " + this.name);
     }
   };
 
-  var kim = new Person('kim');
+  var kim = new Person("kim");
   kim.speakName(10);
   ```
 
@@ -899,30 +898,27 @@ hash(password)
   - 생성자 함수의 prototype에 붙은 속성
   - Object.prototype에 붙은 속성
 
-
-- javascript:
+* javascript:
   - `reverse()`: 배열의 순서를 반전한다.
   - `substring(start[, end])`: 문자열을에서 원하는 위치를 골라내 사용한다. end값이 지정되지 않으면 문자열의 끝까지를 의미한다. start 인덱스의 값 다음 값부터 사용한다.
   - `Math.max(value1[, value2[, ...]])`: 0이상의 숫자중 가장 큰 숫자를 반환한다.
-
 
 - javascript:
 
   - `path.normalize(directory)`: 인자로 전달받은 잘못된 경로를 올바르게 고쳐준다.
 
   ```js
-  path.normalize('c:/abc//def/'); // 'c:\\abc\\def\\'
+  path.normalize("c:/abc//def/"); // 'c:\\abc\\def\\'
   ```
 
   - `path.join(path1[, path2[, ...]])`: 인자로 전달받은 경로를 이어서 하나의 경로로 만든다.
   - `path.resolve([from,] to)`: 인자로 전달받은 경로의 절대경로를 반환한다.
 
   ```js
-  path.resolve('.'); // 'C:\\node'
-  path.resolve('../Python34', 'libs'); // 'C:\\Python34\\libs'
+  path.resolve("."); // 'C:\\node'
+  path.resolve("../Python34", "libs"); // 'C:\\Python34\\libs'
   ```
 
-  
 - javascript:
 
   - `toISOString()`: 확장 iso형식의 문자열을 반환한다. 반환값은 언제나 24글자(YYYY-MM-DDTHH:mm:ss.sssZ) 또는 27글자(±YYYYYY-MM-DDTHH:mm:ss.sssZ)이다. 시간대는 언제나 utc이며 접미어 z로 표현한다.
@@ -949,14 +945,17 @@ hash(password)
     - 생성자로서 사용하지 않으면(new 연산자를 사용하지 않으면) Number를 사용하여 형변환을 할 수 있다.
   - `trim()`: 문자열 양 끝의 공백을 제거한다.
 
-## number 
-- javascript: 
+## number
+
+- javascript:
+
   - `toFixed()`: Number 객체를 주어진 인자만큼의 소수점 이하 자리수를 정확하게 갖는 문자열로 반환한다. 소수점 이하가 길면 숫자를 반올림하고, 짧으면 0으로 채운다.
 
   ## design pattern
-  
+
 - javascript 디자인패턴
-  - CPS(Continuation-Passing Style): `return`대신에 `cb(null, data)`을 사용한다.  
+
+  - CPS(Continuation-Passing Style): `return`대신에 `cb(null, data)`을 사용한다.
 
   ```js
   // Synchronous
@@ -990,35 +989,35 @@ hash(password)
 
   ```js
   // Give a list of files all of them which match an extension
-  function findFiles (files, extension) {
-    const emitter = new EventEmitter()
+  function findFiles(files, extension) {
+    const emitter = new EventEmitter();
 
     if (files.length === 0) {
       // yield an error
-      emitter.emit('error', 'no files supplied')
+      emitter.emit("error", "no files supplied");
     }
 
     // Check for matches
-    function checkFiles () {
+    function checkFiles() {
       files.forEach(file => {
         if (path.extname(file) === extension) {
           // yield a result
-          emitter.emit('match', file)
+          emitter.emit("match", file);
         }
-      })
+      });
     }
 
     // Ask the event loop to loop through our loop ...
-    process.nextTick(checkFiles)
+    process.nextTick(checkFiles);
 
     // For chainability on on()
-    return emitter
+    return emitter;
   }
   ```
 
   - Strategy
-    - 어떤 동작을 하는 로직을 정의하고 이것들을 묶어서 캡슐화하도록 하는 패턴이다. 
-    - 로직을 사용하는 객체들은 자기입맛에 맞게 로직을 효율적으로 수정할 수 있다. 
+    - 어떤 동작을 하는 로직을 정의하고 이것들을 묶어서 캡슐화하도록 하는 패턴이다.
+    - 로직을 사용하는 객체들은 자기입맛에 맞게 로직을 효율적으로 수정할 수 있다.
     - 새로운 로직을 추가하거나 변경할때 객체의 종류수만큼 반복하지 않고 한번으로 반영이 가능하다.
     - 핵심은 로직을 정의하는 행동에도 객체를 선언해야 한다.
     - 느슨한 결합을 사용한다. 즉, 상속을 통한 구현이 아닌 구성을 이용한다.
@@ -1026,6 +1025,7 @@ hash(password)
   <img src="https://dzone.com/storage/temp/2442910-strategy.png" width="500">
 
   - Chain of responsibility
+
     - 서버사이드에서 미들웨어를 사용할때 사용하는 방식이다.
     - ATM에서 돈을 뺄때의 메카니즘과 똑같다.
 
