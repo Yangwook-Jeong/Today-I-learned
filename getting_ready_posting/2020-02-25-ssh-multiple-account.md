@@ -1,13 +1,22 @@
 ---
 layout: post
-title: WSL에 Nodejs 개발환경 세팅하기
+title: 머신 한 대에서 GIT 계정 여러개 사용하기
 author: Yangeok
 categories: ETC
 date: 2020-02-13 09:00
 comments: true
-tags: [ubuntu, zsh, shell, windows subsystem for linux, omz, ohmyzsh, 우분투, 리눅스, 윈도우]
+tags: [ssh, github, multiple account]
 cover:
 ---
+
+목차
+- 계정 두개 준비 후, ssh키 두 개 만들기
+- 계정마다 ssh키 등록하기
+- ~/.ssh/config 파일 작성하기
+- 문제발생: 업로드는 되는데 회사계정으로 개인저장소에 커밋 올라감
+  - ~/.gitconfig, ~/.gitconfig-* 파일 작성하기
+
+
 
 - git-multiple-profile
 	- 각 계정명으로 ssh 공개/비밀키를 생성하고, 파일명을 `id_rsa_foo`로 짓는다.
