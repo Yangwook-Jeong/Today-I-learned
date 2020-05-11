@@ -35,7 +35,7 @@ const saveDeviceToken = useCallback(async () => {
   const refreshedFcmToken = await firebase.messaging().onTokenRefresh()
   if(refreshedFcmToken !== fcmToken) {
     return saveTokenToDatabase(refreshedFcmToken)
-  })
+  }
 }, [fcmToken]);
 ```
 
