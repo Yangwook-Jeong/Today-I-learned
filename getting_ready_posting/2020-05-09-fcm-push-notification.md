@@ -41,6 +41,61 @@ const saveDeviceToken = useCallback(async () => {
 
 프로젝트를 생성하고 **Cloud Messaging**으로 들어가 추가하고자 하는 앱을 추가합니다. bundle id를 가져와서 입력하고 네이티브 단에 sdk를 추가시켜줍니다. 아까 얻은 디바이스 토큰을 가지고 콘솔 상에서 푸시를 보내볼 수 있습니다.
 
+#### 안드로이드
+
+/android/app/build.gradle
+
+```java
+apply plugin: 'com.google.gms.google-services'
+```
+
+/android/build.gradle
+
+```java
+buildescript {
+  
+  (...)
+
+  dependencies {
+    
+    (...)
+    
+    classpath 'com.google.gms:google-services:4.2.0'      
+  }
+
+  (...)
+}
+```
+
+/android/app/google-services.json
+
+### IOS
+
+/ios/<app_name>/AppDelegate.m
+
+```objective-c
+(...)
+
+#import <Firebase.h>
+
+(...)
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
+
+  (...)
+}
+```
+
+/ios/<app_name>/Info.plist
+
+xcode 설정 추가
+
+/ios/GoogleService-Info.plist
+
 ### 리스너 패턴
 
 우선 앱의 라이프사이클에 대해서 이야기를 하지 않고 넘어갈 수는 없을 것 같아요. 리스너 api를 라이프사이클에 맞게 사용해봅니다. 함수형 컴포넌트에서는 hooks를 사용할 수 있기때문에 react 라이프사이클을 사용하는데 훨씬 간편하게 사용할 수 있습니다.
