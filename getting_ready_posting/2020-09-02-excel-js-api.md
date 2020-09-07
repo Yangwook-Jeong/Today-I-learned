@@ -27,6 +27,22 @@ cover:
 const workbook = new Excel.Workbook()
 ```
 
+```ts
+// lib/exceljs.nodejs.js
+const ExcelJS = {
+  Workbook: require('./doc/workbook'),
+
+  (...)
+}
+
+// lib doc/workbook.js
+class Workbook {
+  constructor() {
+    
+  }
+}
+```
+
 2번째 인자에 다양한 옵션을 사용할 수 있습니다.
 
 ```ts
