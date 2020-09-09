@@ -178,10 +178,27 @@ xlsx와 csv 타입을 I/O할 수 있습니다.
 
 ## 커스텀 헬퍼 함수
 
-다음 시간에는 exceljs를 더 편하게 사용할 수 있도록 도와주는 헬퍼 함수들 소개하는 글로 찾아오겠습니다. 🚀
+`readFromExcel`
 
+```ts
+const readFromExcel = (path: string) => {
+  const workbook = new Excel.Workbook()
+  await workbook.xlsx.readFile(path)
+  return wrokbook
+}
 
-i/o: readFromExcel
+const readStreamFromExcel = (path: string) => {
+  const wrokbook = new Excel.stream.xlsx.WorkbookWriter({
+    filename: path
+  })
+  return workbook
+}
+
+const memoizedReadFromExcel = (path: string) => {
+  const memoizedResult = await pMemoize(readFromExcel)
+  return cloneDeep(memoizedResult)
+}
+```
 
 수정/복제/병합: cloneRows, writeRows, getRows, cloneCell, getMergedCells, cloneSheet, WriteLineCursor
 
