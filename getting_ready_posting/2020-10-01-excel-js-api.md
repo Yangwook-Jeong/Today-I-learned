@@ -130,14 +130,10 @@ const mergedCell = worksheet.mergeCells('C1:D1')
 mergedCell.value = 'bar'
 ```
 
-열을 삽입시킨다거나
+머지된 열을 쪼갠다거나
 
 ```ts
-```
-
-열을 쪼갠다거나
-
-```ts
+worksheet.spliceRows()
 ```
 
 열을 복사한다거나
