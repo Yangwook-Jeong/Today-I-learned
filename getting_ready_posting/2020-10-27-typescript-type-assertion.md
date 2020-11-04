@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 
+title: Typescript 고급타입 마스터하기 - 01
 author: Yangeok
 categories: Typescript
 date: 2020-10-01 09:00
