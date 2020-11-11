@@ -13,23 +13,35 @@ cover:
 - [목차](#목차)
 - [심볼 타입이란?](#심볼-타입이란)
 - [특징](#특징)
-  - [private 멤버](#private-멤버)
   - [고유한 값](#고유한-값)
+  - [private 멤버](#private-멤버)
   - [문자열화](#문자열화)
-- [종류](#종류)
-  - [Symbol()](#symbol)
-  - [Symbol.for(string)](#symbolforstring)
-  - [Symbol.iterator](#symboliterator)
 - [용도](#용도)
   - [표준 object property로 사용](#표준-object-property로-사용)
-  - [표준 심볼로 사용](#표준-심볼로-사용)
-  - [](#)
 
 ## 심볼 타입이란?
 
 심볼은 고유한 값을 만들어내기 위해 사용한다. 객체의 key로 사용할 경우 private 멤버 변수처럼 동작한다.
 
 ## 특징
+
+### 고유한 값
+
+심볼은 고유한 값이다. 따라서 내용이 같다고 심볼이 같지는 않다. 한 번 생성하면 절대 그 누구와도 같을 수가 없다.
+
+```ts
+const a = Symbol(123)
+const b = Symbol(123)
+
+const c = Symbol('123')
+const d = Symbol('123')
+
+console.log(a === b) // false
+console.log(a == b) // false
+
+console.log(c === d) // false
+console.log(c == d) // false
+```
 
 ### private 멤버
 
@@ -42,6 +54,8 @@ const obj = {
   '2': true,
   [Symbol('3')]: true
 }
+
+console.log(obj) // { '1': true, '2': true, [Symbol(0)]: true, [Symbol(3)]: true }
 
 const keys = []
 for (let key in obj) {
@@ -77,7 +91,6 @@ const obj = {
   age: 1
 }
 
-
 console.log(obj) // { age: 1, Symbol(name): 'John Doe', Symbol(gender): 'male' }
 console.log(obj[NAME]) // 'John Doe'
 ```
@@ -93,18 +106,6 @@ private 멤버 변수도 가져올 수 있는 트릭이 있긴 하다. 권장하
 ```ts
 Object.getOwnPropertySymbols(obj) // [Symbol(name), Symbol(gender)] 
 Reflect.ownKeys(obj) // ['age', Symbol(name), Symbol(gender)]
-```
-
-### 고유한 값
-
-심볼은 고유한 값이다. 따라서 내용이 같다고 심볼이 같지는 않다. 한 번 생성하면 절대 그 누구와도 같을 수가 없다.
-
-```ts
-const a = Symbol(123)
-const b = Symbol(123)
-
-a === b // false
-a == b // false
 ```
 
 ### 문자열화
@@ -123,14 +124,6 @@ Symbol(true) // Symbol(true)
 Symbol('1') // Symbol(1)
 ```
 
-## 종류
-
-### Symbol()
-
-### Symbol.for(string)
-
-### Symbol.iterator
-
 ## 용도
 
 ### 표준 object property로 사용
@@ -140,10 +133,18 @@ Symbol('1') // Symbol(1)
 ```ts
 const isArray = Symbol('isArray')
 Array[isArray] = arg => (Object.prototype.toString.call(arg) === '[object Array]') ? true : false
+
+console.log(Array.isArray([])) // true
+console.log(Array[isArray]([])) // true
+
+const concat = (x, y) => x.concat(y)
+const flatMap = Symbol('flatMap')
+Array.prototype._flatMap = function (f) {
+  const fn = (f, xs) => xs.map(f).reduce(concat, [])
+  return fn(f, this)
+}
+
+const data = [1, 2, 3, 4]
+console.log(data.flatMap(i => i)) // [1, 2, 3, 4]
+console.log(data._flatMap(i => i)) // [1, 2, 3, 4]
 ```
-
-### 표준 심볼로 사용
-
-well-known symbol이라고도 한다. 
-
-### 
