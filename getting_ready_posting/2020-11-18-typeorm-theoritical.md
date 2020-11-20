@@ -21,26 +21,27 @@ cover:
     - [migration:revert](#migrationrevert)
   - [TypeORM vs. Sequelize](#typeorm-vs-sequelize)
   - [타언어 ORM과 비교](#타언어-orm과-비교)
-  - [Doctrine (PHP)](#doctrine-php)
+    - [Doctrine (PHP)](#doctrine-php)
     - [Active record (Ruby)](#active-record-ruby)
 - [N+1 문제](#n1-문제)
-  - [정의](#정의-1)
+  - [정의 & 해결방법](#정의--해결방법)
     - [Eager loading](#eager-loading)
     - [Lazy loading](#lazy-loading)
-  - [해결방법](#해결방법)
   - [TypeORM vs. Sequelize](#typeorm-vs-sequelize-1)
   - [타언어 ORM과 비교](#타언어-orm과-비교-1)
-    - [Cakeorm (PHP)](#cakeorm-php)
+    - [CakeORM (PHP)](#cakeorm-php)
     - [JPA (Java)](#jpa-java)
-    - [ROR (Ruby)](#ror-ruby)
+    - [Active Record (Ruby)](#active-record-ruby-1)
+
+<br>
+
+---
+
+<br>
 
 ## 마이그레이션
 
 ### 정의
-
-- orm 입문기부터 migration 중요하지 않게 생각한 이유 
-- migration을 사용해야 하는 이유 
-- synchronize만 사용하면 오는 단점들
 
 sequelize로 orm을 입문했다. 그들의 폴더구조인 테이블 스키마가 있는 `models`, 마이그레이션 파일이 있는 `migrations`, 가짜 데이터가 있는 `seeders`로 구성되어 있었다. `migrations`는 `models`와 거의 일치하는 코드인데 함수나 클래스 안에 `up`, `down` 메서드가 있는 것 말고는 딱히 차이가 없어 보였다.
 
@@ -52,10 +53,10 @@ sequelize로 orm을 입문했다. 그들의 폴더구조인 테이블 스키마�
 
 ```sql
 CREATE TABLE People (
-  id int NOT NULL AUTO_INCREMENT,
-  first_name varchar(255) NOT NULL,
-  last_name varchar(255) NOT NULL,
-  city varchar(255),
+  id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  city VARCHAR(255),
   PRIMARY KEY (id)
 );
 
@@ -89,7 +90,6 @@ mysql> SELECT * FROM People;
 
 아래는 [sequelize](https://sequelize.org/master/class/lib/sequelize.js~Sequelize.html#instance-method-sync), [typeorm](https://orkhan.gitbook.io/typeorm/docs/connection-api#connection-api)에서 프로그램을 재실행하면 자동으로 데이터베이스에 동기화할 수 있도록 도와주는 메서드들의 사용방법이다.
 
-
 ```ts
 // using sequelize
 await db.sequelize.sync({ alter: true })
@@ -104,22 +104,54 @@ await getConnection().synchronize()
 
 ```sql
 ALTER TABLE People DROP COLUMN city;
-ALTER TABLE People ADD country varchar(255);
+ALTER TABLE People ADD country VARCHAR(255);
+```
+
+```sql
+mysql> SELECT * FROM People;
++----+------------+------------+---------+
+| id | first_name | last_name  | country |
++----+------------+------------+---------+
+|  1 | John       | Doe        | NULL    |
+|  2 | Warwick    | Hawkins    | NULL    |
+|  3 | Kobi       | Villarreal | NULL    |
+|  4 | Winnie     | Roach      | NULL    |
+|  5 | Peggy      | Ngyen      | NULL    |
++----+------------+------------+---------+
+5 rows in set (0.00 sec)
 ```
 
 하지만 migration을 사용하면 아래와 같이 쿼리문을 날린다.
 
 ```sql
-ALTER TABLE People CHANGE COLUMN city country varchar(255);
+ALTER TABLE People CHANGE COLUMN city country VARCHAR(255);
+```
+
+```sql
+mysql> SELECT * FROM People;
++----+------------+------------+-------------+
+| id | first_name | last_name  | country     |
++----+------------+------------+-------------+
+|  1 | John       | Doe        | Berlin      |
+|  2 | Warwick    | Hawkins    | Dublin      |
+|  3 | Kobi       | Villarreal | Peking      |
+|  4 | Winnie     | Roach      | Ulaanbaatar |
+|  5 | Peggy      | Ngyen      | Hanoi       |
++----+------------+------------+-------------+
+5 rows in set (0.01 sec)
 ```
 
 synchronize는 최초에 데이터와 entity를 동기화할 때는 좋은 옵션이지만 프로덕션에는 안전하지 않다. 위같은 간단한 쿼리는 어느정도 개발하는 입장에서 예상이 가능하지만, association이 엮이는 경우에는 나같은 초보개발자는 synchronize를 해서 오는 사이드이펙트를 가늠하지 못할 것이다. 라이브 환경에서 데이터가 날아가는 일은 끔찍하다. 라이브 환경에서라면 데이터베이스를 안정적으로 관리하기 위한 도구인 migration을 적극 사용하는 것을 orm 공식문서에서 하나같이 권장한다. 
 
+<br>
+
+---
+
+<br>
+
 ### 사용법
 
 #### 데이터베이스 및 config 파일 세팅
-
-- ormconfig.json 혹은 env 파일 + ormconfig.ts 작성하는 방법
 
 여기서는 다중 환경을 사용하지 않는다는 가정 하에 typeorm에서 기본적으로 제공해주는 `ormconfig.json` 파일을 사용할 예정이다. `--name` 플래그는 새로 만들 프로젝트 이름을, `--database`는 데이터베이스 이름을 적어준다.
 
@@ -200,13 +232,19 @@ FLUSH PRIVILEGES;
 docker-compose up
 ```
 
+<br>
+
+---
+
+<br>
+
 #### migration:create
 
 ```sh
 yarn typeorm migration:create -n test-migration-create
 ```
 
-- `-n` 플래그는 migration 파일의 이름을 정해준다.
+참고로 `-n` 플래그는 migration 파일의 이름을 정해준다. 
 
 빈 껍데기인 migration 파일을 만들때 사용한다. 스크립트를 실행하면 `ormconfig.json`에서 `cli.migrationsDir`에 정의한 경로에 `timestamp-test-migration-create.ts`와 같이 timestamp를 포함한 파일명으로 `up`, `down` 메서드에 구현부는 비어있는 파일이 아래처럼 생성된다.
 
@@ -334,9 +372,7 @@ yarn typeorm migration:revert
 ```
 ### TypeORM vs. Sequelize
 
-sequelize에서 제공하는 migration은 아쉽게도 typeorm에서 제공하는 `entities`의 변화를 자동감지해서 migration하는 기능은 가지고 있지 않다. sequelize의 `migration:generate` 커맨드는 typeorm의 `migration:create`와 같다. 
-
-`entities`의 변경사항을 서버를 실행하지 않고 cli로만 synchronize시키는 `schema:sync`도 제공한다. 다만 조심해서 사용해야 한다.
+sequelize에서 제공하는 migration은 아쉽게도 typeorm에서 제공하는 `entities`의 변화를 자동감지해서 migration하는 기능은 가지고 있지 않다. sequelize의 `migration:generate` 커맨드는 typeorm의 `migration:create`와 같다. typeorm에서는 `entities`의 변경사항을 서버를 실행하지 않고 cli로만 synchronize시키는 `schema:sync`도 제공한다. 다만 조심해서 사용해야 한다.
 
 반대로 typeorm에서는 되지 않는 `migration:revert:all`을 sequelize에서는 `db:migrate:undo:all`을 사용해서 모든 migration 파일들의 `down` 메서드를 실행할 수 있다. 
 
@@ -375,9 +411,15 @@ sequelize의 장점은 다음과 같다.
 - `migration:undo:all`을 실행할 수 있어 migration을 모두 되돌릴 때 편하다.
 - seeding을 cli에서 지원해서 간편하게 up, down할 수 있다.
 
+<br>
+
+---
+
+<br>
+
 ### 타언어 ORM과 비교
 
-### Doctrine (PHP)
+#### Doctrine (PHP)
 
 - 테이블 스키마의 변화를 자동감지해서 migration 파일 생성하는 기능을 제공한다.
 - sequelize의 umzug처럼 migration hook이 있어서 cli용 플러그인을 만들기 용이하다. 
@@ -388,68 +430,281 @@ sequelize의 장점은 다음과 같다.
 - 테이블 스키마의 변화를 자동감지해서 [migration 파일](https://github.com/aviflombaum/activerecord-cli-example/blob/master/db/schema.rb) 생성하는 기능을 제공한다.
 - timestamp를 `YYYYMMDDHHMMS` 포맷으로 찍어 파일명에 표기한다. (예: `20201120120000_test-migration-create.rb`)
 
+<br>
+
+---
+
+<br>
+
 ## N+1 문제
 
-### 정의
+### 정의 & 해결방법
 
-- orm 사용 중 성능 문제가 생긴다면 이것일 가능성 높음 
-- raw sql에서 반복문이 돌아 query를 n+1번 날리는 것 예시
-
-간단히 말해서 orm단에서 알아서 lazy loading을 사용해서 자식 객체에 접근할때마다 query를 날려서 생기는 문제임!
-
-
-orm을 사용할 떄 성능 문제가 있다면 들여다봐야 한다.
-
-sequelize에서는 eager/lazy loading 관련 튜닝을 따로 해줘야하는 것 같다. typeorm에서는 eager/lazy relations라는 이름으로 기능을 실험적으로만 지원하고 있다. lazy loading을 사용하면 n+1 문제를 해결할 수 있다고 한다.
-
-lazy loading을 sql의 join문으로도 구현할 수 있다. join문은 다음과 같이 사용할 수 있다.
+위에서 만들었던 테이블인 `People`을 조금 수정하고 `Companies` 테이블을 아래 쿼리로 새로 만들어보자. `Companies`와 `People`은 1:M 관계이다.
 
 ```sql
-SELECT fields
-FROM table1_name t1
-JOIN table2_name t2 
-ON t1.id = t2.id;
+CREATE TABLE Companies (
+  id INT NOT NULL AUTO_INCREMENT,
+  department VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE People ( 
+  id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  city VARCHAR(255),
+  company_id INT, 
+  INDEX comp_idx (company_id), 
+  FOREIGN KEY (company_id) REFERENCES Companies(id) ON DELETE CASCADE,
+  PRIMARY KEY (id)
+);
 ```
 
-typeorm도 마찬가지로 eager loading이 기본값이다. 
+아래와 같이 sql로 `Companies`와 `People`에 데이터를 집어넣어준다.
 
+```sql
+INSERT INTO Companies
+  (department)
+VALUES
+  ('finance'),
+  ('marketing'),
+  ('development'),
+  ('design'),
+  ('planning');
 
-참고로 그냥 join은 inner join의 alias이다. 
+INSERT INTO People 
+  (first_name, last_name, city, company_id) 
+VALUES 
+  ('John', 'Doe', 'Berlin', 1),
+  ('Warwick', 'Hawkins', 'Dublin', 1),
+  ('Kobi', 'Villarreal', 'Peking', 2),
+  ('Winnie', 'Roach', 'Ulaanbaatar', 3),
+  ('Peggy', 'Ngyen', 'Hanoi', 5);
+```
+
+테이블에 select문을 던져주면 아래와 같은 결과가 나온다.
+
+```sql
+mysql> SELECT * FROM Companies;
++----+-------------+
+| id | department  |
++----+-------------+
+|  1 | finance     |
+|  2 | marketing   |
+|  3 | development |
+|  4 | design      |
+|  5 | planning    |
++----+-------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM People;
++----+------------+------------+-------------+------------+
+| id | first_name | last_name  | city        | company_id |
++----+------------+------------+-------------+------------+
+|  1 | John       | Doe        | Berlin      |          1 |
+|  2 | Warwick    | Hawkins    | Dublin      |          1 |
+|  3 | Kobi       | Villarreal | Peking      |          2 |
+|  4 | Winnie     | Roach      | Ulaanbaatar |          3 |
+|  5 | Peggy      | Ngyen      | Hanoi       |          5 |
++----+------------+------------+-------------+------------+
+5 rows in set (0.00 sec)
+```
+
+서론이 너무 길었다. 본론으로 넘어가서 n+1 문제는 orm 사용 중 성능 문제가 생긴다면 이것 때문일 가능성이 높다. 이런 쿼리가 있다고 가정하자. `People`을 가지고 부모인 `Companies.department`를 알아내려고 한다. 아래 pseudo code처럼 작성한다면 n+1 문제가 발생하게 된다.
+
+```ts
+const people = await People.query(`SELECT * FROM People`)
+
+for (let person of people) {
+  const department = await Companies.query(`
+    SELECT department 
+    FROM Companies c
+    WHERE c.id = :personId
+  `)
+  .setParam('personId', person.id)
+}
+```
+
+순서대로 어떤 sql 쿼리가 들어갔는지 보자면 아래와 같다.
+
+```sql
+SELECT * FROM People;
+
+SELECT department FROM Companies c WHERE c.id = 1; -- finance
+SELECT department FROM Companies c WHERE c.id = 1; -- finance
+SELECT department FROM Companies c WHERE c.id = 2; -- marketing
+SELECT department FROM Companies c WHERE c.id = 3; -- development
+SELECT department FROM Companies c WHERE c.id = 5; -- planning
+```
+
+n+1이란 최초의 쿼리를 던진 다음 아래 실행된 `Companies`에서 select하는 문장만큼을 n이라고 해서 쿼리가 총 6(1+5)번 일어나는 것을 보고 n+1 문제라고 한다.
+
+해당 문제를 고치는 방법은 아주 간단하다. inner join으로 쿼리를 날리면 해결이 가능하다. join은 inner join의 alias이다. 
+
+```ts
+const people = await People.query(`
+  SELECT * 
+  FROM People p
+  JOIN Companies c
+  ON p.id = c.id
+`)
+
+for (let person of people) {
+  const department = person.company.department
+}
+```
+
+people에서 던진 쿼리의 결과는 아래와 같다.
+
+```sql
+mysql> SELECT * FROM People p JOIN Companies c ON p.id = c.id;
++----+------------+------------+-------------+------------+----+-------------+
+| id | first_name | last_name  | city        | company_id | id | department  |
++----+------------+------------+-------------+------------+----+-------------+
+|  1 | John       | Doe        | Berlin      |          1 |  1 | finance     |
+|  2 | Warwick    | Hawkins    | Dublin      |          1 |  2 | marketing   |
+|  3 | Kobi       | Villarreal | Peking      |          2 |  3 | development |
+|  4 | Winnie     | Roach      | Ulaanbaatar |          3 |  4 | design      |
+|  5 | Peggy      | Ngyen      | Hanoi       |          5 |  5 | planning    |
++----+------------+------------+-------------+------------+----+-------------+
+5 rows in set (0.00 sec)
+```
 
 #### Eager loading
 
-Eager loading uses joins (where possible) to fetch data from the database in as few queries as possible.
+데이터베이스로부터 데이터를 가져올때 가능한 적은 쿼리를 날리기 위해 아래처럼 join을 사용하는 것을 eager loading이라고 한다. 
+
+```ts
+const people = await People.query(`
+  SELECT * 
+  FROM People p
+  JOIN Companies c
+  ON p.id = c.id
+`)
+```
+
+초기 로딩 시간이 보다 길기때문에 불필요한 데이터를 너무 많이 로드하면 성능이 영향을 끼칠 수도 있다. 쇼핑몰에서 배송정보를 한 화면에 주문상세, 배송지정보까지 한꺼번에 보여줘야 하는 경우를 가정해보자. 주문을 관리하는 부모 테이블`Orders`의 자식 테이블인 `OrderDetails`과 `Delivery`을 한꺼번에 로딩하는 것이 n+1 문제를 일으키지 않기때문에 eager loading을 사용할 수 있다.
 
 #### Lazy loading
 
-While this can save CPU time because possibly unused data is not hydrated into objects, it can result in many more queries being emitted to the database.
+위에서 join을 사용하지 않고 반복문 안에서 아래처럼 n+1번 쿼리를 날리는 케이스를 보고 지연로딩 혹은 lazy loading이라고 한다. 
 
-이미지 로딩에서 처음 사용한 개념인줄 알았는데, orm에서 사용하는 것을 차용했나보다. 
+```ts
+const department = await Companies.query(`
+    SELECT department 
+    FROM Companies c
+    WHERE c.id = :personId
+  `)
+  .setParam('personId', person.id)
+```
 
-- eager loading: 데이터 초기화가 현장에서 일어나는 패턴이다.
-  - 초기 로딩 시간이 보다 길다.
-  - 불필요한 데이터를 너무 많이 로드하면 성능이 영향을 끼칠 수도 있다.
-- lazy loading: 가능한 한 객체의 초기화를 지연시키는데 사용하는 패턴이다.
-  - 초기 로딩 시간이 보다 짧다.
-  - 메모리 소비가 적다.
-  - 지연된 초기화는 원치않는 순간에 성능에 영향을 줄 수도 있다.
-  - 경우에 따라 특별히 초기화된 지연 초기화 객체를 처리해야하거나 예외가 발생할 수 있다.
+초기 로딩 시간을 줄일 수 있고, 자원 소비를 줄일 수 있다는 장점이 있다. 사용하지 않는 데이터를 결과 객체에 포함시키지 않기때문에 cpu 타임을 절약할 수 있는 반면, 그 결과 데이터베이스로 더 많은 쿼리를 날리게 된다. 뿐만 아니라 원치 않는 순간에 성능에 영향을 줄 수도 있다.
 
-### 해결방법
+구체적인 사용 사례로는 sns에서 **댓글 더보기** 버튼을 누르는 경우, eager loading을 사용하는 경우 **댓글 더보기**를 누르지 않았는데도 이미 댓글을 조회해버리기 때문에 성능상 이슈가 생길 수 있다. 이 때는 **댓글 더보기**를 클릭했을 때 댓글 목록을 호출하도록 하는 lazy loading을 사용할 수 있다.
 
-- raw sql에서 join 사용하는 방법 
-- orm문에서 include/with/promise 사용하는 방법
+<br>
+
+---
+
+<br>
 
 ### TypeORM vs. Sequelize
 
-- typeorm에서는 가능은 하지만 권장하지 않는 실험기능이라고 한다.
-- sequelize에서는 eager/lazy loading 관련 튜닝을 직접 해줘야 함
+typeorm은 스키마 선언부에서 eager loading을 할지 결정할 수 있다.
+
+```ts
+// src/entities/People.ts
+@ManyToOne(type => Company, { eager: true })
+@JoinColumn()
+company: Company
+```
+
+lazy loading을 스키마 선언부에서 타입에 Promise generic type으로 사용할 수는 있지만 실험기능이라 권장하지는 않는다고 한다.
+
+```ts
+@ManyToOne(type => Company)
+@JoinColumn()
+company: Promise<Company>
+```
+
+sequelize는 find 메서드에 옵션으로 `include`를 아래처럼 추가해줘야 eager loading을 할 수 있다.
+
+```ts
+const people = await People.findOne({ include: Companies, where: { id: 1 } })
+```
+
+그럼 join을 한 것과 같이 아래의 결과가 나온다. 
+
+```json
+{
+  "id": 1,
+  "first_name": "John",
+  "last_name": "Doe",
+  "city": "Berlin",
+  "company": {
+    "id": 1,
+    "department": "finance"
+  }
+}
+```
+
+반대로 lazy loading같은 경우에는 `include` 옵션을 사용하지 않으면 가능하다.
+
+<br>
+
+---
+
+<br>
 
 ### 타언어 ORM과 비교
 
-#### Cakeorm (PHP)
+#### CakeORM (PHP)
+
+eager loading은 아래와 같이 구현한다. `contain`이라는 예약어를 사용한다.
+
+```php
+$category = $this->Category->get(1, [
+    'contain' => [
+        'Posts'
+    ]
+]);
+$category->posts
+```
+
+lazy loading은 아래와 같이 구현한다.
+
+```php
+$category = $this->Category->get(1);
+$category->posts
+```
 #### JPA (Java)
 
-여담으로 jpa에는 n+1 자동 감지 도구인 db-util이 있다.
+eager loading은 아래와 같이 구현한다. `FetchType.EAGER`란 상수를 사용한다.
 
-#### ROR (Ruby)
+```java
+@ManyToOne(fetch = FetchType.EAGER)
+@JoinColumn(name = "post_id", nullable = false)
+private Post post;
+```
+
+lazy loading은 아래와 같이 구현한다. `FetchType.LAZY`란 상수를 사용한다.
+
+```java
+@OneToMany(mappedBy = "post", fetch = FetchType.LAZY) 
+private List<Comment> commentList = new ArrayList<>();
+```
+
+#### Active Record (Ruby)
+
+eager loading은 아래와 같이 구현한다. sequelize와 비슷하게 `includes`라는 메서드를 추가한다.
+
+```ruby
+@products = Product.all.includes(:variants)
+```
+
+lazy loading은 아래와 같이 구현한다.
+
+```ruby
+@product = Product.find(params[:id])
+```
