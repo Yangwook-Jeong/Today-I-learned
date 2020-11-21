@@ -67,7 +67,7 @@ VALUES
   ('Warwick', 'Hawkins', 'Dublin'),
   ('Kobi', 'Villarreal', 'Peking'),
   ('Winnie', 'Roach', 'Ulaanbaatar'),
-  ('Peggy', 'Ngyen', 'Hanoi');
+  ('Peggy', 'Nguyen', 'Hanoi');
 ```
 
 테이블에 select문을 던져주면 아래와 같은 결과가 나온다.
@@ -81,7 +81,7 @@ mysql> SELECT * FROM People;
 |  2 | Warwick    | Hawkins    | Dublin      |
 |  3 | Kobi       | Villarreal | Peking      |
 |  4 | Winnie     | Roach      | Ulaanbaatar |
-|  5 | Peggy      | Ngyen      | Hanoi       |
+|  5 | Peggy      | Nguyen     | Hanoi       |
 +----+------------+------------+-------------+
 5 rows in set (0.00 sec)
 ```
@@ -116,7 +116,7 @@ mysql> SELECT * FROM People;
 |  2 | Warwick    | Hawkins    | NULL    |
 |  3 | Kobi       | Villarreal | NULL    |
 |  4 | Winnie     | Roach      | NULL    |
-|  5 | Peggy      | Ngyen      | NULL    |
+|  5 | Peggy      | Nguyen     | NULL    |
 +----+------------+------------+---------+
 5 rows in set (0.00 sec)
 ```
@@ -136,7 +136,7 @@ mysql> SELECT * FROM People;
 |  2 | Warwick    | Hawkins    | Dublin      |
 |  3 | Kobi       | Villarreal | Peking      |
 |  4 | Winnie     | Roach      | Ulaanbaatar |
-|  5 | Peggy      | Ngyen      | Hanoi       |
+|  5 | Peggy      | Nguyen     | Hanoi       |
 +----+------------+------------+-------------+
 5 rows in set (0.01 sec)
 ```
@@ -365,11 +365,25 @@ mysql> SELECT * FROM migrations;
 
 #### migration:revert
 
-`migration:run`을 통해 동기화한 내용들을 하나씩 걷어내는 역할을 한다. 가장 마지막에 쌓인 migration부터 스택처럼 `down` 메서드를 실행한다. 아직까지는 `migration:revert:all`같은 솔루션은 없다.
+`migration:run`을 통해 동기화한 내용들을 하나씩 걷어내는 역할을 한다. 가장 마지막에 쌓인 migration부터 스택처럼 `down` 메서드를 실행한다. 아직까지는 `migration:revert:all`같은 솔루션은 없다. 
+
 
 ```sh
 yarn typeorm migration:revert
 ```
+
+`migration:revert`를 한 번 실행하면 마지막 row가 하나 떨어져 나가서 row가 하나만 남는 것을 확인할 수 있다.
+
+```sql
+mysql> SELECT * FROM migrations;
++----+---------------+-------------------------------------+
+| id | timestamp     | name                                |
++----+---------------+-------------------------------------+
+| 1 | 1605840315914 | test-migration-create1605840315914   |
++----+---------------+-------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ### TypeORM vs. Sequelize
 
 sequelize에서 제공하는 migration은 아쉽게도 typeorm에서 제공하는 `entities`의 변화를 자동감지해서 migration하는 기능은 가지고 있지 않다. sequelize의 `migration:generate` 커맨드는 typeorm의 `migration:create`와 같다. typeorm에서는 `entities`의 변경사항을 서버를 실행하지 않고 cli로만 synchronize시키는 `schema:sync`도 제공한다. 다만 조심해서 사용해야 한다.
@@ -391,7 +405,7 @@ export default {
 }
 ```
 
-반면에 typeorm을 사용할때 seeding을 하려면 아래처럼 직접구현해야 하는 불편함이 있다.
+반면에 typeorm을 사용할때 seeding을 하려면 커넥션을 직접 연 다음 아래처럼 구현해야 하는 불편함이 있다.
 
 ```ts
 export default async function seedPeople(numFake = 10) {
@@ -480,7 +494,7 @@ VALUES
   ('Warwick', 'Hawkins', 'Dublin', 1),
   ('Kobi', 'Villarreal', 'Peking', 2),
   ('Winnie', 'Roach', 'Ulaanbaatar', 3),
-  ('Peggy', 'Ngyen', 'Hanoi', 5);
+  ('Peggy', 'Nguyen', 'Hanoi', 5);
 ```
 
 테이블에 select문을 던져주면 아래와 같은 결과가 나온다.
@@ -506,7 +520,7 @@ mysql> SELECT * FROM People;
 |  2 | Warwick    | Hawkins    | Dublin      |          1 |
 |  3 | Kobi       | Villarreal | Peking      |          2 |
 |  4 | Winnie     | Roach      | Ulaanbaatar |          3 |
-|  5 | Peggy      | Ngyen      | Hanoi       |          5 |
+|  5 | Peggy      | Nguyen      | Hanoi       |          5 |
 +----+------------+------------+-------------+------------+
 5 rows in set (0.00 sec)
 ```
@@ -566,7 +580,7 @@ mysql> SELECT * FROM People p JOIN Companies c ON p.id = c.id;
 |  2 | Warwick    | Hawkins    | Dublin      |          1 |  2 | marketing   |
 |  3 | Kobi       | Villarreal | Peking      |          2 |  3 | development |
 |  4 | Winnie     | Roach      | Ulaanbaatar |          3 |  4 | design      |
-|  5 | Peggy      | Ngyen      | Hanoi       |          5 |  5 | planning    |
+|  5 | Peggy      | Nguyen     | Hanoi       |          5 |  5 | planning    |
 +----+------------+------------+-------------+------------+----+-------------+
 5 rows in set (0.00 sec)
 ```
