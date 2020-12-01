@@ -30,15 +30,6 @@ cover:
   - [JoinColumn](#joincolumn)
   - [JoinTable](#jointable)
   - [RelationId](#relationid)
-- [Subscriber & Listener](#subscriber--listener)
-  - [AfterLoad](#afterload)
-  - [BeforeInsert](#beforeinsert)
-  - [AfterInsert](#afterinsert)
-  - [BeforeUpdate](#beforeupdate)
-  - [AfterUpdate](#afterupdate)
-  - [BeforeRemove](#beforeremove)
-  - [AfterRemove](#afterremove)
-  - [EventSubscriber](#eventsubscriber)
 - [Others](#others)
   - [Index](#index)
   - [Unique](#unique)
@@ -60,22 +51,22 @@ export class User {}
 아래와 같이 옵션을 추가적으로 지정할 수 있다.
 
 - `name`: 테이블 이름. 지정하지 않으면 테이블 이름은 엔티티 클래스명으로 생성된다.
-- `database`:  선택된 DB서버의 데이터베이스 이름.
-- `schema`: 스키머 이름.
-- `engine`: 테이블 생성 중에 설정할 수 있는 DB엔진 이름.
+- `database`:  선택된 DB서버의 데이터베이스 이름
+- `schema`: 스키머 이름
+- `engine`: 테이블 생성 중에 설정할 수 있는 DB엔진 이름
 - `synchronize`: `false`로 설정할 시 스키머 싱크를 건너뛴다.
 - `orderBy`: `QueryBuilder`과 `find`를 실행할 때 엔티티의 기본순서를 지정한다.
 
 ```ts
 @Entity({
-  name: "users",
-  engine: "MyISAM",
+  name: 'users',
+  engine: 'MyISAM',
   database: 'example_dev',
   schema: 'schema_with_best_tables',
   synchronize: false,
   orderBy: {
-      name: "ASC",
-      id: "DESC"
+    name: 'ASC',
+    id: 'DESC'
   }
 })
 export class User {}
@@ -83,6 +74,7 @@ export class User {}
 
 ### ViewEntity
 
+<!-- TODO: sql view란? 다른 파일로 옮기기 -->
 여기서 잠깐, view가 뭘 의미하는건지 아라보자.
 - view는 하나의 가상 테이블이다.
 - 실제 데이터가 저장되는 것은 아니지만, view를 통해 데이터를 가상 테이블로 관리가 가능하다.
@@ -101,8 +93,8 @@ export class User {}
 `expression`은 sql문이나 `QueryBuilder`에 체이닝할 수 있는 메서드가 들어갈 수 있다. 특이점으로는 필드명 위에 들어가는 데코레이터를 id까지 전부 `@ViewColumn()`을 사용해야 한다.
 
 ## Column
-### Column
 
+### Column
 
 entity의 속성을 테이블 칼럼으로 표시한다.
 
@@ -133,7 +125,20 @@ isActive: boolean
 - `unique: boolean`: 유니크 칼럼이라고 표시할 수 있다. 유니크 constraint를 만든다. 기본값은 `false`이다.
 - `enum: string[] | AnyEnum`: 칼럼의 값으로 `enum`을 사용할 수 있다.
 - `enumName: string`: 다른 테이블에서 같은 `enum`을 사용하는 경우 필요하다.
-- `transformer: { from(value: DatabaseType): EntityType, to(value: EntityType): DatabaseType }`: TODO: WIP
+- `transformer: { from(value: DatabaseType): EntityType, to(value: EntityType): DatabaseType }`: 아래와 같은 코드를 만들어내서 json을 문자열로 만들고 파싱하는 역할을 한다. 또는 boolean을 integer로 바꿔주는 일도 할 수 있다.
+
+```ts
+import { ValueTransformer } from 'typeorm'
+
+class SomeTransformer implements ValueTransformer {
+  to (value: Map<string, number>): string {
+    return JSON.stringify([...value])
+  }
+  from (value: string): Map<string, number> {
+    return new Map(JSON.parse(value))
+  }
+}
+```
 
 ### PrimaryColumn
 
@@ -361,16 +366,13 @@ const photos = await connection
 
 ### ManyToMany
 
-- 단방향, 양방향 호출 모두 가능
-
-FIXME: soft delete란 뭔지?
-
+<!-- TODO: soft delete란? 다른 파일로 옮기기 -->
 - 데이터 열을 실제로 삭제하지 않고, 삭제여부를 나타내는 칼럼인 `deletedAt`을 사용하는 방식이다.
 - 일반적인 삭제 대신 removed 칼럼을 갱신하는 update문을 사용하는 방식이다.
 - 복구하거나 예전 기록을 확인하고자 할 때 간편하다.
 - 다른 테이블과 join시 항상 removed를 점검해야 하므로 속도가 느려진다.
 
-`Category`와 `Question` 테이블을 아래와 같이 준비한다. 둘의 관계는 N:M 관계이다. 카테고리는 여러개의 질문을 가질 수 있고, 질문 또한 여러개의 카테고리를 가질 수 있다.
+`Category`와 `Question` 테이블을 아래와 같이 준비한다. 둘의 관계는 N:M 관계이다. 카테고리는 여러개의 질문을 가질 수 있고, 질문 또한 여러개의 카테고리를 가질 수 있다. 관계는 단방향과 양방향 모두 작성이 가능하다. 
 
 ```ts
 @Entity()
@@ -524,28 +526,23 @@ export class Post {
 }
 ```
 
-## Subscriber & Listener
-
-### AfterLoad
-
-### BeforeInsert
-
-### AfterInsert
-
-### BeforeUpdate
-
-### AfterUpdate
-
-### BeforeRemove
-
-### AfterRemove
-
-### EventSubscriber
-
-
 ## Others
 
 ### Index
+
+<!-- TODO: index란? 다른 파일로 옮기기 -->
+- 테이블 쿼리 속도를 올려주는 자료구조를 말한다.
+- 테이블 내 1개 혹은 그 이상의 칼럼을 이용해 생성할 수 있다.
+- 인덱스는 보통 키-필드만 갖고있고, 테이블의 다른 세부항목을 갖지 않기때문에 보통 테이블을 저장하는 공간보다 더 적은 공간을 차지한다.
+- 특정 칼럼 값을 가지고 있는 열이나 값을 빠르게 찾기 위해 사용한다.
+- 인덱싱하지 않은 경우는 첫번째 열부터 전체 테이블을 걸쳐 연관된 열을 검색하기때문에 테이블이 클수록 쿼리비용이 커진다.
+- 인덱싱을 한 경우는 모든 데이터를 조회하지 않고 데이터 파일의 중간에서 검색위치를 빠르게 잡을 수 있다.
+- where절과 일치하는 열을 빨리 찾기 위해서 사용한다.
+- join을 실행할 때 다른 테이블에서 열을 추출하기 위해서 사용한다.
+- 데이터 양이 많고 검색이 변경보다 빈번한 경우 인덱싱을 하면 좋다.
+
+![](https://itholic.github.io/assets/images/2018/10/23/index/10000page.png)
+- 쉽게 말해 이런 책에서 transaction이 어딨는지 목차 없이 찾으려면 눈물날지도 모른다. 책의 주요내용을 가나다순으로 정리한 목록이 있으면 찾기 쉬울텐데 인덱스가 바로 그 역할을 한다.
 
 특정 칼럼에 인덱스를 걸 수 있다. 옵션으로 고유키를 부여할 수도 있다. 단일 칼럼에 인덱스를 걸고 싶으면 칼럼마다 추가할 수도 있지만, 테이블 전체에 인덱스를 걸고싶은 경우 `@Entity()`아래 `@Index()`를 추가할 수도 있다.
 
@@ -611,8 +608,7 @@ export class User {
 
 ### Transaction/TransactionManager/TransactionRepository
 
-FIXME: 트랜잭션이 뭔지!
-
+<!-- TODO: transaction이란? 다른 파일로 옮기기 -->
 - 데이터베이스 내에서 하나의 그룹으로 처리해야하는 명령문을 모아서 처리하는 작업의 단위를 말한다.
 - 여러 단계의 처리를 하나의 처리처럼 다루는 기능이다.
 - 여러 개의 명령어의 집합이 정상적으로 처리되면 정상종료된다.
@@ -620,3 +616,5 @@ FIXME: 트랜잭션이 뭔지!
 - 트랜잭션을 쓰는 이유는 데이터의 일관성을 유지하면서 안정적으로 데이터를 복구하기 위함이다.
 
 ### EntityRepository
+
+entity repository를 커스텀할 수 있도록 도와준다. 
