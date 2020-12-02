@@ -117,13 +117,31 @@ isActive: boolean
 
 `@Column()`에 들어갈 수 있는 옵션들 중 중요하다고 판단한 것들은 아래와 같다.
 
-- `type: ColumnType`: javascript의 원시타입들을 세분화해서 사용할 수 있다.
+- `type: ColumnType`: javascript의 원시타입들을 세분화해서 사용할 수 있다. 타입을 정의하는 방법은 다음과 같다.
+
+```ts
+// way 1
+@Column('int')
+
+// way 2
+@Column({ type: 'int' })
+```
+
+다음은 mysql 기준으로 아래와 같은 타입들을 `@Column()` 데코레이터의 인자로 사용할 수 있다.
+`enum` 칼럼 타입은 아래와 같은 방식으로 사용할 수 있다.
+
 - `length: string | number`: javascript의 원시타입들을 세분화해서 사용하기 위해 `type` 옵션과 같이 사용할 수 있다.
 - `onUpdate: string`: cascading을 하기 위한 옵션으로 `ON UPDATE` 트리거이다.
 - `nullable: boolean`: 칼럼을 `NULL`이나 `NOT NULL`로 만드는 옵션이다. 기본값은 `false`이다.
 - `default: string`: 칼럼에 `DEFAULT` 값을 추가한다.
 - `unique: boolean`: 유니크 칼럼이라고 표시할 수 있다. 유니크 constraint를 만든다. 기본값은 `false`이다.
 - `enum: string[] | AnyEnum`: 칼럼의 값으로 `enum`을 사용할 수 있다.
+
+```ts
+@Column({ enum: AnyEnum })
+data: AnyEnum
+```
+
 - `enumName: string`: 다른 테이블에서 같은 `enum`을 사용하는 경우 필요하다.
 - `transformer: { from(value: DatabaseType): EntityType, to(value: EntityType): DatabaseType }`: 아래와 같은 코드를 만들어내서 json을 문자열로 만들고 파싱하는 역할을 한다. 또는 boolean을 integer로 바꿔주는 일도 할 수 있다.
 
