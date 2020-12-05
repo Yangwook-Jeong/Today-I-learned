@@ -6,7 +6,7 @@ categories: Typescript
 date: 2020-10-01 09:00
 comments: true
 tags: []
-cover:
+cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/typeorm.jpg
 ---- 
 
 ## 목차
@@ -31,7 +31,7 @@ bit, int, integer, tinyint, smallint, mediumint, bigint, float, double, double p
 ## 메서드 사용 중 발생하는 이슈 해결 방법
 
 - response가 update, remove는 나올 필요 없는 것 -> `return res ? successResponse : failureResponse`
-- response `order by` 해서 abc 순으로 전달하기
+- response `order by` 해서 abc 순으로 전달하기 FIXME:
 
 ## Entity inheritance
 

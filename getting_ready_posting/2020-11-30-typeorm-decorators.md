@@ -6,7 +6,7 @@ categories: Typescript
 date: 2020-10-01 09:00
 comments: true
 tags: []
-cover:
+cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/typeorm.jpg
 ---- 
 
 ## 목차
