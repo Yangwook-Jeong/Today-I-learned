@@ -23,14 +23,22 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
   - [Column](#column-1)
   - [PrimaryColumn](#primarycolumn)
   - [PrimaryGeneratedColumn](#primarygeneratedcolumn)
-  - [CreateDateColumn](#createdatecolumn)
-  - [UpdateDateColumn](#updatedatecolumn)
-  - [DeleteDateColumn](#deletedatecolumn)
+  - [DateColumn](#datecolumn)
+    - [CreateDateColumn](#createdatecolumn)
+    - [UpdateDateColumn](#updatedatecolumn)
+    - [DeleteDateColumn](#deletedatecolumn)
+  - [VersionColumn](#versioncolumn)
   - [Generated](#generated)
 - [Relation](#relation)
   - [OneToOne](#onetoone)
   - [ManyToOne/OneToMany](#manytooneonetomany)
   - [ManyToMany](#manytomany)
+  - [Tree entity](#tree-entity)
+    - [Adjacency list](#adjacency-list)
+    - [Tree entity](#tree-entity-1)
+      - [Nested set](#nested-set)
+      - [Materialized path](#materialized-path)
+      - [Closure table](#closure-table)
   - [JoinColumn](#joincolumn)
   - [JoinTable](#jointable)
   - [RelationId](#relationid)
@@ -41,11 +49,6 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
   - [Check](#check)
   - [Transaction/TransactionManager/TransactionRepository](#transactiontransactionmanagertransactionrepository)
   - [EntityRepository](#entityrepository)
-- [Tree entity](#tree-entity)
-  - [Adjacency list](#adjacency-list)
-  - [Nested set](#nested-set)
-  - [Materialized path](#materialized-path)
-  - [Closure table](#closure-table)
 
 ## Entity
 
@@ -262,6 +265,8 @@ desc문을 돌리면 아래와 같이 나온다.
 
 `expression`은 sql문이나 `QueryBuilder`에 체이닝할 수 있는 메서드가 들어갈 수 있다. 특이점으로는 필드명 위에 들어가는 데코레이터를 id까지 전부 `@ViewColumn()`을 사용해야 한다.
 
+
+
 ## Column
 
 ### Column
@@ -355,9 +360,11 @@ export class User {
 }
 ```
 
-### CreateDateColumn
+### DateColumn
 
-해당 열이 추가된 시각을 자동으로 기록한다.
+#### CreateDateColumn 
+
+- 해당 열이 추가된 시각을 자동으로 기록한다.
 
 ```ts
 @Entity()
@@ -367,9 +374,9 @@ export class User {
 }
 ```
 
-### UpdateDateColumn
+#### UpdateDateColumn
 
-해당 열이 수정된 시각을 자동으로 기록한다.
+- 해당 열이 수정된 시각을 자동으로 기록한다.
 
 ```ts
 @Entity()
@@ -379,9 +386,16 @@ export class User {
 }
 ```
 
-### DeleteDateColumn
+#### DeleteDateColumn
 
-해당 열이 삭제된 시각을 자동으로 기록한다. `deletedAt`에 시각이 기록되지 않은 열들만 쿼리하기 위해 typeorm의 soft delete 기능을 활용할 수 있다. 
+<!-- TODO: soft delete란? 다른 파일로 옮기기 -->
+- 데이터 열을 실제로 삭제하지 않고, 삭제여부를 나타내는 칼럼인 `deletedAt`을 사용하는 방식이다.
+- 일반적인 삭제 대신 removed 칼럼을 갱신하는 update문을 사용하는 방식이다.
+- 복구하거나 예전 기록을 확인하고자 할 때 간편하다.
+- 다른 테이블과 join시 항상 removed를 점검해야 하므로 속도가 느려진다.
+
+- 해당 열이 삭제된 시각을 자동으로 기록한다. 
+- `deletedAt`에 시각이 기록되지 않은 열들만 쿼리하기 위해 typeorm의 soft delete 기능을 활용할 수 있다. 
 
 ```ts
 @Entity()
@@ -391,9 +405,21 @@ export class User {
 }
 ```
 
+### VersionColumn
+
+저장을 호출할 때마다 entity의 버전을 자동으로 설정할 수 있다.
+
+```ts
+@Entity()
+export class User {
+  @VersionColumn()
+  version: number
+}
+```
+
 ### Generated
 
-pk로 쓰는 id 외에 추가로 uuid를 기록하기 위해서 사용할 수 있다.
+- pk로 쓰는 id 외에 추가로 uuid를 기록하기 위해서 사용할 수 있다.
 
 ```ts
 @Entity()
@@ -554,12 +580,6 @@ const photos = await connection
 
 ### ManyToMany
 
-<!-- TODO: soft delete란? 다른 파일로 옮기기 -->
-- 데이터 열을 실제로 삭제하지 않고, 삭제여부를 나타내는 칼럼인 `deletedAt`을 사용하는 방식이다.
-- 일반적인 삭제 대신 removed 칼럼을 갱신하는 update문을 사용하는 방식이다.
-- 복구하거나 예전 기록을 확인하고자 할 때 간편하다.
-- 다른 테이블과 join시 항상 removed를 점검해야 하므로 속도가 느려진다.
-
 `Category`와 `Question` 테이블을 아래와 같이 준비한다. 둘의 관계는 N:M 관계이다. 카테고리는 여러개의 질문을 가질 수 있고, 질문 또한 여러개의 카테고리를 가질 수 있다. 관계는 단방향과 양방향 모두 작성이 가능하다. 
 
 ```ts
@@ -631,6 +651,74 @@ const questions = await connection
   .leftJoinAndSelect('question.categories', 'category')
   .getMany()
 ```
+
+### Tree entity
+
+#### Adjacency list
+
+자기참조를 `@ManyToOne()`, `@OneToMany()` 데코레이터로 표현할 수 있다. 이 방식은 간단한 것이 가장 큰 장점이지만, join하는데 제약이 있어 큰 트리를 로드하는데 문제가 있다.
+
+```ts
+@Entity()
+export class Category {
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @Column()
+  name: string
+
+  @Column()
+  description: string
+
+  @ManyToOne(type => Category, category => category.children)
+  parent: Category
+
+  @OneToMany(type => Category, category => category.parent)
+  children: Category[]
+}
+```
+
+
+#### Tree entity 
+
+##### Nested set 
+
+- `@Tree()`, `@TreeChildren()`, `@TreeParent()`를 사용한 또 다른 패턴이다. 
+- 읽기 작업에는 효과적이지만 쓰기 작업에는 그렇지 않다. 
+- 여러개의 루트를 가질 수 없다는 점도 문제이다.
+- `@Tree()`의 인자로 `nested-set`이 들어간다.
+
+```ts
+@Entity()
+@Tree('nested-set')
+export class Category {
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @Column()
+  name: string
+
+  @TreeChildren()
+  children: Category[]
+
+  @TreeParent()
+  parent: Category
+}
+```
+
+##### Materialized path 
+
+- 구체화된 경로 혹은 경로 열거라고 부른다. 
+- 간단하고 효율적이다.
+- nested set과 사용방법은 같다.
+- `@Tree()`의 인자로 `materialized-path`이 들어간다.
+
+##### Closure table
+
+- 부모와 자식 사이의 관계를 분리된 테이블에 특별한 방법으로 저장한다. 
+- 읽기와 쓰기 모두 효율적으로 할 수 있다.
+- nested set과 사용방법은 같다.
+- `@Tree()`의 인자로 `closure-table`이 들어간다.
 
 ### JoinColumn
 
@@ -827,95 +915,3 @@ TODO: 트랜잭션 격리성 수준 작성하기!
 
 entity repository를 커스텀할 수 있도록 도와준다. 
 
-## Tree entity
-
-### Adjacency list
-
-자기참조를 `@ManyToOne()`, `@OneToMany()` 데코레이터로 표현할 수 있다. 이 방식은 간단한 것이 가장 큰 장점이지만, join하는데 제약이 있어 큰 트리를 로드하는데 문제가 있다.
-
-```ts
-@Entity()
-export class Category {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column()
-  name: string
-
-  @Column()
-  description: string
-
-  @ManyToOne(type => Category, category => category.children)
-  parent: Category
-
-  @OneToMany(type => Category, category => category.parent)
-  children: Category[]
-}
-```
-
-
-### Nested set
-
-`@Tree()`, `@TreeChildren()`, `@TreeParent()`를 사용한 또 다른 패턴이다. 읽기 작업에는 효과적이지만 쓰기 작업에는 그렇지 않다. 여러개의 루트를 가질 수 없다는 점도 문제이다.
-
-```ts
-@Entity()
-@Tree('nested-set')
-export class Category {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column()
-  name: string
-
-  @TreeChildren()
-  children: Category[]
-
-  @TreeParent()
-  parent: Category
-}
-```
-
-### Materialized path
-
-구체화된 경로 혹은 경로 열거라고 부른다. 간단하고 효율적이다.
-
-```ts
-@Entity()
-@Tree('materialized-path')
-export class Category {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column()
-  name: string
-
-  @TreeChildren()
-  children: Category[]
-
-  @TreeParent()
-  parent: Category
-}
-```
-
-### Closure table
-
-부모와 자식 사이의 관계를 분리된 테이블에 특별한 방법으로 저장한다. 읽기와 쓰기 모두 효율적으로 할 수 있다.
-
-```ts
-@Entity()
-@Tree('closure-table')
-export class Category {
-  @PrimaryGeneratedColumn()
-  id: number
-
-  @Column()
-  name: string
-
-  @TreeChildren()
-  children: Category[]
-
-  @TreeParent()
-  parent: Category
-}
-```
