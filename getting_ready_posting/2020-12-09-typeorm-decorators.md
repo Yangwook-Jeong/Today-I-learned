@@ -23,12 +23,11 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
   - [Column](#column-1)
   - [PrimaryColumn](#primarycolumn)
   - [PrimaryGeneratedColumn](#primarygeneratedcolumn)
+  - [Generated](#generated)
   - [DateColumn](#datecolumn)
     - [CreateDateColumn](#createdatecolumn)
     - [UpdateDateColumn](#updatedatecolumn)
     - [DeleteDateColumn](#deletedatecolumn)
-  - [VersionColumn](#versioncolumn)
-  - [Generated](#generated)
 - [Relation](#relation)
   - [OneToOne](#onetoone)
   - [ManyToOne/OneToMany](#manytooneonetomany)
@@ -48,7 +47,6 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
   - [Unique](#unique)
   - [Check](#check)
   - [Transaction/TransactionManager/TransactionRepository](#transactiontransactionmanagertransactionrepository)
-  - [EntityRepository](#entityrepository)
 
 ## Entity
 
@@ -84,7 +82,6 @@ export class User {}
 })
 export class User {}
 ```
-
 
 #### Entity inheritance
 
@@ -173,6 +170,8 @@ export class Post extends BaseContent {
 ```
 
 ##### Single table inheritance
+
+`@TableInheritance()`, `@ChildEntity()`를 사용하는 방법이다.
 
 ```ts
 @Entity()
@@ -263,9 +262,7 @@ desc문을 돌리면 아래와 같이 나온다.
 - `schema`: 스키머 이름.
 - `expression`: 뷰를 정의. 꼭 있어야하는 파라미터.
 
-`expression`은 sql문이나 `QueryBuilder`에 체이닝할 수 있는 메서드가 들어갈 수 있다. 특이점으로는 필드명 위에 들어가는 데코레이터를 id까지 전부 `@ViewColumn()`을 사용해야 한다.
-
-
+`expression`은 sql문이나 `QueryBuilder`에 체이닝할 수 있는 메서드가 들어갈 수 있다. 특이점으로는 필드명 위에 들어가는 데코레이터를 id까지 전부 `@ViewColumn()`을 사용해야 한다. join을 쳐서 테이블끼리 연결을 시키냐, 아니면 view를 통해 나중에 자주 사용할 가상 테이블을 미리 만들어두냐의 차이로 생각할 수 있겠다.
 
 ## Column
 
@@ -310,7 +307,7 @@ isActive: boolean
 - `nullable: boolean`: 칼럼을 `NULL`이나 `NOT NULL`로 만드는 옵션이다. 기본값은 `false`이다.
 - `default: string`: 칼럼에 `DEFAULT` 값을 추가한다.
 - `unique: boolean`: 유니크 칼럼이라고 표시할 수 있다. 유니크 constraint를 만든다. 기본값은 `false`이다.
-- `enum: string[] | AnyEnum`: 칼럼의 값으로 `enum`을 사용할 수 있다.
+- `enum: string[] | AnyEnum`: 칼럼의 값으로 `enum`을 사용할 수 있다. `enum`은 db단에서 처리할 수도, orm단에서 처리할 수도 있다. 
 
 ```ts
 @Column({ enum: AnyEnum })
@@ -335,7 +332,7 @@ class SomeTransformer implements ValueTransformer {
 
 ### PrimaryColumn
 
-`@Column()`의 옵션인 `primary`를 대체할 수 있다.
+`@Column()`의 옵션인 `primary`를 대체할 수 있다. pk를 만드는 역할을 한다.
 
 ### PrimaryGeneratedColumn
 
@@ -356,7 +353,20 @@ export class User {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
+}
+```
+
+### Generated
+
+- pk로 쓰는 id 외에 추가로 uuid를 기록하기 위해서 사용할 수 있다.
+
+```ts
+@Entity()
+export class User {
+  @Column()
+  @Generated('uuid')
+  uuid: string
 }
 ```
 
@@ -364,7 +374,7 @@ export class User {
 
 #### CreateDateColumn 
 
-- 해당 열이 추가된 시각을 자동으로 기록한다.
+해당 열이 추가된 시각을 자동으로 기록한다. 옵션을 적지 않을시 `datetime` 타입으로 기록된다.
 
 ```ts
 @Entity()
@@ -376,7 +386,7 @@ export class User {
 
 #### UpdateDateColumn
 
-- 해당 열이 수정된 시각을 자동으로 기록한다.
+해당 열이 수정된 시각을 자동으로 기록한다. 옵션을 적지 않을시 `datetime` 타입으로 기록된다.
 
 ```ts
 @Entity()
@@ -394,8 +404,7 @@ export class User {
 - 복구하거나 예전 기록을 확인하고자 할 때 간편하다.
 - 다른 테이블과 join시 항상 removed를 점검해야 하므로 속도가 느려진다.
 
-- 해당 열이 삭제된 시각을 자동으로 기록한다. 
-- `deletedAt`에 시각이 기록되지 않은 열들만 쿼리하기 위해 typeorm의 soft delete 기능을 활용할 수 있다. 
+해당 열이 삭제된 시각을 자동으로 기록한다. `deletedAt`에 시각이 기록되지 않은 열들만 쿼리하기 위해 typeorm의 soft delete 기능을 활용할 수 있다. 옵션을 적지 않을시 `datetime` 타입으로 기록된다.
 
 ```ts
 @Entity()
@@ -405,33 +414,9 @@ export class User {
 }
 ```
 
-### VersionColumn
-
-저장을 호출할 때마다 entity의 버전을 자동으로 설정할 수 있다.
-
-```ts
-@Entity()
-export class User {
-  @VersionColumn()
-  version: number
-}
-```
-
-### Generated
-
-- pk로 쓰는 id 외에 추가로 uuid를 기록하기 위해서 사용할 수 있다.
-
-```ts
-@Entity()
-export class User {
-  @Column()
-  @Generated('uuid')
-  uuid: string
-}
-```
-
 ## Relation
 
+IMPT: 1:1/1:N/M:N 관계 예시 적기
 ### OneToOne
 
 `User`와 `Profile` 테이블을 아래와 같이 준비한다. 둘의 관계는 1:1 관계이다. `User`에서 target relation type을 `Profile`로, `Profile`에서 target relation type은 `User`로 지정했다. 다시 언급할 `@JoinColumn()`을 사용한 필드는 외래키로 타겟 테이블에 외래키로 등록된다. `@JoinColumn()`은 반드시 한쪽 테이블에서만 사용해야 한다!
@@ -654,6 +639,7 @@ const questions = await connection
 
 ### Tree entity
 
+IMPT: 셀프조인 설명하기
 #### Adjacency list
 
 자기참조를 `@ManyToOne()`, `@OneToMany()` 데코레이터로 표현할 수 있다. 이 방식은 간단한 것이 가장 큰 장점이지만, join하는데 제약이 있어 큰 트리를 로드하는데 문제가 있다.
@@ -722,16 +708,18 @@ export class Category {
 
 ### JoinColumn
 
-외래키를 가진 칼럼명과 참조칼럼명을 설정할 수 있는 옵션을 가지고 있다. 설정하지 않으면 테이블명을 가지고 자동으로 매핑한다.
+IMPT: 내용 약간 추가!
+외래키를 가진 칼럼명과 참조칼럼명을 설정할 수 있는 옵션을 가지고 있다. 설정하지 않으면 테이블명을 가지고 자동으로 매핑한다. 아래와 같은 경우에는 `categoryId`라고 매핑되야 할 것을 `category_id`로 이름을 직접 지정할 수 있다. 주의할 점으로는 `@ManyToOne()`에서는 꼭 적지 않아도 `categoryId`를 칼럼을 자동으로 만들어주지만, `@OneToOne()`에서는 반드시 적어줘야 한다.
 
 ```ts
 @Entity()
 export class Post {
   @ManyToOne(type => Category)
   @JoinColumn({
-    name: 'cat_id',
+    name: 'category_id',
     referencedColumnName: 'name'
   })
+  category: Category
 }
 
 @Entity()
@@ -746,6 +734,7 @@ export class Category {
 
 ### JoinTable
 
+IMPT: 내용 약간 추가!
 다대다 관계에서 사용하며 연결테이블을 설정할 수 있다. `@JoinTable()`의 옵션을 사용해 연결테이블의 칼럼명과 참조칼럼명을 설정할 수 있다.
 
 ```ts
@@ -778,6 +767,7 @@ export class Category {
 
 ### RelationId
 
+IMPT: 내용 약간 추가!
 `@RelationId()`로 테이블을 조회하면 새로운 칼럼명 `categoryId`도 결과에 같이 들고올 수 있다.
 
 ```ts
@@ -908,10 +898,6 @@ export class User {
 - 여러 개의 명령어의 집합이 정상적으로 처리되면 정상종료된다.
 - 하나의 명령어라도 잘못되면 전체 취소된다.
 - 트랜잭션을 쓰는 이유는 데이터의 일관성을 유지하면서 안정적으로 데이터를 복구하기 위함이다.
+- 격리성 수준 설정을 통해 트랜잭션이 열려있는 동안 외부에서 해당 데이터에 접근하지 못하도록 락을 걸 수도 있다.
 
-TODO: 트랜잭션 격리성 수준 작성하기!
-
-### EntityRepository
-
-entity repository를 커스텀할 수 있도록 도와준다. 
-
+IMPT: start-commit 과정 코드로 예시

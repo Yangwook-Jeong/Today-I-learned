@@ -12,3 +12,17 @@ macos에서는 `localhost`, `127.0.0.1` 대신 `host.docker.internal`를 사용�
 ```sh
 export CLOUDSDK_PYTHON=python3
 ```
+
+## DB connection 문제
+
+아래와 같이 에러가 나는 경우,
+
+> Aborted connection 209 to db: 'lullu_analytics' user: 'root' host: '172.31.0.1' (Got an error reading communication packets)
+
+`command`에 아래와 같이 추가하기
+
+```yml
+command:
+  - --max_allowed_packet=32505856
+  - --wait_timeout=28800
+```

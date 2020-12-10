@@ -21,8 +21,7 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
 - [숫자형](#숫자형)
   - [INT](#int)
   - [NUMERIC/DECIMAL](#numericdecimal)
-  - [FLOAT](#float)
-  - [DOUBLE/REAL](#doublereal)
+  - [FLOAT/DOUBLE/REAL](#floatdoublereal)
 - [날짜형](#날짜형)
   - [DATE](#date)
   - [TIME](#time)
@@ -54,11 +53,13 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
   - `VARCHAR(20)`일 때 2byte의 문자를 넣으면 2byte만큼의 데이터만 잡는다. 
   - 데이터 길이에 따라 가변적으로 길이가 정해진다. 
 
+IMPT: national char는 언제 쓰는지 찾기
 - `NCAHR`: typeorm에서는 `nchar` 혹은 `national char`로 사용한다.
 - `NVARCHAR`: typeorm에서는 `nvarchar` 혹은 `national varchar`로 사용한다.
 
 ### BINARY
 
+IMPT: binary는 언제 쓰는지 찾기
 - `BINARY`/`VARBINARY`가 있다. 
 - 바이너리 바이트로 데이터를 저장할 수 있다. 
 - 관련된 문자세트가 없는 문자의 전체 바이트를 저장할 때 사용한다.  
@@ -73,11 +74,13 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
 
 ### BLOB
 
+IMPT: blob은 언제 쓰는지 찾기
 - `BLOB`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`가 있다. 
 - 기본값을 가질 수 없다. 
 
 ### SET
 
+IMPT: set, enum 비교해서 언제 쓰는지 찾기
 - 중복되지 않는 여러 값을 갖는 객체 타입이다. 
 - `WHERE` 절에서 `FIND_IN_SET()`을 통해 `SET`의 아이템 중 일치하는 멤버를 찾을 수 있다.
 ### ENUM
@@ -98,17 +101,14 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
 
 ### NUMERIC/DECIMAL
 
+IMPT: decimal은 언제 쓰는지 찾기
 - `NUMERIC`/`DECIMAL(m, \[d])`로 사용한다.
 - typeorm에서는 `numeric`, `dec` 혹은 `decimal`로 사용한다.
 - 전체 자릿수 `m`과 소수점 이하 자릿수 `d`를 가진 타입이다.
 
-### FLOAT
+### FLOAT/DOUBLE/REAL
 
-- `FLOAT`
-
-### DOUBLE/REAL
-
-- `DOUBLE`/`REAL`
+- `FLOAT`/`DOUBLE`/`REAL`
 
 ## 날짜형
 
