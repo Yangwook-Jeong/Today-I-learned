@@ -38,8 +38,9 @@ cover: https://res.cloudinary.com/yangeok/image/upload/v1606139412/logo/posts/ty
       - [Nested set](#nested-set)
       - [Materialized path](#materialized-path)
       - [Closure table](#closure-table)
-  - [JoinColumn](#joincolumn)
-  - [JoinTable](#jointable)
+  - [JoinColumn/JoinTable](#joincolumnjointable)
+    - [JoinColumn](#joincolumn)
+    - [JoinTable](#jointable)
   - [RelationId](#relationid)
 - [Subscriber](#subscriber)
 - [Others](#others)
@@ -159,7 +160,7 @@ export class Photo extends BaseContent {
 @Entity()
 export class Question extends BaseContent {
   @Column()
-  answersCount: numbre
+  answersCount: number
 }
 
 @Entity()
@@ -171,12 +172,12 @@ export class Post extends BaseContent {
 
 ##### Single table inheritance
 
-`@TableInheritance()`, `@ChildEntity()`를 사용하는 방법이다.
+`@TableInheritance()`, `@ChildEntity()`를 사용하는 방법이다. 이 방법은 데이터베이스에 `Content` 테이블이 생성된다.
 
 ```ts
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' }})
-export class BaseContent {
+export class Content {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -263,6 +264,28 @@ desc문을 돌리면 아래와 같이 나온다.
 - `expression`: 뷰를 정의. 꼭 있어야하는 파라미터.
 
 `expression`은 sql문이나 `QueryBuilder`에 체이닝할 수 있는 메서드가 들어갈 수 있다. 특이점으로는 필드명 위에 들어가는 데코레이터를 id까지 전부 `@ViewColumn()`을 사용해야 한다. join을 쳐서 테이블끼리 연결을 시키냐, 아니면 view를 통해 나중에 자주 사용할 가상 테이블을 미리 만들어두냐의 차이로 생각할 수 있겠다.
+
+아래와 같이 코드를 작성할 수 있다.
+
+```ts
+@ViewEntity({ 
+    expression: `
+        SELECT "post"."id" AS "id", "post"."name" AS "name", "category"."name" AS "categoryName"
+        FROM "post" "post"
+        LEFT JOIN "category" "category" ON "post"."categoryId" = "category"."id"
+    `
+})
+export class PostCategory {
+  @ViewColumn()
+  id: number
+
+  @ViewColumn()
+  name: string
+
+  @ViewColumn()
+  categoryName: string
+}
+```
 
 ## Column
 
@@ -400,9 +423,9 @@ export class User {
 
 <!-- TODO: soft delete란? 다른 파일로 옮기기 -->
 - 데이터 열을 실제로 삭제하지 않고, 삭제여부를 나타내는 칼럼인 `deletedAt`을 사용하는 방식이다.
-- 일반적인 삭제 대신 removed 칼럼을 갱신하는 update문을 사용하는 방식이다.
+- 일반적인 삭제 대신 삭제된 열을 갱신하는 update문을 사용하는 방식이다.
 - 복구하거나 예전 기록을 확인하고자 할 때 간편하다.
-- 다른 테이블과 join시 항상 removed를 점검해야 하므로 속도가 느려진다.
+- 다른 테이블과 JOIN시 항상 삭제된 열을 검사해서 성능이 떨어진다.
 
 해당 열이 삭제된 시각을 자동으로 기록한다. `deletedAt`에 시각이 기록되지 않은 열들만 쿼리하기 위해 typeorm의 soft delete 기능을 활용할 수 있다. 옵션을 적지 않을시 `datetime` 타입으로 기록된다.
 
@@ -417,6 +440,8 @@ export class User {
 ## Relation
 
 IMPT: 1:1/1:N/M:N 관계 예시 적기
+- 1:1은 회원정보:프로필정보, 사원번호:주민번호, 학생:연락처정보
+- M:N은 사원:업무, 영화:영화배우, 학생:수업
 ### OneToOne
 
 `User`와 `Profile` 테이블을 아래와 같이 준비한다. 둘의 관계는 1:1 관계이다. `User`에서 target relation type을 `Profile`로, `Profile`에서 target relation type은 `User`로 지정했다. 다시 언급할 `@JoinColumn()`을 사용한 필드는 외래키로 타겟 테이블에 외래키로 등록된다. `@JoinColumn()`은 반드시 한쪽 테이블에서만 사용해야 한다!
@@ -640,6 +665,7 @@ const questions = await connection
 ### Tree entity
 
 IMPT: 셀프조인 설명하기
+- 상품 카테고리(소,중,대분류), 사원(사원,관리자,상위관리자), 지역(읍/면/동,구/군,시/도)
 #### Adjacency list
 
 자기참조를 `@ManyToOne()`, `@OneToMany()` 데코레이터로 표현할 수 있다. 이 방식은 간단한 것이 가장 큰 장점이지만, join하는데 제약이 있어 큰 트리를 로드하는데 문제가 있다.
@@ -706,9 +732,17 @@ export class Category {
 - nested set과 사용방법은 같다.
 - `@Tree()`의 인자로 `closure-table`이 들어간다.
 
-### JoinColumn
+### JoinColumn/JoinTable
 
 IMPT: 내용 약간 추가!
+- `eager` 옵션이 있어서  N+1 문제를 제어할 수 있음
+- `cascade`, `onDelete` 옵션이 있어 관계가 연결된 객체를 추가/수정/삭제되도록 할 수 있음. 버그를 유발할 수 있으니 주의해서 사용하는 것이 좋음
+- `@JoinColumn()`을 사용하면 테이블에 자동으로 property name + referenced column name을 가진 칼럼을 만들어냄. 
+- `@JoinTable()`은 다대다 관계에서 사용하고 연결테이블에 들어갈 칼럼을 선언할 수 있음.  참조할 칼럼명과 테이블명을 내부 옵션에서 설정할 수 있음
+#### JoinColumn
+
+
+
 외래키를 가진 칼럼명과 참조칼럼명을 설정할 수 있는 옵션을 가지고 있다. 설정하지 않으면 테이블명을 가지고 자동으로 매핑한다. 아래와 같은 경우에는 `categoryId`라고 매핑되야 할 것을 `category_id`로 이름을 직접 지정할 수 있다. 주의할 점으로는 `@ManyToOne()`에서는 꼭 적지 않아도 `categoryId`를 칼럼을 자동으로 만들어주지만, `@OneToOne()`에서는 반드시 적어줘야 한다.
 
 ```ts
@@ -732,7 +766,7 @@ export class Category {
 }
 ```
 
-### JoinTable
+#### JoinTable
 
 IMPT: 내용 약간 추가!
 다대다 관계에서 사용하며 연결테이블을 설정할 수 있다. `@JoinTable()`의 옵션을 사용해 연결테이블의 칼럼명과 참조칼럼명을 설정할 수 있다.
@@ -768,6 +802,8 @@ export class Category {
 ### RelationId
 
 IMPT: 내용 약간 추가!
+1:N/M:N 관계에서 entity에 명시적으로 관계가 있는 테이블의 칼럼 id를 적고싶은 경우, `@RelationId()`를 사용하면 됨
+
 `@RelationId()`로 테이블을 조회하면 새로운 칼럼명 `categoryId`도 결과에 같이 들고올 수 있다.
 
 ```ts
@@ -900,4 +936,53 @@ export class User {
 - 트랜잭션을 쓰는 이유는 데이터의 일관성을 유지하면서 안정적으로 데이터를 복구하기 위함이다.
 - 격리성 수준 설정을 통해 트랜잭션이 열려있는 동안 외부에서 해당 데이터에 접근하지 못하도록 락을 걸 수도 있다.
 
-IMPT: start-commit 과정 코드로 예시
+격리성 수준은 다음과 같이 분류할 수 있다. 아래로 갈수록 격리성 수준이 높아진다.
+
+- `READ UNCOMMITTED`
+- `READ COMMITTED` 
+- `REPEATABLE READ`
+- `SERIALIZABLE`
+
+global connection을 열어서 트랜젝션을 사용하는 경우는 아래와 같이 사용한다.
+
+```ts
+await getManager().transaction('SERIALIZABLE', transactionalEntityManager => {})
+```
+
+하지만 global connection은 사이드이펙트가 많은 방법이기때문에 데코레이터나 `queryRunner`를 사용한 방법을 추천한다. 아래는 데코레이터 `@Transaction()`, `@TransactionManager()`, 
+`@TransactionRepository()`를 사용한 패턴이다.
+
+```ts
+// using transaction manager
+@Transaction({ isolation: 'SERIALIZABLE' })
+save(@TransactionManager() manager: EntityManager, user: User) {
+    return manager.save(user)
+}
+
+// using transaction repository
+@Transaction({ isolation: 'SERIALIZABLE' })
+save(user: User, @TransactionRepository(User) userRepository: Repository<User>) {
+    return userRepository.save(user) 
+}
+```
+
+아래는 `queryRunner`를 사용한 방법이다. 다만 이 방법에서는 격리성 수준 설정이 불가능하다.
+
+- `startTransaction`은 트랜잭션을 시작하는 메서드임
+- `commitTransaction`는 모든 변경사항을 커밋하는 메서드임
+- `rollbackTransaction`는 모든 변경사항을 되돌리는 메서드임
+
+```ts
+await queryRunner.startTransaction()
+
+try {
+  await queryRunner.manager.save(user)
+  await queryRunner.manager.save(photos)
+  
+  await queryRunner.commitTransaction() 
+} catch (err) {
+  await queryRunner.rollbackTransaction()
+} finally {
+  await queryRunner.release()
+}
+```
