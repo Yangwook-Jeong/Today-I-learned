@@ -146,6 +146,7 @@ SELECT CAST('2020-12-01 12:00:00' AS DATE) AS 'date';
 ### TIME
 
 - `HH:MM:SS` 포맷을 사용한다.
+
 ```sql
 SELECT CAST('2020-12-01 12:00:00' AS TIME) AS 'time';
 -- 12:00:00
@@ -154,6 +155,7 @@ SELECT CAST('2020-12-01 12:00:00' AS TIME) AS 'time';
 ### DATETIME
 
 - `YYYY-MM-DD HH:MM:SS` 포맷을 사용한다.
+
 ```sql
 SELECT CAST('2020-12-01 12:00:00' AS DATETIME) AS 'datetime';
 -- 2020-12-01 12:00:00
